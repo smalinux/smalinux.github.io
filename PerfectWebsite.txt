@@ -1,0 +1,2 @@
+1- meta tags
+- compress all files: html - css - js
