@@ -10,13 +10,32 @@
         margin: 0;
         padding: 0;
       }
+
+      /*============ Start Contact Section
+      */
+      #Contact {
+        height: 100%;
+      }
+
       #map {
         height: 100%;
       }
+      /*============ End Contact Section
+      */
     </style>
   </head>
   <body>
-    <div id="map"></div>
+
+    <!-- Start Contact Section -->
+      <section id="Contact">
+        <div class="container">
+          <div class="row">
+            <div id="map"></div>
+          </div>
+        </div>
+      </section>
+      <!-- End Contact Section -->
+
     <script>
       var map;
       function initMap() {
@@ -26,6 +45,14 @@
         });
       }
     </script>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAtn0bwiTWb2WAddxCONZRpxRXW0iAbi2w&callback=initMap"
     async defer></script>
   </body>
