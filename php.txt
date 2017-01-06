@@ -1,0 +1,44 @@
+
+php , php oop , php design patter, php mvc , php mysql db ( PDO )
+see laravel after all this
+SEE> http://ask.fm/ahmedash95/answers/136727715496
+http://www.apress.com/gp/book/9781430260325#otherversion=9781430260318
+==============================
+php Unit: http://ask.fm/ahmedash95/answers/140123150248
+DDD
+BDD: https://www.uvd.co.uk/blog/moving-to-bdd-in-php/#_=_
+Behat
+Software Architect
+==============================
+composer
+how to use git 
+how to use composer
+1 - git ( github - bitbucket )
+2 - any js framework ( Angular 2 - ReactJs - VueJs )
+3 - Read books about ( Designs Pattern - OOP - Testing )
+4 - try to write posts on medium or do more projects on github
+Digital Ocean or AWS
+Book> the php clean code 
+==============================
+PSR: http://www.php-fig.org/psr/#_=_
+learn this beside: html , css , javascript , mysql , php , git , docker , vagrant , ajax
+==============================
+http://www.phptherightway.com/
+==============================
+http://ask.fm/ahmedash95/answers/139673477800
+http://ask.fm/ahmedash95/answers/139418258600
+https://code.tutsplus.com/series/design-patterns-in-php--cms-747#_=_
+https://www.youtube.com/user/firefoxegy/playlists
+https://www.youtube.com/user/hasanzohdy/playlists
+https://code.tutsplus.com/tutorials/the-whens-and-whys-for-php-design-patterns--net-27862#_=_
+http://ask.fm/ahmedash95/answers/138232326312
+https://www.quora.com/What-should-a-senior-PHP-developer-know#_=_
+https://www.youtube.com/playlist?list=PLfdtiltiRHWGXVHXX09fxXDi-DqInchFD
+http://ask.fm/ahmedash95/answers/136778331304
+http://ask.fm/ahmedash95/answers/136341556904
+http://www.apress.com/gp/book/9781430210115#_=_
+http://ask.fm/ahmedash95/answers/136109456808
+===========
+========
+======
+http://ask.fm/ahmedash95/answers/136009237928
