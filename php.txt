@@ -53,3 +53,8 @@ http://code.tutsplus.com/series/design-patterns-in-php--cms-747
 
 -----------------
 OOP: traits - absstract - interface - implements 
+
+---------
+Build a PHP MVC Application:
+https://www.youtube.com/playlist?list=PLfdtiltiRHWGXVHXX09fxXDi-DqInchFD
+-----------
