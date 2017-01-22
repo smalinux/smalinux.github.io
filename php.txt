@@ -58,3 +58,91 @@ OOP: traits - absstract - interface - implements
 Build a PHP MVC Application:
 https://www.youtube.com/playlist?list=PLfdtiltiRHWGXVHXX09fxXDi-DqInchFD
 -----------
+
+## Popular PHP Projects: https://www.phpclasses.org/browse/
+Social Websites
+AJAX
+Algorithms
+Artificial intelligence
+Astrology
+Audio
+Biology
+Blogs
+Cache
+Chat
+Code Generation
+Compression
+Configuration
+Console
+Content management
+Conversion
+Cryptography
+Data types
+Databases
+Debug
+Design Patterns
+E-Commerce
+E-Learning
+Email
+Emulators
+Files and Folders
+Finances
+Flash
+Forums
+Games
+Geography
+Graphics
+GUI
+Hardware
+Hosting
+HTML
+HTTP
+Language
+Libraries
+Localization
+Logging
+Mac OS
+Math
+Networking
+P2P
+Parsers
+Performance and optimization
+PHP 5
+PHP 7
+Physics
+Printing
+Project Management
+PSR
+Searching
+Security
+SEO
+Social Networking
+Statistics
+Stream wrappers
+System information
+Systems administration
+Templates
+Testing
+Text processing
+Time and Date
+Traits
+Unix
+User Management
+Utilities and Tools
+Validation
+Video
+Weather
+Web services
+Windows
+Wireless and Mobile
+XML
+Zephir
+
+
+
+
+
+
+
+
+
