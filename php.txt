@@ -42,3 +42,14 @@ http://ask.fm/ahmedash95/answers/136109456808
 ========
 ======
 http://ask.fm/ahmedash95/answers/136009237928
+
+=========
+
+Singleton - Factory
+-------------
+design patterns :
+http://www.apress.com/9781430260318
+http://code.tutsplus.com/series/design-patterns-in-php--cms-747
+
+-----------------
+OOP: traits - absstract - interface - implements 
