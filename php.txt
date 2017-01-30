@@ -1,5 +1,5 @@
 
-php , php oop , php design patter, php mvc , php mysql db ( PDO )
+php , php oop , php design pattern , php mvc , php mysql db ( PDO ) , php cookbook
 see laravel after all this
 SEE> http://ask.fm/ahmedash95/answers/136727715496
 http://www.apress.com/gp/book/9781430260325#otherversion=9781430260318
