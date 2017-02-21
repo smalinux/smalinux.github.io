@@ -1,5 +1,34 @@
+======================================
+======================================
+======================================
 
-php , php oop , php design pattern , php mvc , php mysql db ( PDO ) , php cookbook
+Everything about PHP :-
+
+PHP
+PHP Function Reference
+PHP OOP
+PHP Design Pattern
+PHP MVC
+PHP Frameworks: Laravel & CodeIgniter
+PHP MySQL DB ( PDO )
+PHP Cookbook: Main Web Services
+
+http://www.phptherightway.com/
+Classes & Ideas: https://www.phpclasses.org/
+GitHub> PHP
+YouTube> PHP Projects
+Third party API
+Learn to SEE <> Analysis Projects <> Read Codes
+
+Practice,,Practice,,Practice
+
+
+======================================
+======================================
+======================================
+
+
+
 see laravel after all this
 SEE> http://ask.fm/ahmedash95/answers/136727715496
 http://www.apress.com/gp/book/9781430260325#otherversion=9781430260318
@@ -137,12 +166,3 @@ Windows
 Wireless and Mobile
 XML
 Zephir
-
-
-
-
-
-
-
-
-
