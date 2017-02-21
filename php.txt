@@ -74,17 +74,12 @@ http://ask.fm/ahmedash95/answers/136009237928
 
 =========
 
-Singleton - Factory
--------------
-design patterns :
+Design Patterns :
 http://www.apress.com/9781430260318
 http://code.tutsplus.com/series/design-patterns-in-php--cms-747
 
------------------
-OOP: traits - absstract - interface - implements 
-
 ---------
-Build a PHP MVC Application:
+Build a PHP MVC Application: {>> FINISHED <<}
 https://www.youtube.com/playlist?list=PLfdtiltiRHWGXVHXX09fxXDi-DqInchFD
 -----------
 
