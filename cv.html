@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="ie=edge" http-equiv="X-UA-Compatible">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
+    <style>
+         * {
+           font-family: "Open Sans", sans-serif;
+         }
+         body {
+           margin-left: 50px;
+           margin-right: 50px;
+         }
+         .header {
+           text-align: center;
+           border-bottom: 1px solid #010101;
+           margin: 0;
+         }
+         .header h3 {
+           color: #666;
+           line-height: 13px;
+         }
+         .content {
+           padding-left: 10px;
+         }
+         .content div {
+           margin-bottom: 20px;
+         }
+         .list li {
+           list-style: none;
+         }
+         /* .inline {
+           display: flex;
+         } */
+         .inline li {
+           display: inline;
+           padding: 5px 10px;
+           /* color: #2196f3; */
+
+           line-height: 26px;
+         }
+         .inline li::after {
+           content: ",";
+         }
+
+         .xinline li {
+           display: inline;
+           padding: 5px 10px;
+           /* color: #2196f3; */
+
+           line-height: 26px;
+         }
+         .xinline li::after {
+         }
+         .content h2 {
+           color: #101010;
+           font-weight: bolder;
+           margin-top: 30px;
+         }
+         .work {
+           /* margin-left: 5px; */
+           text-decoration: underline;
+         }
+         .links a {
+           font-size: large;
+         }
+         a {
+           text-decoration: underline;
+           color: #2DB2BA;
+         }
+         * {
+           margin-top: 10px;
+           margin-bottom: 10px;
+           color: #010101;
+         }
+    </style>
+    <title>Sohaib Mohammed</title>
+</head>
+<body>
+    <div class="header">
+        <h2>Sohaib Mohammed</h2>
+        <h3>Location: Giza - Egypt</h3>
+        <h3>Phone: <a href="tel:+201157133430">+201157133430</a></h3>
+        <h3>Email: <a href="mailto:xunilams@gmail.com">xunilams@gmail.com</a></h3>
+        <h3>LinkedIn: <a href="https://www.linkedin.com/in/smalinux/">Sohaib Mohammed</a></h3>
+        <h3>Github: <a href="https://github.com/smalinux">Github</a></h3>
+    </div>
+    <div class="content">
+        <h2>Professional Summary:</h2>
+        <p>Undergrad student in the last year, a linux kernel and low-level enthusiast.</p>
+        <h2>Open source projects:</h2>
+
+        <!-- Project 1 -->
+        <h3 class="work">simOS</h3>
+        <ul class="list xinline">
+            <li>Tiny bare-bones operating system made for learning only. 
+            16-bit real mode based on x86 architecture using BIOS interrupts.</li>
+        </ul>
+        <h5>What I used:</h5>
+        <ul class="list inline">
+            <li>Assembly</li>
+            <li>Bochs emulator</li>
+            <li>osdev.org</li>
+        </ul>
+        <div class="links inline">
+            <p>GitHub: <a href="https://github.com/smalinux/simOS/">link</a></p>
+            <p>Watch: <a href="https://youtu.be/aUWQ_VIuKY4">Video Demo</a></p>
+        </div>
+
+        <!-- Project 2 -->
+        <h3 class="work">Misc linux kernel modules</h3>
+        <ul class="list xinline">
+            <li>A big list of Linux kernel modules.</li>
+        </ul>
+        <h5>What I used:</h5>
+        <ul class="list inline">
+            <li>C lang</li>
+            <li>Qemu emulator</li>
+            <li>LDD3 book</li>
+            <li>Vim editor</li>
+        </ul>
+        <div class="links inline">
+            <p>GitHub: <a href="https://github.com/smalinux/lab">link</a></p>
+        </div>
+
+        <!-- Project 3 -->
+        <h3 class="work">RogueLike</h3>
+        <ul class="list xinline">
+            <li>ASCII based graphics game.</li>
+        </ul>
+        <h5>What I used:</h5>
+        <ul class="list inline">
+            <li>C lang</li>
+            <li>ncurses C lib</li>
+            <li>Vim editor</li>
+        </ul>
+        <div class="links inline">
+            <p>GitHub: <a href="https://github.com/smalinux/Gym/blob/master/RogueLike.c">link</a></p>
+            <p>Watch: <a href="https://youtu.be/4vNrjhPuxMM">Video Demo</a></p>
+        </div>
+
+        <h2>proficiency SKills</h2>
+        <ul class="list inline">
+            <li>C lang</li>
+            <li>Bash script</li>
+            <li>Git</li>
+            <li>Qemu</li>
+            <li>SysAdmin</li>
+        </ul>
+
+        <h2>Education:</h2>
+        <ul class="list xinline">
+            <li>Faculty of Computer Science - MUST University.</li>
+        </ul>
+        <h2>Languages</h2>
+        <ul class="list xinline">
+            <li>English: very good command</li>
+            <li>Arabic: Native</li>
+        </ul>
+    </div>
+</body>
+</html>
