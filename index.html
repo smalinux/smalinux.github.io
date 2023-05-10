@@ -1,22 +1,23 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>smalinux - linux kernel fan</title>
+   <head>
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>smalinux - low-level hacker</title>
 
-  <meta name="description" content="I'm Sohaib, a low-level enthusiast living in Cairo,EG. I'm currently trying to build a solid linux kernel modules! My Projects on GitHub. You can find me on Twitter and Telegram.">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="p:domain_verify" content="b8c3afa132542a7888bc800db8f793b3"/>
-  <link href="https://fonts.googleapis.com/css?family=Noto+Sans" rel="stylesheet">
-  <style type="text/css">
-    /* -------------------------------------------------------------------------- */
-    /* GLOBAL
-    /* -------------------------------------------------------------------------- */
-    html {
+      <meta name="description" content="I'm Sohaib, a low-level hacker living in Cairo,EG. my open-source contributions at Google Summer of Code, Htop and Linux kernel.
+      You can chat with me. and LinkedIn.">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="p:domain_verify" content="b8c3afa132542a7888bc800db8f793b3"/>
+      <link href="https://fonts.googleapis.com/css?family=Noto+Sans" rel="stylesheet">
+      <style type="text/css">
+/* -------------------------------------------------------------------------- */
+/* GLOBAL
+      /* -------------------------------------------------------------------------- */
+   html {
       font-size: 100%;
-    }
-    body {
+   }
+   body {
       font-family: 'Noto Sans', sans-serif;
       background: #f4f4f4;
       text-align: center;
@@ -26,8 +27,8 @@
       padding: 0;
       margin: 0;
       color: #666;
-    }
-    .wrap {
+   }
+   .wrap {
       border: 1px solid #ddd;
       display: inline-block;
       vertical-align: middle;
@@ -38,15 +39,15 @@
       -webkit-box-shadow: 1px 1px 3px rgba(0,0,0,0.1);
       -moz-box-shadow: 1px 1px 3px rgba(0,0,0,0.1);
       box-shadow: 1px 1px 3px rgba(0,0,0,0.1);
-    }
-    a {
+   }
+   a {
       color: #2DB2BA;
       text-decoration: none;
-    }
-    a:hover {
+   }
+   a:hover {
       color: #1982BB;
-    }
-    h1 {
+   }
+   h1 {
       text-transform: uppercase;
       font-weight: normal;
       font-size: 26px;
@@ -54,21 +55,21 @@
       margin: 0 0 0.5em 0;
       line-height: 1.2;
       color: #333;
-    }
-    p,
-    .mugshot {
+   }
+   p,
+   .mugshot {
       margin: 0 0 1em;
-    }
+   }
 
-    a.myAvatar {
+   a.myAvatar {
       cursor: default;
-    }
-    img,
-    .mugshot {
+   }
+   img,
+   .mugshot {
       max-width: 100%;
       height: auto;
-    }
-    .visuallyhidden {
+   }
+   .visuallyhidden {
       position: absolute;
       clip: rect(0 0 0 0);
       overflow: hidden;
@@ -77,77 +78,77 @@
       width: 1px;
       margin: -1px;
       padding: 0;
-    }
-    /* -------------------------------------------------------------------------- */
-    /* MUGSHOT
-    /* -------------------------------------------------------------------------- */
-    .mugshot {
-      border: 1px solid #ddd;
-      -webkit-box-shadow: inset 1px 1px 5px rgba(0,0,0,0.6);
-      -moz-box-shadow: inset 1px 1px 5px rgba(0,0,0,0.6);
-      box-shadow: inset 1px 1px 5px rgba(0,0,0,0.6);
-      -webkit-border-radius: 100%;
-      -moz-border-radius: 100%;
-      border-radius: 100%;
-    }
-    /* -------------------------------------------------------------------------- */
-    /* VERTICALLY ALIGN ON LARGER DEVICES
-    /* -------------------------------------------------------------------------- */
-    @media (min-width: 540px) {
-      html,
-      body {
-        height: 100%;
+   }
+   /* -------------------------------------------------------------------------- */
+   /* MUGSHOT
+/* -------------------------------------------------------------------------- */
+      .mugshot {
+         border: 1px solid #ddd;
+         -webkit-box-shadow: inset 1px 1px 5px rgba(0,0,0,0.6);
+         -moz-box-shadow: inset 1px 1px 5px rgba(0,0,0,0.6);
+         box-shadow: inset 1px 1px 5px rgba(0,0,0,0.6);
+         -webkit-border-radius: 100%;
+         -moz-border-radius: 100%;
+         border-radius: 100%;
       }
-      body:before {
-        content: '';
-        display: inline-block;
-        vertical-align: middle;
-        margin-right: -0.25em;
-        height: 100%;
+      /* -------------------------------------------------------------------------- */
+      /* VERTICALLY ALIGN ON LARGER DEVICES
+/* -------------------------------------------------------------------------- */
+      @media (min-width: 540px) {
+         html,
+         body {
+            height: 100%;
+         }
+         body:before {
+            content: '';
+            display: inline-block;
+            vertical-align: middle;
+            margin-right: -0.25em;
+            height: 100%;
+         }
       }
-    }
-  </style>
-</head>
-<body>
-  <div class="wrap">
-    <header role="banner">
-      <!--<h1><span style="text-decoration:line-through;">UI developer</span></h1>-->
-    </header>
-    <aside>
-      <a class="myAvatar" href="https://smalinux.github.io/">
-        <img src="./8196176.png" width="160" height="160" class="mugshot" alt="Sohaib Mohammed">
-      </a>
-    </aside>
-    <main role="main">
-      <h2 class="visuallyhidden">About</h2>
-      <p>
-        I'm Sohaib, a low-level enthusiast living in Cairo, EG.
-        <!-- I'm currently working at <a href="http://www.x.com">X</a> and -->
-	<!-- my Linux kernel <a href="https://github.com/smalinux/lab">drivers</a>,
-    my <a href="https://github.com/smalinux/simOS">own OS!</a>. -->
+      </style>
+   </head>
+   <body>
+      <div class="wrap">
+         <header role="banner">
+            <!--<h1><span style="text-decoration:line-through;">UI developer</span></h1>-->
+         </header>
+         <aside>
+            <a class="myAvatar" href="https://smalinux.github.io/">
+               <img src="./8196176.png" width="160" height="160" class="mugshot" alt="Sohaib Mohammed">
+            </a>
+         </aside>
+         <main role="main">
+            <h2 class="visuallyhidden">About</h2>
+            <p>
+            I'm Sohaib, a low-level programmer based in Cairo, Egypt.
 
-	my open-source contributions at
-   <a href="https://gist.github.com/smalinux/e869b376b5c77cacdcda4cb14f027632">Google Summer of Code</a>,
-   <a href="https://github.com/htop-dev/htop/commits?author=smalinux">Htop</a>
-   <!--<a href="https://github.com/performancecopilot/pcp/commits?author=smalinux">PCP</a>-->
-	and <a href="https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/log/?qt=grep&q=sohaib">Linux kernel</a>.
-   <br>
+            <!-- I'm currently working at <a href="http://www.x.com">X</a> and -->
 
-	You can <a href="mailto:sohaib.amhmd@gmail.com?Subject=Hello!"
-      target="_blank">chat</a> with me.
-        <!--<a href="https://twitter.com/smalinux">Twitter</a>-->
-        and <a href="http://eg.linkedin.com/in/smalinux">LinkedIn</a>.
-        <!--<a href="https://www.messenger.com/t/smalinux">Facebook</a>,-->
-        <!--<a href="https://www.instagram.com/smalinux/">instagram</a>,-->
-        <!--<a href="http://stackoverflow.com/users/5688267/sohaib-mohammed?tab=profile">StackOverflow</a>-->
-	<!--and -->
-	<!--<a href="https://t.me/smalinux">Telegram</a>.-->
-      </p>
-    </main>
-  </div>
+            <!-- my Linux kernel <a href="https://github.com/smalinux/lab">drivers</a>,
+               my <a href="https://github.com/smalinux/simOS">own OS!</a>. -->
 
-  <script type="text/javascript">
+               My open-source contributions to
+               <a href="https://gist.github.com/smalinux/e869b376b5c77cacdcda4cb14f027632">Google Summer of Code</a>
+               and many <a href="https://gist.github.com/smalinux/2e9c5537fdac65501a655280352c9c15">other</a> projects.
+               <br>
 
-  </script>
-</body>
+               You CAN <a href="mailto:sohaib.amhmd@gmail.com?Subject=Hello!"
+                  target="_blank">chat</a> with me!
+               <!--<a href="https://twitter.com/smalinux">Twitter</a>-->
+               and <a href="http://eg.linkedin.com/in/smalinux">LinkedIn</a>.
+               <!--<a href="https://www.messenger.com/t/smalinux">Facebook</a>,-->
+               <!--<a href="https://www.instagram.com/smalinux/">instagram</a>,-->
+               <!--<a href="http://stackoverflow.com/users/5688267/sohaib-mohammed?tab=profile">StackOverflow</a>-->
+               <!--and -->
+               <!--<a href="https://t.me/smalinux">Telegram</a>.-->
+            </p>
+         </main>
+      </div>
+
+      <script type="text/javascript">
+
+      </script>
+   </body>
 </html>
