@@ -8,7 +8,9 @@ tags:
   - Tag
 weight: 1
 comments: true
-hidden: true
+hidden: false
 ---
 
 Hello world
+
+[[How many devices can you connect on I2C bus EN]]
