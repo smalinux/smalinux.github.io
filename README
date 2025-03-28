@@ -9,3 +9,7 @@ Comments: https://utteranc.es/
 Hugo: https://gohugo.io/documentation/
 
 Obsidian
+
+
+> Test locally:
+hugo server -D
