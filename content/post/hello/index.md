@@ -8,7 +8,7 @@ tags:
   - Tag
 weight: 1
 comments: true
+hidden: true
 ---
 
 Hello world
-
