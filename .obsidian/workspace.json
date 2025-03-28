@@ -1,0 +1,292 @@
+{
+  "main": {
+    "id": "2c75d04609873700",
+    "type": "split",
+    "children": [
+      {
+        "id": "1f8c4f970c90d2a7",
+        "type": "tabs",
+        "dimension": 54.07124681933843,
+        "children": [
+          {
+            "id": "f4907a3af242b3b0",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "assets/Slurp/How many devices can you connect on I2C bus EN.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "How many devices can you connect on I2C bus EN"
+            }
+          },
+          {
+            "id": "594715550c306c95",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "content/post/math-typesetting/index.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "index"
+            }
+          },
+          {
+            "id": "b5bd8f86d83730f1",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Clippings/How many devices can you connect on I2C bus EN.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "How many devices can you connect on I2C bus EN"
+            }
+          }
+        ],
+        "currentTab": 1
+      },
+      {
+        "id": "1358db50f52b1997",
+        "type": "tabs",
+        "dimension": 45.92875318066158,
+        "children": [
+          {
+            "id": "e6aabbf5d2b9816b",
+            "type": "leaf",
+            "state": {
+              "type": "hugo-preview-view",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "Hugo Preview"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "f5ddfc6aef81da8e",
+    "type": "split",
+    "children": [
+      {
+        "id": "59ec58aa444854ec",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "8af1b61f2663b52f",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "e6232314a2fd13c7",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "7de72cc4e527c864",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          },
+          {
+            "id": "7197cf15804986c9",
+            "type": "leaf",
+            "state": {
+              "type": "recent-files",
+              "state": {},
+              "icon": "clock",
+              "title": "Recent Files"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "768169272cce8364",
+    "type": "split",
+    "children": [
+      {
+        "id": "7a257e037a67fb31",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "12c32a1d02f622bd",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "content/post/hello/index.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks for index"
+            }
+          },
+          {
+            "id": "41d6851db7e39fc9",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "content/post/my-first-post/index.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links from index"
+            }
+          },
+          {
+            "id": "421864b70e716c11",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "8c5c4ee9f7d1f163",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "content/post/my-first-post/index.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline of index"
+            }
+          },
+          {
+            "id": "23476f0798509edd",
+            "type": "leaf",
+            "state": {
+              "type": "quiet-outline",
+              "state": {},
+              "icon": "lines-of-text",
+              "title": "Quiet Outline"
+            }
+          }
+        ],
+        "currentTab": 4
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "obsidian-raindrop-highlights:Sync your Raindrop bookmarks": false,
+      "hugo-publish:hugo sync": false,
+      "ob2static-site:Current file - Static Site MD Export": false,
+      "ob2static-site:All files - Static Site MD Export": false
+    }
+  },
+  "active": "594715550c306c95",
+  "lastOpenFiles": [
+    "public/categories/syntax/page/1/index.html",
+    "public/categories/syntax/page/1",
+    "public/categories/syntax/page",
+    "public/categories/themes/index.html",
+    "public/categories/themes/index.xml",
+    "public/categories/themes/page/1/index.html",
+    "public/categories/themes/page/1",
+    "public/categories/themes/page",
+    "public/categories/themes",
+    "public/en/index.html",
+    "public/en/sitemap.xml",
+    "public/favicon-16x16.png",
+    "public/favicon-32x32.png",
+    "public/favicon-96x96.png",
+    "public/favicon.svg",
+    "public/img/avatar_hu190e528798e90195d3cefef01f0a2d44_410_300x0_resize_box_3.png",
+    "public/img/avatar_huda2458f72ce188392d75c5d51cd8e24e_373_300x0_resize_box_3.png",
+    "public/mstile-150x150.png",
+    "public/p/hello-world/cover.c514d916917173a48a42e0114b469961.jpg",
+    "public/p/hello-world/cover.c514d916917173a48a42e0114b469961_hud7e36f7e20e71be184458283bdae4646_55974_250x150_fill_q75_box_smart1.jpg",
+    "public/p/hello-world/cover.jpg",
+    "public/post/my-first-post/index.md",
+    "content/page/blogarchive/index.md",
+    "content/page/blogarchive/assets/index.md",
+    "content/page/links/index.md",
+    "content/post/hello/index.md",
+    "content/page/archives/index.md",
+    "content/post/markdown-syntax/index.md",
+    "content/post/math-typesetting/index.md",
+    "Clippings/How many devices can you connect on I2C bus EN.md",
+    "assets/Slurp/How many devices can you connect on I2C bus EN.md",
+    "Untitled.md",
+    "assets/Slurp/GitHub - JimHeaneyi2c-usb-hub - An i2C Controllable USB 2.0 Hub.md",
+    "assets/Slurp/Untitled.md",
+    "content/post/hello-world/index.md",
+    "content/post/image-gallery/index.md",
+    "assets/raindrop/BBB/Dave Cheney  The acme of foolishness.md",
+    "assets/raindrop/BBB/armhf.com  Ubuntu and Wheezy Images for ARMhf Devices.md",
+    "assets/raindrop/BBB/Two Six Technologies  Mission Focused. Impact Driven.md",
+    "assets/raindrop/BBB/Kiwi Electronics.md",
+    "assets/raindrop/BBB/IoT modems and IoT shields [LTE CATM1, NBIoT, 4G, 3G, GSM], GNSS and SENSORS - Arduino, Teensy, Beaglebone and Raspberry PI compatible - home of THE ALPHABET PROJECT.md",
+    "assets/raindrop/BBB/Jürgen Stuber.md",
+    "assets/raindrop/BBB/casualhacking.md",
+    "assets/raindrop/BBB/Cycling and Coding Around the World.md",
+    "assets/raindrop/BBB/Yours for the making - Instructables.md",
+    "assets/raindrop/BBB/Linux Automation - Linux Automation GmbH.md"
+  ]
+}
