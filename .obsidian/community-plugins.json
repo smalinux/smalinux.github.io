@@ -10,5 +10,6 @@
   "hugo-preview-obsidian",
   "hugo-publish",
   "ob2static-site",
-  "slurp"
+  "slurp",
+  "hugo-codeblock-highlight"
 ]
