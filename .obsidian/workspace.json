@@ -51,7 +51,7 @@
             }
           }
         ],
-        "currentTab": 2
+        "currentTab": 1
       },
       {
         "id": "accd0c1cf41a7eb4",
@@ -240,10 +240,10 @@
       "ob2static-site:All files - Static Site MD Export": false
     }
   },
-  "active": "b5bd8f86d83730f1",
+  "active": "594715550c306c95",
   "lastOpenFiles": [
-    "content/post/hello/index.md",
     "Clippings/How many devices can you connect on I2C bus EN.md",
+    "content/post/hello/index.md",
     "assets/Slurp/How many devices can you connect on I2C bus EN.md",
     "Untitled.md",
     "content/page/archives/index.md",
