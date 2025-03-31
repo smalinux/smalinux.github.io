@@ -28,12 +28,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Clippings/How many devices can you connect on I2C bus EN.md",
+                "file": "assets/Slurp/Making my first embedded Linux system.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "How many devices can you connect on I2C bus EN"
+              "title": "Making my first embedded Linux system"
             }
           },
           {
@@ -242,6 +242,10 @@
   },
   "active": "b5bd8f86d83730f1",
   "lastOpenFiles": [
+    "Clippings/Making my first embedded Linux system.md",
+    "assets/Slurp/Making my first embedded Linux system.md",
+    "Clippings/How many devices can you connect on I2C bus EN.md",
+    "assets/raindrop/BBB/Uros Popovic.md",
     "assets/Slurp/How many devices can you connect on I2C bus EN.md",
     "assets/raindrop/BBB/sysplaybbb Experiments, Learning, Sharing done at SysPlay on BeagleBone Black.md",
     "assets/raindrop/BBB/Wired &amp;&amp; Coded;.md",
@@ -279,14 +283,10 @@
     "content/post/hello/index.md",
     "content/page/archives/index.md",
     "content/post/markdown-syntax/index.md",
-    "Clippings/How many devices can you connect on I2C bus EN.md",
     "Untitled.md",
     "assets/Slurp/Untitled.md",
     "content/post/hello-world/index.md",
     "content/post/image-gallery/index.md",
-    "assets/raindrop/BBB/Dave Cheney  The acme of foolishness.md",
-    "assets/raindrop/BBB/armhf.com  Ubuntu and Wheezy Images for ARMhf Devices.md",
-    "assets/raindrop/BBB/Kiwi Electronics.md",
-    "assets/raindrop/BBB/IoT modems and IoT shields [LTE CATM1, NBIoT, 4G, 3G, GSM], GNSS and SENSORS - Arduino, Teensy, Beaglebone and Raspberry PI compatible - home of THE ALPHABET PROJECT.md"
+    "assets/raindrop/BBB/Dave Cheney  The acme of foolishness.md"
   ]
 }
