@@ -2,15 +2,39 @@
   "recentFiles": [
     {
       "basename": "How many devices can you connect on I2C bus EN",
+      "path": "Clippings/How many devices can you connect on I2C bus EN.md"
+    },
+    {
+      "basename": "How many devices can you connect on I2C bus EN",
       "path": "assets/Slurp/How many devices can you connect on I2C bus EN.md"
     },
     {
-      "basename": "GitHub - JimHeaneyi2c-usb-hub - An i2C Controllable USB 2.0 Hub",
-      "path": "assets/Slurp/GitHub - JimHeaneyi2c-usb-hub - An i2C Controllable USB 2.0 Hub.md"
+      "basename": "sysplaybbb Experiments, Learning, Sharing done at SysPlay on BeagleBone Black",
+      "path": "assets/raindrop/BBB/sysplaybbb Experiments, Learning, Sharing done at SysPlay on BeagleBone Black.md"
+    },
+    {
+      "basename": "Wired &amp;&amp; Coded;",
+      "path": "assets/raindrop/BBB/Wired &amp;&amp; Coded;.md"
+    },
+    {
+      "basename": "Yours for the making - Instructables",
+      "path": "assets/raindrop/BBB/Yours for the making - Instructables.md"
     },
     {
       "basename": "oscilloscope",
       "path": "content/post/hello 1/oscilloscope.md"
+    },
+    {
+      "basename": "default",
+      "path": "archetypes/default.md"
+    },
+    {
+      "basename": "index",
+      "path": "content/post/math-typesetting/index.md"
+    },
+    {
+      "basename": "GitHub - JimHeaneyi2c-usb-hub - An i2C Controllable USB 2.0 Hub",
+      "path": "assets/Slurp/GitHub - JimHeaneyi2c-usb-hub - An i2C Controllable USB 2.0 Hub.md"
     },
     {
       "basename": "index",
@@ -35,14 +59,6 @@
     {
       "basename": "index",
       "path": "content/post/markdown-syntax/index.md"
-    },
-    {
-      "basename": "index",
-      "path": "content/post/math-typesetting/index.md"
-    },
-    {
-      "basename": "How many devices can you connect on I2C bus EN",
-      "path": "Clippings/How many devices can you connect on I2C bus EN.md"
     },
     {
       "basename": "index",

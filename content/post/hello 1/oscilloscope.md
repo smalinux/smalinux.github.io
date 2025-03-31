@@ -23,3 +23,7 @@ https://sigrok.org/wiki/Supported_hardware#Logic_analyzers
 دا ترشيح احمد فطوم ليا كبدايه
 لانه رخيص اولاً. وهيساعدك تشوف الـ signals بتاعت كل حاجه, مثلا I2C & SPI الخ
 
+____
+انا مش محتاج الـ analog على الاقل فى البدايه
+مش محتاج اتعمق فى الـ analog 
+طبعاً مهم بس وقت لما تقرر تذاكر electronics وبس

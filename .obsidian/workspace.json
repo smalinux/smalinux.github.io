@@ -6,6 +6,7 @@
       {
         "id": "1f8c4f970c90d2a7",
         "type": "tabs",
+        "dimension": 76.59033078880407,
         "children": [
           {
             "id": "f4907a3af242b3b0",
@@ -19,20 +20,6 @@
               },
               "icon": "lucide-file",
               "title": "How many devices can you connect on I2C bus EN"
-            }
-          },
-          {
-            "id": "594715550c306c95",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "content/post/math-typesetting/index.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "index"
             }
           },
           {
@@ -64,14 +51,15 @@
             }
           }
         ],
-        "currentTab": 3
+        "currentTab": 1
       },
       {
-        "id": "f2888401910784bf",
+        "id": "c27726cefafb5360",
         "type": "tabs",
+        "dimension": 23.40966921119593,
         "children": [
           {
-            "id": "9f0b6e4a724d918a",
+            "id": "3961a4baa0749bee",
             "type": "leaf",
             "state": {
               "type": "hugo-preview-view",
@@ -252,10 +240,18 @@
       "ob2static-site:All files - Static Site MD Export": false
     }
   },
-  "active": "9f0b6e4a724d918a",
+  "active": "b5bd8f86d83730f1",
   "lastOpenFiles": [
-    "assets/Slurp/GitHub - JimHeaneyi2c-usb-hub - An i2C Controllable USB 2.0 Hub.md",
+    "assets/Slurp/How many devices can you connect on I2C bus EN.md",
+    "assets/raindrop/BBB/sysplaybbb Experiments, Learning, Sharing done at SysPlay on BeagleBone Black.md",
+    "assets/raindrop/BBB/Wired &amp;&amp; Coded;.md",
+    "assets/raindrop/BBB/Two Six Technologies  Mission Focused. Impact Driven.md",
+    "assets/raindrop/BBB/Yours for the making - Instructables.md",
     "content/post/hello 1/oscilloscope.md",
+    "assets/raindrop/BBB/Preface  Introduction.md",
+    "archetypes/default.md",
+    "content/post/math-typesetting/index.md",
+    "assets/Slurp/GitHub - JimHeaneyi2c-usb-hub - An i2C Controllable USB 2.0 Hub.md",
     "public/tags/bbb/index.xml",
     "public/tags/bbb/page/1/index.html",
     "public/tags/bbb/page/1",
@@ -265,7 +261,6 @@
     "public/p/oscilloscope/index.html",
     "public/p/oscilloscope",
     "content/post/hello 1",
-    "content/post/math-typesetting/index.md",
     "public/index.xml",
     "public/p/image-gallery/2_hubce42636ecacc1a380b462f3110efcec_37455_1024x0_resize_q75_box.jpg",
     "public/p/image-gallery/2_hubce42636ecacc1a380b462f3110efcec_37455_480x0_resize_q75_box.jpg",
@@ -285,19 +280,13 @@
     "content/page/archives/index.md",
     "content/post/markdown-syntax/index.md",
     "Clippings/How many devices can you connect on I2C bus EN.md",
-    "assets/Slurp/How many devices can you connect on I2C bus EN.md",
     "Untitled.md",
     "assets/Slurp/Untitled.md",
     "content/post/hello-world/index.md",
     "content/post/image-gallery/index.md",
     "assets/raindrop/BBB/Dave Cheney  The acme of foolishness.md",
     "assets/raindrop/BBB/armhf.com  Ubuntu and Wheezy Images for ARMhf Devices.md",
-    "assets/raindrop/BBB/Two Six Technologies  Mission Focused. Impact Driven.md",
     "assets/raindrop/BBB/Kiwi Electronics.md",
-    "assets/raindrop/BBB/IoT modems and IoT shields [LTE CATM1, NBIoT, 4G, 3G, GSM], GNSS and SENSORS - Arduino, Teensy, Beaglebone and Raspberry PI compatible - home of THE ALPHABET PROJECT.md",
-    "assets/raindrop/BBB/Jürgen Stuber.md",
-    "assets/raindrop/BBB/casualhacking.md",
-    "assets/raindrop/BBB/Cycling and Coding Around the World.md",
-    "assets/raindrop/BBB/Yours for the making - Instructables.md"
+    "assets/raindrop/BBB/IoT modems and IoT shields [LTE CATM1, NBIoT, 4G, 3G, GSM], GNSS and SENSORS - Arduino, Teensy, Beaglebone and Raspberry PI compatible - home of THE ALPHABET PROJECT.md"
   ]
 }
