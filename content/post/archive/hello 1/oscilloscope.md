@@ -5,7 +5,7 @@ slug: oscilloscope
 date: 2022-03-06 00:00:00+0000
 tags:
   - BBB
-weight: 1
+weight: 
 comments: true
 hidden: true
 ---

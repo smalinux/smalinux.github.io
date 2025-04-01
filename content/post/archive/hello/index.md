@@ -6,10 +6,9 @@ date: 2022-03-06 00:00:00+0000
 tags:
   - Example
   - Tag
-weight: 1
+weight: 
 comments: true
-hidden: false
-blog_tag: true
+hidden: true
 ---
 
 Hello world
