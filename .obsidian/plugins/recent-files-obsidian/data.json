@@ -2,6 +2,18 @@
   "recentFiles": [
     {
       "basename": "index",
+      "path": "content/page/RSS/index.md"
+    },
+    {
+      "basename": "index",
+      "path": "content/page/archives/index.md"
+    },
+    {
+      "basename": "index",
+      "path": "content/page/links/index.md"
+    },
+    {
+      "basename": "index",
       "path": "content/post/2025/how-to-find-blog-content/index.md"
     },
     {
@@ -11,10 +23,6 @@
     {
       "basename": "index",
       "path": "content/page/search/index.md"
-    },
-    {
-      "basename": "index",
-      "path": "content/page/archives/index.md"
     },
     {
       "basename": "index",
@@ -79,10 +87,6 @@
     {
       "basename": "GitHub - JimHeaneyi2c-usb-hub - An i2C Controllable USB 2.0 Hub",
       "path": "assets/Slurp/GitHub - JimHeaneyi2c-usb-hub - An i2C Controllable USB 2.0 Hub.md"
-    },
-    {
-      "basename": "index",
-      "path": "content/page/links/index.md"
     }
   ],
   "omittedPaths": [],
