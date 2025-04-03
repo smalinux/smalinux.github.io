@@ -187,10 +187,7 @@
       "daily-notes:Open today's daily note": false,
       "templates:Insert template": false,
       "command-palette:Open command palette": false,
-      "obsidian-raindrop-highlights:Sync your Raindrop bookmarks": false,
-      "hugo-publish:hugo sync": false,
-      "ob2static-site:Current file - Static Site MD Export": false,
-      "ob2static-site:All files - Static Site MD Export": false
+      "obsidian-raindrop-highlights:Sync your Raindrop bookmarks": false
     }
   },
   "active": "a3e420e23cf5f179",
