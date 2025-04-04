@@ -11,14 +11,26 @@
             "id": "a3e420e23cf5f179",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "content/page/RSS/index.md",
-                "mode": "source",
-                "source": true
-              },
+              "type": "empty",
+              "state": {},
               "icon": "lucide-file",
-              "title": "index"
+              "title": "New tab"
+            }
+          }
+        ]
+      },
+      {
+        "id": "a2ec05b52084876d",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "94d843fbbfc662eb",
+            "type": "leaf",
+            "state": {
+              "type": "hugo-preview-view",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "Hugo Preview"
             }
           }
         ]
@@ -190,17 +202,34 @@
       "obsidian-raindrop-highlights:Sync your Raindrop bookmarks": false
     }
   },
-  "active": "a3e420e23cf5f179",
+  "active": "94d843fbbfc662eb",
   "lastOpenFiles": [
+    "public/index.xml",
+    "public/p/markdown-syntax-guide/index.html",
+    "public/p/markdown-syntax-guide",
+    "public/p/image-gallery/index.html",
+    "public/p/math-typesetting/index.html",
+    "public/p/math-typesetting",
+    "public/p/shortcodes/index.html",
+    "public/post/page/1/index.html",
+    "public/post/page/1",
+    "public/post/page",
+    "public/post/index.xml",
+    "public/p/hello-world/cover_hud7e36f7e20e71be184458283bdae4646_55974_120x120_fill_q75_box_smart1.jpg",
+    "public/p/image-gallery/2_hubce42636ecacc1a380b462f3110efcec_37455_1024x0_resize_q75_box.jpg",
+    "public/p/image-gallery/2_hubce42636ecacc1a380b462f3110efcec_37455_480x0_resize_q75_box.jpg",
+    "public/p/image-gallery/1_hudd2e8259c20ed0dcaa856c253552e90f_14625_1024x0_resize_q75_box.jpg",
+    "public/p/image-gallery/1_hudd2e8259c20ed0dcaa856c253552e90f_14625_480x0_resize_q75_box.jpg",
+    "public/p/shortcodes/cover_huec3c3e34981507583e214021ad1b9a4b_12942_120x120_fill_q75_box_smart1.jpg",
+    "public/p/image-gallery/2_hubce42636ecacc1a380b462f3110efcec_37455_120x120_fill_q75_box_smart1.jpg",
+    "public/p/shortcodes/cover_huec3c3e34981507583e214021ad1b9a4b_12942_1600x0_resize_q75_box.jpg",
+    "public/p/shortcodes/cover_huec3c3e34981507583e214021ad1b9a4b_12942_800x0_resize_q75_box.jpg",
+    "public/p/hello-world/cover_hud7e36f7e20e71be184458283bdae4646_55974_1600x0_resize_q75_box.jpg",
+    "content/page/RSS/index.md",
     "assets/raindrop/BBB/Blog - Jay Carlson.md",
     "content/page/archives/index.md",
     "content/page/links/index.md",
-    "content/page/RSS/index.md",
-    "public/rss/index.html",
-    "public/rss",
     "content/post/2025/how-to-find-blog-content/index.md",
-    "content/page/RSS/2025",
-    "content/page/RSS",
     "assets/raindrop/BBB/pkg-config.md",
     "assets/raindrop/BBB/Update bricks smart locks preferred by Airbnb  TechCrunch.md",
     "assets/raindrop/BBB/Linux Kernel Development Exploring USB device drivers.md",
@@ -220,23 +249,6 @@
     "assets/raindrop/BBB/Happylab Dein 900m² Makerspace mitten in Wien.md",
     "assets/raindrop/BBB/Pinecil Power Supplies.md",
     "assets/raindrop/BBB/Adafruit NeoDriver - I2C to NeoPixel Driver Board - Stemma QT.md",
-    "assets/raindrop/BBB/Adafruit Industries, Unique &amp; fun DIY electronics and kits.md",
-    "assets/raindrop/BBB/Results for &quot;beaglebone&quot; in all - Instructables.md",
-    "public/page/blogarchive/index.xml",
-    "public/page/blogarchive/page/1/index.html",
-    "public/page/blogarchive/page/1",
-    "public/page/blogarchive/page",
-    "public/page/blogarchive/index.html",
-    "public/page/blogarchive",
-    "public/p/hello-world/cover.c514d916917173a48a42e0114b469961_hud7e36f7e20e71be184458283bdae4646_55974_250x150_fill_q75_box_smart1.jpg",
-    "public/p/hello-world/cover.c514d916917173a48a42e0114b469961.jpg",
-    "public/p/image-gallery/2_hubce42636ecacc1a380b462f3110efcec_37455_1024x0_resize_q75_box.jpg",
-    "public/p/image-gallery/2_hubce42636ecacc1a380b462f3110efcec_37455_480x0_resize_q75_box.jpg",
-    "public/p/image-gallery/1_hudd2e8259c20ed0dcaa856c253552e90f_14625_1024x0_resize_q75_box.jpg",
-    "public/p/image-gallery/1_hudd2e8259c20ed0dcaa856c253552e90f_14625_480x0_resize_q75_box.jpg",
-    "public/p/image-gallery/2_hubce42636ecacc1a380b462f3110efcec_37455_1600x0_resize_q75_box.jpg",
-    "public/p/image-gallery/2_hubce42636ecacc1a380b462f3110efcec_37455_800x0_resize_q75_box.jpg",
-    "public/p/hello-world/cover_hud7e36f7e20e71be184458283bdae4646_55974_1600x0_resize_q75_box.jpg",
-    "public/p/hello-world/cover_hud7e36f7e20e71be184458283bdae4646_55974_800x0_resize_q75_box.jpg"
+    "assets/raindrop/BBB/Adafruit Industries, Unique &amp; fun DIY electronics and kits.md"
   ]
 }

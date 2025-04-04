@@ -2,82 +2,80 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>http://localhost:43247/</loc>
+    <loc>http://localhost:41835/</loc>
     <lastmod>2025-04-01T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:43247/p/how-to-find-blogs/</loc>
+    <loc>http://localhost:41835/p/how-to-find-blogs/</loc>
     <lastmod>2025-04-01T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:43247/post/</loc>
+    <loc>http://localhost:41835/post/</loc>
     <lastmod>2025-04-01T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:43247/categories/</loc>
+    <loc>http://localhost:41835/categories/</loc>
     <lastmod>2023-09-07T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:43247/tags/css/</loc>
+    <loc>http://localhost:41835/tags/css/</loc>
     <lastmod>2023-09-07T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:43247/tags/html/</loc>
+    <loc>http://localhost:41835/tags/html/</loc>
     <lastmod>2023-09-07T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:43247/tags/markdown/</loc>
+    <loc>http://localhost:41835/tags/markdown/</loc>
     <lastmod>2023-09-07T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:43247/p/markdown-syntax-guide/</loc>
+    <loc>http://localhost:41835/p/markdown-syntax-guide/</loc>
     <lastmod>2023-09-07T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:43247/categories/syntax/</loc>
+    <loc>http://localhost:41835/categories/syntax/</loc>
     <lastmod>2023-09-07T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:43247/tags/</loc>
+    <loc>http://localhost:41835/tags/</loc>
     <lastmod>2023-09-07T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:43247/tags/themes/</loc>
+    <loc>http://localhost:41835/tags/themes/</loc>
     <lastmod>2023-09-07T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:43247/categories/themes/</loc>
+    <loc>http://localhost:41835/categories/themes/</loc>
     <lastmod>2023-09-07T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:43247/p/image-gallery/</loc>
+    <loc>http://localhost:41835/p/image-gallery/</loc>
     <lastmod>2023-08-26T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:43247/p/shortcodes/</loc>
+    <loc>http://localhost:41835/p/shortcodes/</loc>
     <lastmod>2023-08-25T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:43247/p/math-typesetting/</loc>
+    <loc>http://localhost:41835/p/math-typesetting/</loc>
     <lastmod>2023-08-24T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:43247/archives/</loc>
+    <loc>http://localhost:41835/archives/</loc>
     <lastmod>2022-03-06T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:43247/tags/bbb/</loc>
+    <loc>http://localhost:41835/tags/bbb/</loc>
     <lastmod>2022-03-06T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:43247/tags/example/</loc>
+    <loc>http://localhost:41835/tags/example/</loc>
     <lastmod>2022-03-06T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:43247/categories/example-category/</loc>
+    <loc>http://localhost:41835/categories/example-category/</loc>
     <lastmod>2022-03-06T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:43247/p/hello-world/</loc>
+    <loc>http://localhost:41835/p/hello-world/</loc>
     <lastmod>2022-03-06T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:43247/p/hello/</loc>
+    <loc>http://localhost:41835/p/hello/</loc>
     <lastmod>2022-03-06T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:43247/p/oscilloscope/</loc>
+    <loc>http://localhost:41835/p/oscilloscope/</loc>
     <lastmod>2022-03-06T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:43247/page/</loc>
+    <loc>http://localhost:41835/page/</loc>
     <lastmod>2022-03-06T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:43247/tags/tag/</loc>
+    <loc>http://localhost:41835/tags/tag/</loc>
     <lastmod>2022-03-06T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:43247/links/</loc>
+    <loc>http://localhost:41835/links/</loc>
   </url><url>
-    <loc>http://localhost:43247/rss/</loc>
-  </url><url>
-    <loc>http://localhost:43247/search/</loc>
+    <loc>http://localhost:41835/search/</loc>
   </url>
 </urlset>

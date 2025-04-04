@@ -2,16 +2,16 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Posts on smalinux</title>
-        <link>http://localhost:43247/post/</link>
+        <link>http://localhost:41835/post/</link>
         <description>Recent content in Posts on smalinux</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>en</language>
-        <lastBuildDate>Tue, 01 Apr 2025 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:43247/post/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Tue, 01 Apr 2025 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:41835/post/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>How to find Blogs</title>
-        <link>http://localhost:43247/p/how-to-find-blogs/</link>
+        <link>http://localhost:41835/p/how-to-find-blogs/</link>
         <pubDate>Tue, 01 Apr 2025 00:00:00 +0000</pubDate>
         
-        <guid>http://localhost:43247/p/how-to-find-blogs/</guid>
+        <guid>http://localhost:41835/p/how-to-find-blogs/</guid>
         <description>&lt;p&gt;Google:&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;&amp;ldquo;BeagleBone Black&amp;rdquo; inurl:blog&lt;/p&gt;
