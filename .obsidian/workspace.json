@@ -11,20 +11,24 @@
             "id": "a3e420e23cf5f179",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {},
+              "type": "markdown",
+              "state": {
+                "file": "content/post/2025/how-i-use-rss/index.md",
+                "mode": "source",
+                "source": false
+              },
               "icon": "lucide-file",
-              "title": "New tab"
+              "title": "index"
             }
           }
         ]
       },
       {
-        "id": "a2ec05b52084876d",
+        "id": "a83445b6897b3aff",
         "type": "tabs",
         "children": [
           {
-            "id": "94d843fbbfc662eb",
+            "id": "e6021ae6afddf595",
             "type": "leaf",
             "state": {
               "type": "hugo-preview-view",
@@ -202,8 +206,18 @@
       "obsidian-raindrop-highlights:Sync your Raindrop bookmarks": false
     }
   },
-  "active": "94d843fbbfc662eb",
+  "active": "a3e420e23cf5f179",
   "lastOpenFiles": [
+    "assets/raindrop/BBB/James Munns.md",
+    "assets/raindrop/BBB/Eric Draken - Hard-Problem Solver.md",
+    "assets/raindrop/BBB/Blog.md",
+    "public/p/how-i-use-rss/index.html",
+    "public/p/how-i-use-rss",
+    "content/post/2025/how-i-use-rss/index.md",
+    "content/post/2025/how-i-use-rss",
+    "content/page/archives/index.md",
+    "content/page/search/noindex.md",
+    "content/page/archives/dotfiles.md",
     "public/index.xml",
     "public/p/markdown-syntax-guide/index.html",
     "public/p/markdown-syntax-guide",
@@ -211,10 +225,6 @@
     "public/p/math-typesetting/index.html",
     "public/p/math-typesetting",
     "public/p/shortcodes/index.html",
-    "public/post/page/1/index.html",
-    "public/post/page/1",
-    "public/post/page",
-    "public/post/index.xml",
     "public/p/hello-world/cover_hud7e36f7e20e71be184458283bdae4646_55974_120x120_fill_q75_box_smart1.jpg",
     "public/p/image-gallery/2_hubce42636ecacc1a380b462f3110efcec_37455_1024x0_resize_q75_box.jpg",
     "public/p/image-gallery/2_hubce42636ecacc1a380b462f3110efcec_37455_480x0_resize_q75_box.jpg",
@@ -227,7 +237,6 @@
     "public/p/hello-world/cover_hud7e36f7e20e71be184458283bdae4646_55974_1600x0_resize_q75_box.jpg",
     "content/page/RSS/index.md",
     "assets/raindrop/BBB/Blog - Jay Carlson.md",
-    "content/page/archives/index.md",
     "content/page/links/index.md",
     "content/post/2025/how-to-find-blog-content/index.md",
     "assets/raindrop/BBB/pkg-config.md",
@@ -244,11 +253,6 @@
     "assets/raindrop/BBB/PINECIL – Smart Mini Portable Soldering Iron (Version 2) - PINE STORE.md",
     "assets/raindrop/BBB/PINE64 Store - Main Page.md",
     "assets/raindrop/BBB/googlebloaty Bloaty a size profiler for binaries.md",
-    "assets/raindrop/BBB/μArt.md",
-    "assets/raindrop/BBB/How to Make a BeagleBone and an Arduino Communicate.md",
-    "assets/raindrop/BBB/Happylab Dein 900m² Makerspace mitten in Wien.md",
-    "assets/raindrop/BBB/Pinecil Power Supplies.md",
-    "assets/raindrop/BBB/Adafruit NeoDriver - I2C to NeoPixel Driver Board - Stemma QT.md",
-    "assets/raindrop/BBB/Adafruit Industries, Unique &amp; fun DIY electronics and kits.md"
+    "assets/raindrop/BBB/μArt.md"
   ]
 }
