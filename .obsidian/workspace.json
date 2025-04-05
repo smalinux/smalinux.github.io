@@ -11,14 +11,10 @@
             "id": "a3e420e23cf5f179",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Clippings/BBB Advanced Learning Path.md",
-                "mode": "source",
-                "source": false
-              },
+              "type": "empty",
+              "state": {},
               "icon": "lucide-file",
-              "title": "BBB Advanced Learning Path"
+              "title": "New tab"
             }
           }
         ]
@@ -208,8 +204,11 @@
   },
   "active": "a3e420e23cf5f179",
   "lastOpenFiles": [
-    "content/post/2025/how-i-use-rss/index.md",
+    "assets/raindrop/BBB/K32A-B Beaglebone Controller Cap by Kulp Lights.md",
+    "assets/raindrop/BBB/New Raspberry Pi A+ and Raspberry Pi B+ Cases Now Live  Built to Spec.md",
+    "assets/raindrop/BBB/BeagleBone® Black.md",
     "Clippings/BBB Advanced Learning Path.md",
+    "content/post/2025/how-i-use-rss/index.md",
     "assets/raindrop/BBB/James Munns.md",
     "assets/raindrop/BBB/Eric Draken - Hard-Problem Solver.md",
     "assets/raindrop/BBB/Blog.md",
@@ -250,9 +249,6 @@
     "assets/raindrop/BBB/Leon Anavi - IT Tips &amp;&amp; Tricks.md",
     "assets/raindrop/BBB/Embedded Linux &amp; Yocto Software and Hardware Development.md",
     "assets/raindrop/BBB/iFixit The Free Repair Manual.md",
-    "assets/raindrop/BBB/FixHub  Power Series Portable Soldering Station.md",
-    "assets/raindrop/BBB/PINECIL – Smart Mini Portable Soldering Iron (Version 2) - PINE STORE.md",
-    "assets/raindrop/BBB/PINE64 Store - Main Page.md",
-    "assets/raindrop/BBB/googlebloaty Bloaty a size profiler for binaries.md"
+    "assets/raindrop/BBB/FixHub  Power Series Portable Soldering Station.md"
   ]
 }
