@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "content/post/2025/how-i-use-rss/index.md",
+                "file": "Clippings/BBB Advanced Learning Path.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "index"
+              "title": "BBB Advanced Learning Path"
             }
           }
         ]
@@ -208,12 +208,13 @@
   },
   "active": "a3e420e23cf5f179",
   "lastOpenFiles": [
+    "content/post/2025/how-i-use-rss/index.md",
+    "Clippings/BBB Advanced Learning Path.md",
     "assets/raindrop/BBB/James Munns.md",
     "assets/raindrop/BBB/Eric Draken - Hard-Problem Solver.md",
     "assets/raindrop/BBB/Blog.md",
     "public/p/how-i-use-rss/index.html",
     "public/p/how-i-use-rss",
-    "content/post/2025/how-i-use-rss/index.md",
     "content/post/2025/how-i-use-rss",
     "content/page/archives/index.md",
     "content/page/search/noindex.md",
@@ -252,7 +253,6 @@
     "assets/raindrop/BBB/FixHub  Power Series Portable Soldering Station.md",
     "assets/raindrop/BBB/PINECIL – Smart Mini Portable Soldering Iron (Version 2) - PINE STORE.md",
     "assets/raindrop/BBB/PINE64 Store - Main Page.md",
-    "assets/raindrop/BBB/googlebloaty Bloaty a size profiler for binaries.md",
-    "assets/raindrop/BBB/μArt.md"
+    "assets/raindrop/BBB/googlebloaty Bloaty a size profiler for binaries.md"
   ]
 }
