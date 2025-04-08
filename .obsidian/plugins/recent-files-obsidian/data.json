@@ -2,6 +2,22 @@
   "recentFiles": [
     {
       "basename": "index",
+      "path": "content/post/2025/bbb-usb-audio/index.md"
+    },
+    {
+      "basename": "cover",
+      "path": "content/post/2025/bbb-usb-audio/cover.jpg"
+    },
+    {
+      "basename": "cover",
+      "path": "content/post/2025/bbb-usb-audio/cover.png"
+    },
+    {
+      "basename": "index",
+      "path": "content/post/archive/shortcodes/index.md"
+    },
+    {
+      "basename": "index",
       "path": "content/page/links/index.md"
     },
     {
@@ -11,10 +27,6 @@
     {
       "basename": "index",
       "path": "content/post/archive/hello/index.md"
-    },
-    {
-      "basename": "index",
-      "path": "content/post/archive/shortcodes/index.md"
     },
     {
       "basename": "index",
