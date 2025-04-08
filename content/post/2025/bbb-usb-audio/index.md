@@ -1,6 +1,6 @@
 ---
 title: Audio USB
-description: Connecting USB headset to Beaglebone black
+description: Connecting USB headset to Beaglebone black using Yocto
 slug: bbb-usb-audio
 date: 2025-04-08
 tags:
