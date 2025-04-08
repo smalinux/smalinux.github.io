@@ -2,10 +2,10 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Example Category on smalinux</title>
-        <link>http://localhost:38451/categories/example-category/</link>
+        <link>http://localhost:40017/categories/example-category/</link>
         <description>Recent content in Example Category on smalinux</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>en</language>
-        <lastBuildDate></lastBuildDate><atom:link href="http://localhost:38451/categories/example-category/index.xml" rel="self" type="application/rss+xml" />
+        <lastBuildDate></lastBuildDate><atom:link href="http://localhost:40017/categories/example-category/index.xml" rel="self" type="application/rss+xml" />
     </channel>
 </rss>

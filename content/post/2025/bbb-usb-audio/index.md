@@ -17,3 +17,11 @@ image: cover.png
 
 
 Source code: [feat(audio): Audio-USB by smalinux · Pull Request #12 · smalinux/yocto · GitHub](https://github.com/smalinux/yocto/pull/12)
+
+
+Ref:
+- [Multimedia - eLinux.org](https://elinux.org/Multimedia)
+- [Advanced Linux Sound Architecture - Wikipedia](https://en.wikipedia.org/wiki/Advanced_Linux_Sound_Architecture)
+- [PulseAudio - Wikipedia](https://en.wikipedia.org/wiki/PulseAudio)
+- [What is the relation between ALSA and PulseAudio sound architecture? - Ask Ubuntu](https://askubuntu.com/a/581130)
+- 

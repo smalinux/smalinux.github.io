@@ -2,10 +2,10 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Markdown on smalinux</title>
-        <link>http://localhost:38451/tags/markdown/</link>
+        <link>http://localhost:40017/tags/markdown/</link>
         <description>Recent content in Markdown on smalinux</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>en</language>
-        <lastBuildDate></lastBuildDate><atom:link href="http://localhost:38451/tags/markdown/index.xml" rel="self" type="application/rss+xml" />
+        <lastBuildDate></lastBuildDate><atom:link href="http://localhost:40017/tags/markdown/index.xml" rel="self" type="application/rss+xml" />
     </channel>
 </rss>

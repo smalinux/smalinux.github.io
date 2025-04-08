@@ -2,18 +2,24 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>BBB on smalinux</title>
-        <link>http://localhost:38451/tags/bbb/</link>
+        <link>http://localhost:40017/tags/bbb/</link>
         <description>Recent content in BBB on smalinux</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>en</language>
-        <lastBuildDate>Tue, 08 Apr 2025 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:38451/tags/bbb/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Tue, 08 Apr 2025 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:40017/tags/bbb/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>Audio USB</title>
-        <link>http://localhost:38451/p/bbb-usb-audio/</link>
+        <link>http://localhost:40017/p/bbb-usb-audio/</link>
         <pubDate>Tue, 08 Apr 2025 00:00:00 +0000</pubDate>
         
-        <guid>http://localhost:38451/p/bbb-usb-audio/</guid>
-        <description>&lt;img src="http://localhost:38451/p/bbb-usb-audio/cover.png" alt="Featured image of post Audio USB" /&gt;&lt;p&gt;Source code: &lt;a class=&#34;link&#34; href=&#34;https://github.com/smalinux/yocto/pull/12&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+        <guid>http://localhost:40017/p/bbb-usb-audio/</guid>
+        <description>&lt;img src="http://localhost:40017/p/bbb-usb-audio/cover.png" alt="Featured image of post Audio USB" /&gt;&lt;p&gt;Source code: &lt;a class=&#34;link&#34; href=&#34;https://github.com/smalinux/yocto/pull/12&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;feat(audio): Audio-USB by smalinux · Pull Request #12 · smalinux/yocto · GitHub&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Ref:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://elinux.org/Multimedia&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Multimedia - eLinux.org&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;/li&gt;
+&lt;/ul&gt;
 </description>
         </item>
         
