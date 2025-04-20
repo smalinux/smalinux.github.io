@@ -1,15 +1,12 @@
 ---
-title: Neopixel Matrix
-description: Play RGB matrix using DMA & I2S
+title: NeoPixel
+description: Cuted list of resources helped me to understand pinctrl
 slug: neopixel
-date: 2025-04-21
-tags:
-  - Linux
+date: 2025-04-20
+tags: 
 weight: 
 comments: true
 hidden: false
+image: cover.png
 ---
-
-Google images: 
-Led Matrix Panel, Ws2812b Rgb 832 Pixel Digitale Flexible Matrix
 
