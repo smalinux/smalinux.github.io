@@ -2,96 +2,112 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Tags on smalinux</title>
-        <link>http://localhost:40017/tags/</link>
+        <link>http://localhost:1313/tags/</link>
         <description>Recent content in Tags on smalinux</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>en</language>
-        <lastBuildDate>Tue, 08 Apr 2025 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:40017/tags/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Sat, 19 Apr 2025 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Linux</title>
+        <link>http://localhost:1313/tags/linux/</link>
+        <pubDate>Sat, 19 Apr 2025 00:00:00 +0000</pubDate>
+        
+        <guid>http://localhost:1313/tags/linux/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Pinctrl</title>
+        <link>http://localhost:1313/tags/pinctrl/</link>
+        <pubDate>Sat, 19 Apr 2025 00:00:00 +0000</pubDate>
+        
+        <guid>http://localhost:1313/tags/pinctrl/</guid>
+        <description></description>
+        </item>
+        <item>
         <title>ALSA</title>
-        <link>http://localhost:40017/tags/alsa/</link>
+        <link>http://localhost:1313/tags/alsa/</link>
         <pubDate>Tue, 08 Apr 2025 00:00:00 +0000</pubDate>
         
-        <guid>http://localhost:40017/tags/alsa/</guid>
+        <guid>http://localhost:1313/tags/alsa/</guid>
         <description></description>
         </item>
         <item>
         <title>BBB</title>
-        <link>http://localhost:40017/tags/bbb/</link>
+        <link>http://localhost:1313/tags/bbb/</link>
         <pubDate>Tue, 08 Apr 2025 00:00:00 +0000</pubDate>
         
-        <guid>http://localhost:40017/tags/bbb/</guid>
+        <guid>http://localhost:1313/tags/bbb/</guid>
         <description></description>
         </item>
         <item>
         <title>Beaglebone</title>
-        <link>http://localhost:40017/tags/beaglebone/</link>
+        <link>http://localhost:1313/tags/beaglebone/</link>
         <pubDate>Tue, 08 Apr 2025 00:00:00 +0000</pubDate>
         
-        <guid>http://localhost:40017/tags/beaglebone/</guid>
+        <guid>http://localhost:1313/tags/beaglebone/</guid>
         <description></description>
         </item>
         <item>
         <title>USB</title>
-        <link>http://localhost:40017/tags/usb/</link>
+        <link>http://localhost:1313/tags/usb/</link>
         <pubDate>Tue, 08 Apr 2025 00:00:00 +0000</pubDate>
         
-        <guid>http://localhost:40017/tags/usb/</guid>
+        <guid>http://localhost:1313/tags/usb/</guid>
         <description></description>
         </item>
         <item>
         <title>Yocto</title>
-        <link>http://localhost:40017/tags/yocto/</link>
+        <link>http://localhost:1313/tags/yocto/</link>
         <pubDate>Tue, 08 Apr 2025 00:00:00 +0000</pubDate>
         
-        <guid>http://localhost:40017/tags/yocto/</guid>
+        <guid>http://localhost:1313/tags/yocto/</guid>
         <description></description>
         </item>
         <item>
         <title>Css</title>
-        <link>http://localhost:40017/tags/css/</link>
+        <link>http://localhost:1313/tags/css/</link>
         <pubDate>Thu, 07 Sep 2023 00:00:00 +0000</pubDate>
         
-        <guid>http://localhost:40017/tags/css/</guid>
+        <guid>http://localhost:1313/tags/css/</guid>
         <description></description>
         </item>
         <item>
         <title>Html</title>
-        <link>http://localhost:40017/tags/html/</link>
+        <link>http://localhost:1313/tags/html/</link>
         <pubDate>Thu, 07 Sep 2023 00:00:00 +0000</pubDate>
         
-        <guid>http://localhost:40017/tags/html/</guid>
+        <guid>http://localhost:1313/tags/html/</guid>
         <description></description>
         </item>
         <item>
         <title>Markdown</title>
-        <link>http://localhost:40017/tags/markdown/</link>
+        <link>http://localhost:1313/tags/markdown/</link>
         <pubDate>Thu, 07 Sep 2023 00:00:00 +0000</pubDate>
         
-        <guid>http://localhost:40017/tags/markdown/</guid>
+        <guid>http://localhost:1313/tags/markdown/</guid>
         <description></description>
         </item>
         <item>
         <title>Themes</title>
-        <link>http://localhost:40017/tags/themes/</link>
+        <link>http://localhost:1313/tags/themes/</link>
         <pubDate>Thu, 07 Sep 2023 00:00:00 +0000</pubDate>
         
-        <guid>http://localhost:40017/tags/themes/</guid>
+        <guid>http://localhost:1313/tags/themes/</guid>
         <description></description>
         </item>
         <item>
         <title>Example</title>
-        <link>http://localhost:40017/tags/example/</link>
+        <link>http://localhost:1313/tags/example/</link>
         <pubDate>Sun, 06 Mar 2022 00:00:00 +0000</pubDate>
         
-        <guid>http://localhost:40017/tags/example/</guid>
+        <guid>http://localhost:1313/tags/example/</guid>
         <description></description>
         </item>
         <item>
         <title>Tag</title>
-        <link>http://localhost:40017/tags/tag/</link>
+        <link>http://localhost:1313/tags/tag/</link>
         <pubDate>Sun, 06 Mar 2022 00:00:00 +0000</pubDate>
         
-        <guid>http://localhost:40017/tags/tag/</guid>
+        <guid>http://localhost:1313/tags/tag/</guid>
         <description></description>
         </item>
         

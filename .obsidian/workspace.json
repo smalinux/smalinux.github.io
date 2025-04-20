@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "content/post/2025/pinctrl-subsystem/index.md",
+                "file": "content/post/2025/neopixel/index.md",
                 "mode": "source",
                 "source": false
               },
@@ -24,11 +24,11 @@
         ]
       },
       {
-        "id": "339c52cca83defb8",
+        "id": "8b5543686eda184e",
         "type": "tabs",
         "children": [
           {
-            "id": "a3fb09dfee1325fa",
+            "id": "dd85290c53d9846b",
             "type": "leaf",
             "state": {
               "type": "hugo-preview-view",
@@ -208,6 +208,17 @@
   },
   "active": "a3e420e23cf5f179",
   "lastOpenFiles": [
+    "content/post/2025/bbb-usb-audio/index.md",
+    "content/post/2025/neopixel/index.md",
+    "content/post/2025/pinctrl-subsystem/index.md",
+    "public/p/pinctrlx/index.html",
+    "public/p/pinctrlx",
+    "content/post/2025/neopixel/neopixel.png",
+    "content/post/2025/pinctrl-subsystem/cover.png",
+    "public/p/pinctrl/neopixel.png",
+    "content/post/2025/neopixel/cover.png",
+    "public/p/pinctrl/Pasted image.png",
+    "content/post/2025/neopixel",
     "public/tags/linux/index.xml",
     "public/tags/linux/page/1/index.html",
     "public/tags/linux/page/1",
@@ -215,21 +226,11 @@
     "public/tags/linux/index.html",
     "public/tags/linux",
     "public/tags/pinctrl/page/1/index.html",
-    "public/tags/pinctrl/page/1",
-    "public/tags/pinctrl/page",
-    "public/tags/pinctrl/index.xml",
-    "public/tags/pinctrl/index.html",
     "public/p/pinctrl/cover_hu0bf6b436ac5f3974962d2e02068c7929_11407055_120x120_fill_box_smart1_3.png",
     "public/p/pinctrl/cover_hu0bf6b436ac5f3974962d2e02068c7929_11407055_1600x0_resize_box_3.png",
     "public/p/pinctrl/cover_hu0bf6b436ac5f3974962d2e02068c7929_11407055_800x0_resize_box_3.png",
     "public/p/pinctrl/cover.9c4a1fcf50a24604100d6e5c33a8b943_hu0bf6b436ac5f3974962d2e02068c7929_11407055_250x150_fill_box_smart1_3.png",
     "public/p/pinctrl/cover.9c4a1fcf50a24604100d6e5c33a8b943.png",
-    "public/p/pinctrl/cover.png",
-    "content/post/2025/bbb-usb-audio/index.md",
-    "public/p/bbb-usb-audio/cover.9c4a1fcf50a24604100d6e5c33a8b943_hu0bf6b436ac5f3974962d2e02068c7929_11407055_250x150_fill_box_smart1_3.png",
-    "public/p/bbb-usb-audio/cover.9c4a1fcf50a24604100d6e5c33a8b943.png",
-    "content/post/2025/pinctrl-subsystem/index.md",
-    "content/post/2025/pinctrl-subsystem/cover.png",
     "assets/raindrop/BBB/kernelconfig.io - search config information for linux kernel modules.md",
     "assets/raindrop/BBB/fpga arabic - Google Search.md",
     "assets/raindrop/BBB/Freien Treiber 7 Zoll 1024600 Display Kapazitiven Touchscreen Monitor Raspberry Pi Alle Modelle PC BeagleBone schwarz Stecker und Spielen - Google Search.md",
@@ -251,8 +252,6 @@
     "assets/raindrop/BBB/&39;No Bugs&39; Hare on Soft.ware.md",
     "assets/raindrop/BBB/EmerytHacks.md",
     "assets/raindrop/BBB/Blog - Lennart Heim.md",
-    "assets/raindrop/BBB/PyroElectro – News, Projects &amp; Tutorials.md",
-    "assets/raindrop/BBB/Bootlin – Embedded Linux and kernel engineering.md",
-    "public/p/bbb-usb-audio/cover_hu0bf6b436ac5f3974962d2e02068c7929_11407055_120x120_fill_box_smart1_3.png"
+    "assets/raindrop/BBB/PyroElectro – News, Projects &amp; Tutorials.md"
   ]
 }

@@ -15,7 +15,6 @@
         <description>&lt;ul&gt;
 &lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; &lt;del&gt;&lt;a class=&#34;link&#34; href=&#34;https://lwn.net/Articles/468759/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;The pin control subsystem [LWN.net]&lt;/a&gt;&lt;/del&gt; useless&lt;/li&gt;
-&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; &lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;&amp;lt; use Linux kernel as a bootloader! (&lt;a class=&#34;link&#34; href=&#34;https://linux.die.net/man/8/kexec&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;https://linux.die.net/man/8/kexec&lt;/a&gt;)&lt;/p&gt;

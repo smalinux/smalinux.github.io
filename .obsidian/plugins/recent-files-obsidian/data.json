@@ -2,11 +2,19 @@
   "recentFiles": [
     {
       "basename": "index",
-      "path": "content/post/2025/pinctrl-subsystem/index.md"
+      "path": "content/post/2025/neopixel/index.md"
     },
     {
       "basename": "index",
       "path": "content/post/2025/bbb-usb-audio/index.md"
+    },
+    {
+      "basename": "index",
+      "path": "content/post/2025/pinctrl-subsystem/index.md"
+    },
+    {
+      "basename": "neopixel",
+      "path": "content/post/2025/neopixel/neopixel.png"
     },
     {
       "basename": "cover",
