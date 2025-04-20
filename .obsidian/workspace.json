@@ -11,22 +11,24 @@
             "id": "a3e420e23cf5f179",
             "type": "leaf",
             "state": {
-              "type": "image",
+              "type": "markdown",
               "state": {
-                "file": "content/post/2025/neopixel/cover.png"
+                "file": "content/post/2025/neopixel/index.md",
+                "mode": "source",
+                "source": false
               },
-              "icon": "lucide-image",
-              "title": "cover"
+              "icon": "lucide-file",
+              "title": "index"
             }
           }
         ]
       },
       {
-        "id": "37cc4d95af2e8750",
+        "id": "f81d8ba511435734",
         "type": "tabs",
         "children": [
           {
-            "id": "cb5445f85ddc8aad",
+            "id": "72bae6bb043bdd32",
             "type": "leaf",
             "state": {
               "type": "hugo-preview-view",
@@ -206,18 +208,23 @@
   },
   "active": "a3e420e23cf5f179",
   "lastOpenFiles": [
+    "content/post/2025/pinctrl-subsystem/index.md",
     "content/post/2025/neopixel/index.md",
+    "content/post/2025/bbb-usb-audio/index.md",
+    "public/p/index.html",
+    "content/post/2025/neopixel",
     "content/post/2025/neopixel/cover.png",
+    "content/post/2025/neopixel/Pasted image (2).png",
+    "content/post/2025/neopixel/Pasted image.png",
+    "public/p/neopixel/Pasted image (2).png",
     "public/p/neopixel/cover.png",
     "public/p/neopixel/Pasted image.png",
     "public/p/neopixel/index.html",
     "public/p/neopixel",
-    "content/post/2025/pinctrl-subsystem/index.md",
     "content/post/2025/neopixel",
     "content/post/2025/neopixeldfasddf/index.md",
     "content/post/2025/neopixeldfasddf/cover.png",
     "content/post/2025/neopixeldfasddf",
-    "content/post/2025/bbb-usb-audio/index.md",
     "public/p/pinctrlx/index.html",
     "public/p/pinctrlx",
     "content/post/2025/pinctrl-subsystem/cover.png",
@@ -225,10 +232,6 @@
     "public/p/pinctrl/Pasted image.png",
     "content/post/2025/neopixel",
     "public/tags/linux/index.xml",
-    "public/tags/linux/page/1/index.html",
-    "public/tags/linux/page/1",
-    "public/p/pinctrl/cover_hu0bf6b436ac5f3974962d2e02068c7929_11407055_120x120_fill_box_smart1_3.png",
-    "public/p/pinctrl/cover_hu0bf6b436ac5f3974962d2e02068c7929_11407055_1600x0_resize_box_3.png",
     "assets/raindrop/BBB/kernelconfig.io - search config information for linux kernel modules.md",
     "assets/raindrop/BBB/fpga arabic - Google Search.md",
     "assets/raindrop/BBB/Freien Treiber 7 Zoll 1024600 Display Kapazitiven Touchscreen Monitor Raspberry Pi Alle Modelle PC BeagleBone schwarz Stecker und Spielen - Google Search.md",

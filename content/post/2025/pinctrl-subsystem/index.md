@@ -7,18 +7,13 @@ tags:
   - pinctrl
   - Linux
 weight: 
-comments: false
+comments: true
 hidden: false
 image:
 ---
 
 
 - [ ] ~~[The pin control subsystem [LWN.net]](https://lwn.net/Articles/468759/)~~ useless
-
-
-
-
-
 
 
 < use Linux kernel as a bootloader! (https://linux.die.net/man/8/kexec)
