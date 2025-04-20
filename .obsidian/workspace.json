@@ -22,22 +22,6 @@
             }
           }
         ]
-      },
-      {
-        "id": "f81d8ba511435734",
-        "type": "tabs",
-        "children": [
-          {
-            "id": "72bae6bb043bdd32",
-            "type": "leaf",
-            "state": {
-              "type": "hugo-preview-view",
-              "state": {},
-              "icon": "lucide-file",
-              "title": "Hugo Preview"
-            }
-          }
-        ]
       }
     ],
     "direction": "vertical"

@@ -1,5 +1,5 @@
 ---
-title: ddd
+title: NeoPixel
 description: dddd
 slug: neopixel
 date: 2025-03-31
@@ -11,7 +11,6 @@ tags:
   - ALSA
 weight: 
 comments: true
-hidden: false
+hidden: true
 image: cover.png
 ---
-xxxx
