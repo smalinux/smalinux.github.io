@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Redirecting…</title>
+
+  <!-- Immediate meta refresh redirect as a fallback -->
+  <meta http-equiv="refresh" content="0; url=https://smalinux.github.io/main">
+
+  <!-- Prevent indexing of the redirect page -->
+  <meta name="robots" content="noindex, nofollow">
+
+  <script>
+    // JavaScript redirect (preferred): replace so the redirect doesn't create a history entry
+    (function() {
+      var url = 'https://docs.google.com/spreadsheets/d/109UOD-WENXYbubvJplK0msusMPPG-KtVLC6r_4krN6s/edit?usp=sharing';
+      try {
+        window.location.replace(url);
+      } catch (e) {
+        // final fallback: set href on top-level location
+        window.top.location.href = url;
+      }
+    })();
+  </script>
+
+  <style>
+    /* Minimal styling for users who briefly see this page */
+    html,body{height:100%;margin:0;font-family:system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;color:#111;background:#fff}
+    .wrap{height:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:.5rem}
+    a{color:#0066cc}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Redirecting…</h1>
+    <p>If you are not redirected automatically, <a href="https://docs.google.com/spreadsheets/d/109UOD-WENXYbubvJplK0msusMPPG-KtVLC6r_4krN6s/edit?usp=sharing">click here to go to the destination</a>.</p>
+  </div>
+</body>
+</html>
+
