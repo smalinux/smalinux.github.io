@@ -1,0 +1,121 @@
+
+
+
+SMA: Debugging session - Where story started from? panic dump stack
+SMA: nv vars at compile time
+
+
+
+
+
+
+
+
+
+
+SMA: Debugging session - Where story started from? panic dump stack
+==========================================================================================================================
+The problem:
+
+      Nothing bootable found
+      eth0: rx data <: 00000000: a2 7a 89 9a 0d a7 02 10 18 f6 02 ac 08 06 00 01  .z..............
+      eth0: rx data <: 00000010: 08 00 06 04 00 02 02 10 18 f6 02 ac c0 a8 00 01  ................
+      eth0: rx data <: 00000020: a2 7a 89 9a 0d a7 c0 a8 00 c4 00 00 00 00 00 00  .z..............
+      eth0: rx data <: 00000030: 00 00 00 00 00 00 00 00 00 00 00 00              ............
+
+      ==================================================================
+      BUG: KASAN: use-after-free in net_receive+0x1e3/0x55c
+      Write of size 6 at addr dffcb100
+
+      [<ffaaf2e9>] (unwind_backtrace+0x1/0x10c) from [<ffa7cc9d>] (kasan_report+0xb5/0x218)
+      [<ffa7cc9d>] (kasan_report+0xb5/0x218) from [<ffa7c6c1>] (check_memory_region+0xbd/0x134)
+      [<ffa7c6c1>] (check_memory_region+0xbd/0x134) from [<ffa7cea1>] (memcpy+0x25/0x38)
+      [<ffa7cea1>] (memcpy+0x25/0x38) from [<ffa9204b>] (net_receive+0x1e3/0x55c)
+      [<ffa9204b>] (net_receive+0x1e3/0x55c) from [<ffa1ff7b>] (eqos_recv+0x73/0x100)
+      [<ffa1ff7b>] (eqos_recv+0x73/0x100) from [<ffa911e7>] (eth_rx+0x87/0x168)
+      [<ffa911e7>] (eth_rx+0x87/0x168) from [<ffa9167f>] (net_poll+0x13/0x1c)
+      [<ffa9167f>] (net_poll+0x13/0x1c) from [<ffa916a1>] (__net_poll+0x19/0x30)
+      [<ffa916a1>] (__net_poll+0x19/0x30) from [<ffa0f685>] (poller_call+0x55/0x108)
+      [<ffa0f685>] (poller_call+0x55/0x108) from [<ffa0f449>] (resched+0x29/0x40)
+      [<ffa0f449>] (resched+0x29/0x40) from [<ffa094bb>] (ctrlc+0x7/0x10)
+      [<ffa094bb>] (ctrlc+0x7/0x10) from [<ffa1093b>] (parse_stream_outer+0x15b/0x1e8)
+      [<ffa1093b>] (parse_stream_outer+0x15b/0x1e8) from [<ffa11ac9>] (run_shell+0x99/0xf0)
+      [<ffa11ac9>] (run_shell+0x99/0xf0) from [<ffa01f41>] (run_init+0x18d/0x30c)
+      [<ffa01f41>] (run_init+0x18d/0x30c) from [<ffa01d45>] (start_barebox+0x39/0x90)
+      [<ffa01d45>] (start_barebox+0x39/0x90) from [<ffaabb1f>] (barebox_non_pbl_start+0xab/0xc8)
+      [<ffaabb1f>] (barebox_non_pbl_start+0xab/0xc8) from [<ffa00005>] (__bare_init_start+0x1/0xc)
+
+
+0. before starting;
+  CONFIG_KASAN=y
+
+  I wanted barebox $ ethlog => CONFIG_CMD_ETHLOG=y
+
+
+1. The problem:
+Ubuntu@scripts $ cat file.txt
+[<ffaaf2e9>] (unwind_backtrace+0x1/0x10c) from [<ffa7cc9d>] (kasan_report+0xb5/0x218)
+[<ffa7cc9d>] (kasan_report+0xb5/0x218) from [<ffa7c6c1>] (check_memory_region+0xbd/0x134)
+[<ffa7c6c1>] (check_memory_region+0xbd/0x134) from [<ffa7cea1>] (memcpy+0x25/0x38)
+[<ffa7cea1>] (memcpy+0x25/0x38) from [<ffa9204b>] (net_receive+0x1e3/0x55c)
+[<ffa9204b>] (net_receive+0x1e3/0x55c) from [<ffa1ff7b>] (eqos_recv+0x73/0x100)
+[<ffa1ff7b>] (eqos_recv+0x73/0x100) from [<ffa911e7>] (eth_rx+0x87/0x168)
+[<ffa911e7>] (eth_rx+0x87/0x168) from [<ffa9167f>] (net_poll+0x13/0x1c)
+[<ffa9167f>] (net_poll+0x13/0x1c) from [<ffa916a1>] (__net_poll+0x19/0x30)
+[<ffa916a1>] (__net_poll+0x19/0x30) from [<ffa0f685>] (poller_call+0x55/0x108)
+[<ffa0f685>] (poller_call+0x55/0x108) from [<ffa0f449>] (resched+0x29/0x40)
+[<ffa0f449>] (resched+0x29/0x40) from [<ffa094bb>] (ctrlc+0x7/0x10)
+[<ffa094bb>] (ctrlc+0x7/0x10) from [<ffa1093b>] (parse_stream_outer+0x15b/0x1e8)
+[<ffa1093b>] (parse_stream_outer+0x15b/0x1e8) from [<ffa11ac9>] (run_shell+0x99/0xf0)
+[<ffa11ac9>] (run_shell+0x99/0xf0) from [<ffa01f41>] (run_init+0x18d/0x30c)
+[<ffa01f41>] (run_init+0x18d/0x30c) from [<ffa01d45>] (start_barebox+0x39/0x90)
+[<ffa01d45>] (start_barebox+0x39/0x90) from [<ffaabb1f>] (barebox_non_pbl_start+0xab/0xc8)
+[<ffaabb1f>] (barebox_non_pbl_start+0xab/0xc8) from [<ffa00005>] (__bare_init_start+0x1/0xc)
+
+
+2. decode stack with linux script:
+Ubuntu@scripts $ ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- ./decode_stacktrace.sh /src/build/barebox/stm32/barebox < file.txt
+
+3. After:
+Ubuntu@scripts $ ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- ./decode_stacktrace.sh /src/build/barebox/stm32/barebox < file.txt
+ (unwind_backtrace+0x1/0x10c) from kasan_report (/src/barebox/lib/kasan/report.c:83 /src/barebox/lib/kasan/report.c:174 /src/barebox/lib/kasan/report.c:190)
+ (kasan_report+0xb5/0x218) from check_memory_region (/src/barebox/lib/kasan/generic.c:187 (discriminator 1) /src/barebox/lib/kasan/generic.c:253 (discriminator 1))
+ (check_memory_region+0xbd/0x134) from memcpy (/src/barebox/lib/kasan/common.c:59 (discriminator 1))
+ (memcpy+0x25/0x38) from net_receive (/src/barebox/net/net.c:129 /src/barebox/net/net.c:619 /src/barebox/net/net.c:820)
+ (net_receive+0x1e3/0x55c) from eqos_recv (/src/barebox/drivers/net/designware_eqos.c:778)
+ (eqos_recv+0x73/0x100) from eth_rx (/src/barebox/net/eth.c:284 /src/barebox/net/eth.c:301)
+ (eth_rx+0x87/0x168) from net_poll (/src/barebox/net/net.c:253 /src/barebox/net/net.c:242)
+ (net_poll+0x13/0x1c) from __net_poll (/src/barebox/net/net.c:284 /src/barebox/net/net.c:256)
+ (__net_poll+0x19/0x30) from poller_call (/src/barebox/include/linux/ktime.h:210 /src/barebox/common/poller.c:135)
+ (poller_call+0x55/0x108) from resched (/src/barebox/common/sched.c:26)
+ (resched+0x29/0x40) from ctrlc (/src/barebox/common/console_ctrlc.c:50)
+ (ctrlc+0x7/0x10) from parse_stream_outer (/src/barebox/common/hush.c:1775 (discriminator 1))
+ (parse_stream_outer+0x15b/0x1e8) from run_shell (/src/barebox/common/hush.c:1989)
+ (run_shell+0x99/0xf0) from run_init (/src/barebox/common/startup.c:369)
+ (run_init+0x18d/0x30c) from start_barebox (/src/barebox/common/startup.c:423 (discriminator 1))
+ (start_barebox+0x39/0x90) from barebox_non_pbl_start (/src/barebox/arch/arm/cpu/start.c:195)
+ (barebox_non_pbl_start+0xab/0xc8) from __bare_init_start (/src/barebox/common/boards/lxa/factory-data.c:132)
+
+:::: The problem
+(memcpy+0x25/0x38) from net_receive (/src/barebox/net/net.c:129 /src/barebox/net/net.c:619 /src/barebox/net/net.c:820)
+
+
+4. Fatoum mentioned: 
+  smoltcp -> written by Rust
+  -> study Rust in future
+
+5. Since the problem was "use-after-free" so we searched about all suspected locations, we found two net_free_packet()
+  And we assigned   arp_ether=NULL;
+  then we basically moved the issue away, just to make sure we are patching the write place.
+  Then next step is to UNDERSTAND. Yes.
+  We need to understand what happend exactly leads to this situation.
+
+
+
+SMA: nv vars at compile time
+==========================================================================================================================
+$ /src/barebox/defaultenv/defaultenv-2-base/nv
+$ cat allow_color
+
+You can put here all your amazing vars, at compile time. you don't need them at runtime like U-boot, this is not safe.
+You should not give end users a tool to change env vars at runtime...
