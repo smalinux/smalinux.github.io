@@ -1,0 +1,10 @@
+
+SMA: Quality list:
+
+
+
+SMA: Quality list:
+==========================================================================================================================
+=> Code style check (indentation, etc, using script based on the project)
+=>
+=>
