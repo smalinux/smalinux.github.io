@@ -1,4 +1,5 @@
 
+SMA: temp
 SMA: Quality list:
 
 
@@ -6,5 +7,33 @@ SMA: Quality list:
 SMA: Quality list:
 ==========================================================================================================================
 => Code style check (indentation, etc, using script based on the project)
+=> Share add defconfig that you added. with your barebox patch.
 =>
-=>
+
+
+
+
+
+
+
+SMA: temp
+==========================================================================================================================
+ack devfs_add_partition
+
+$ ack type_guid
+  Now I see where they have GUID for barebox env
+  include/efi/partition.h
+
+Read this later:
+https://github.com/barebox/barebox/blob/master/Documentation/boards/at91/microchip-at91sam9263-ek.rst
+
+
+
+load_environment
+register_env_vars -> common/environment.c
+
+
+drivers/mci/mci-core.c -> boot + MCI_STARTUP + 
+
+
+I spent good time to add nor update handler in this file: arch/arm/mach-stm32mp/bbu.c
