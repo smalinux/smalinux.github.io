@@ -1,6 +1,8 @@
 
 SMA: temp
 SMA: Quality list:
+SMA: nvim: useful shortcuts
+SMA: stm32mp drivers
 
 
 
@@ -37,3 +39,106 @@ drivers/mci/mci-core.c -> boot + MCI_STARTUP +
 
 
 I spent good time to add nor update handler in this file: arch/arm/mach-stm32mp/bbu.c
+
+
+
+SMA: nvim: useful shortcuts
+==========================================================================================================================
+<F8>           <Outline current file>
+:Git blame     <Show blame for the current file>
+
+
+
+
+
+SMA: stm32mp drivers
+==========================================================================================================================
+compatible = "st,stm32mp151-pwr-mcu", "syscon";
+compatible = "st,stm32mp157-pinctrl";
+compatible = "st,stm32mp157-syscfg", "syscon";
+compatible = "st,stm32mp157-z-pinctrl";
+compatible = "st,stpmic1";
+compatible = "st,stpmic1-onkey";
+compatible = "st,stpmic1-regulators";
+compatible = "st,stpmic1-wdt";
+compatible = "vivante,gc";
+compatible = "adi,adv7513";
+compatible = "arm,armv7-timer";
+compatible = "arm,cortex-a7";
+compatible = "arm,cortex-a7-gic";
+compatible = "arm,cortex-a7-pmu";
+compatible = "arm,psci-1.0";
+compatible = "arrow,stm32mp157a-avenger96", "dh,stm32mp157a-dhcor-som", "st,stm32mp157";
+compatible = "atmel,24c02";
+compatible = "audio-graph-card";
+compatible = "barebox,environment";
+compatible = "bosch,m_can";
+compatible = "brcm,bcm4329-fmac";
+compatible = "brcm,bcm43438-bt";
+compatible = "fixed-clock";
+compatible = "generic-ehci";
+compatible = "generic-ohci";
+compatible = "gpio-leds";
+compatible = "hdmi-connector";
+compatible = "jedec,spi-nor";
+compatible = "regulator-fixed";
+compatible = "regulator-gpio";
+compatible = "shared-dma-pool";
+compatible = "simple-bus";
+compatible = "snps,dwmac-mdio";
+compatible = "st,mlahb", "simple-bus";
+compatible = "st,st-mipid02";
+compatible = "st,stm32-cec";
+compatible = "st,stm32-dac";
+compatible = "st,stm32-dcmi";
+compatible = "st,stm32-dfsdm-adc";
+compatible = "st,stm32-dma";
+compatible = "st,stm32-dsi";
+compatible = "st,stm32-etzpc", "simple-bus";
+compatible = "st,stm32-lptimer";
+compatible = "st,stm32-lptimer-counter";
+compatible = "st,stm32-lptimer-trigger";
+compatible = "st,stm32-ltdc";
+compatible = "st,stm32-pwm";
+compatible = "st,stm32-pwm-lp";
+compatible = "st,stm32-rng";
+compatible = "st,stm32-sai-sub-a";
+compatible = "st,stm32-sai-sub-b";
+compatible = "st,stm32-sdmmc2", "arm,pl18x", "arm,primecell";
+compatible = "st,stm32-tamp", "syscon", "simple-mfd";
+compatible = "st,stm32-thermal";
+compatible = "st,stm32-timer-counter";
+compatible = "st,stm32-timers";
+compatible = "st,stm32-vrefbuf";
+compatible = "st,stm32f469-qspi";
+compatible = "st,stm32f7-crc";
+compatible = "st,stm32f756-hash";
+compatible = "st,stm32h7-dac-core";
+compatible = "st,stm32h7-dmamux";
+compatible = "st,stm32h7-i2s";
+compatible = "st,stm32h7-mdma";
+compatible = "st,stm32h7-sai";
+compatible = "st,stm32h7-spdifrx";
+compatible = "st,stm32h7-spi";
+compatible = "st,stm32h7-timer-trigger";
+compatible = "st,stm32h7-uart";
+compatible = "st,stm32mp1,pwr-reg";
+compatible = "st,stm32mp1-adc";
+compatible = "st,stm32mp1-adc-core";
+compatible = "st,stm32mp1-booster";
+compatible = "st,stm32mp1-dfsdm";
+compatible = "st,stm32mp1-dwmac", "snps,dwmac-4.20a";
+compatible = "st,stm32mp1-exti", "syscon";
+compatible = "st,stm32mp1-fmc2-ebi";
+compatible = "st,stm32mp1-fmc2-nfc";
+compatible = "st,stm32mp1-ipcc";
+compatible = "st,stm32mp1-iwdg";
+compatible = "st,stm32mp1-m4";
+compatible = "st,stm32mp1-rcc", "syscon";
+compatible = "st,stm32mp1-rtc";
+compatible = "st,stm32mp1-usbphyc";
+compatible = "st,stm32mp15-bsec";
+compatible = "st,stm32mp15-hsotg", "snps,dwc2";
+compatible = "st,stm32mp15-i2c";
+compatible = "st,stm32mp151-hdp";
+
