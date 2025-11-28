@@ -35,7 +35,7 @@ load_environment
 register_env_vars -> common/environment.c
 
 
-drivers/mci/mci-core.c -> boot + MCI_STARTUP + 
+drivers/mci/mci-core.c -> boot + MCI_STARTUP +
 
 
 I spent good time to add nor update handler in this file: arch/arm/mach-stm32mp/bbu.c
@@ -141,4 +141,255 @@ compatible = "st,stm32mp15-bsec";
 compatible = "st,stm32mp15-hsotg", "snps,dwc2";
 compatible = "st,stm32mp15-i2c";
 compatible = "st,stm32mp151-hdp";
+
+
+SMA: AM335x drivers
+==========================================================================================================================
+compatible = "arm,cortex-a8";
+compatible = "arm,cortex-a8-pmu";
+compatible = "arm,idle-state";
+compatible = "atmel,24c256";
+compatible = "fixed-clock";
+compatible = "fixed-factor-clock";
+compatible = "fixed-layout";
+compatible = "gpio-gate-clock";
+compatible = "gpio-leds";
+compatible = "mmio-sram";
+compatible = "nxp,tda998x";
+compatible = "operating-points-v2-ti-cpu";
+compatible = "pinctrl-single";
+compatible = "regulator-fixed";
+compatible = "simple-audio-card";
+compatible = "simple-bus";
+compatible = "simple-pm-bus";
+compatible = "syscon\0simple-bus";
+compatible = "ti,am3-dpll-clock";
+compatible = "ti,am3-dpll-core-clock";
+compatible = "ti,am3-dpll-no-gate-clock";
+compatible = "ti,am3-dpll-no-gate-j-type-clock";
+compatible = "ti,am3-dpll-x2-clock";
+compatible = "ti,am3-prcm\0simple-bus";
+compatible = "ti,am3-prm-inst\0ti,omap-prm-i                                            };
+compatible = "ti,am3-prm-inst\0ti,omap-prm-inst";
+compatible = "ti,am3-scm\0simple-bus";
+compatible = "ti,am335-sdhci";
+compatible = "ti,am3352-d_can";
+compatible = "ti,am3352-ecap";
+compatible = "ti,am3352-ehrpwm";
+compatible = "ti,am3352-elm";
+compatible = "ti,am3352-eqep";
+compatible = "ti,am3352-gpmc";
+compatible = "ti,am3352-phy-gmii-sel";
+compatible = "ti,am3352-rtc\0ti,da830-rtc";
+compatible = "ti,am3352-uart\0ti,omap3-uart";
+compatible = "ti,am3352-wkup-m3";
+compatible = "ti,am3352-wkup-m3-ipc";
+compatible = "ti,am3356-pru";
+compatible = "ti,am3356-pruss";
+compatible = "ti,am3359-adc";
+compatible = "ti,am3359-cppi41";
+compatible = "ti,am3359-tsc";
+compatible = "ti,am3359-tscadc";
+compatible = "ti,am335x-bone-black\0ti,am335x-bone\0ti,am33xx";
+compatible = "ti,am335x-cpsw-switch\0ti,cpsw-switch";
+compatible = "ti,am335x-cpsw\0ti,cpsw";
+compatible = "ti,am335x-edma-crossbar";
+compatible = "ti,am335x-timer";
+compatible = "ti,am335x-timer-1ms";
+compatible = "ti,am335x-usb-ctrl-module";
+compatible = "ti,am335x-usb-phy";
+compatible = "ti,am33xx-intc";
+compatible = "ti,am33xx-l4-fast\0simple-pm-bus";
+compatible = "ti,am33xx-l4-fw\0simple-bus";
+compatible = "ti,am33xx-l4-mpuss\0simple-bus";
+compatible = "ti,am33xx-l4-per\0simple-pm-bus";
+compatible = "ti,am33xx-l4-wkup\0simple-pm-bus";
+compatible = "ti,am33xx-mcasp-audio";
+compatible = "ti,am33xx-pwmss";
+compatible = "ti,am33xx-tilcdc";
+compatible = "ti,clkctrl";
+compatible = "ti,clksel";
+compatible = "ti,cpsw-mdio\0ti,davinci_mdio";
+compatible = "ti,davinci_mdio";
+compatible = "ti,divider-clock";
+compatible = "ti,edma3-tpcc";
+compatible = "ti,edma3-tptc";
+compatible = "ti,emif-am3352";
+compatible = "ti,gate-clock";
+compatible = "ti,musb-am33xx";
+compatible = "ti,mux-c  model = "TI AM335x BeagleBone Black";
+compatible = "ti,mux-clock";
+compatible = "ti,omap-infra";
+compatible = "ti,omap3-mpu";
+compatible = "ti,omap3-wdt";
+compatible = "ti,omap3630-gpu\0img,powervr-sgx530";
+compatible = "ti,omap4-aes";
+compatible = "ti,omap4-cm";
+compatible = "ti,omap4-gpio";
+compatible = "ti,omap4-hwspinlock";
+compatible = "ti,omap4-i2c";
+compatible = "ti,omap4-mailbox";
+compatible = "ti,omap4-mcspi";
+compatible = "ti,omap4-rng";
+compatible = "ti,omap4-sham";
+compatible = "ti,pruss-cfg\0syscon";
+compatible = "ti,pruss-intc";
+compatible = "ti,pruss-mii\0syscon";
+compatible = "ti,sram";
+compatible = "ti,sysc";
+compatible = "ti,sysc-omap2-timer\0ti,sysc";
+compatible = "ti,sysc-omap2\0ti,sysc";
+compatible = "ti,sysc-omap3-sham\0ti,sysc";
+compatible = "ti,sysc-omap4-simple\0ti,sysc";
+compatible = "ti,sysc-omap4-timer\0ti,sysc";
+compatible = "ti,sysc-omap4\0ti,sysc";
+compatible = "ti,sysc-pruss\0ti,sysc";
+compatible = "ti,tps65217";
+compatible = "ti,tps65217-charger";
+compatible = "ti,tps65217-pwrbutton";
+
+
+
+===============================================================================
+CONFIG I enabed and I don't want to lose, maybe I can ask to enable them by default...
+Or at least I will change do for it
+Ubuntu@barebox $ diff x_config build/defconfig
+6,7d5
+< CONFIG_ARM_BOARD_APPEND_ATAG=y
+< CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
+15d12
+< CONFIG_BOOTM_OFTREE=y
+24a22
+> CONFIG_CMD_DEVLOOKUP=y
+28a27
+> CONFIG_CMD_ETHLOG=y
+58a58
+> CONFIG_CMD_PARTED=y
+75a76
+> CONFIG_CMD_USBGADGET=y
+81a83
+> CONFIG_DEBUG_LL=y
+117a120
+> CONFIG_KASAN=y
+125d127
+< CONFIG_MACH_DHCOR_STM32MP1=y
+174a177
+> CONFIG_STM32_QSPI=y
+
+
+
+===============================================================================
+I don't need this nodes anymore, because of autoprobe ...:
+	```
+		chosen {
+			environment-sd {
+				compatible = "barebox,environment";
+				status = "disabled";
+			};
+
+			environment-emmc {
+				compatible = "barebox,environment";
+				status = "disabled";
+			};
+		};
+uplex link detected
+WARNING: eth0: No MAC address set. Using random address 0e:25:9f:46:87:cb
+T T eth0: DHCP client bound to address 192.168.0.91
+ERROR: could not open /mnt/tftp/none-linux-stm32mp157a-avenger96: No such file or directory
+ERROR: Booting entry 'net' failed: No such file or directory
+Nothing bootable found
+barebox@Arrow Electronics STM32MP157A Avenger96 board:/
+barebox@Arrow Electronics STM32MP157A Avenger96 board:/
+barebox@Arrow Electronics STM32MP157A Avenger96 board:/
+barebox@Arrow Electronics STM32MP157A Avenger96 board:/
+barebox@Arrow Electronics STM32MP157A Avenger96 board:/
+barebox@Arrow Electronics STM32MP157A Avenger96 board:/
+	```
+
+===============================================================================
+
+barebox@Arrow Electronics STM32MP157A Avenger96 board:/
+barebox@Arrow Electronics STM32MP157A Avenger96 board:/
+barebox@Arrow Electronics STM32MP157A Avenger96 board:/
+barebox@Arrow Electronics STM32MP157A Avenger96 board:/ ERROR: fastboot: no such variable: max-download-size
+
+Count down aborted by fastboot
+fastboot: Downloading 213444 bytes...
+        [EMERG: xfuncs: out of memory                                    ]
+EMERG: xfuncs: Unable to allocate 4096 bytes
+used: 533645480
+free: 6808
+PANIC: out of memory
+[<ffb6b921>] (unwind_backtrace+0x1/0x84) from [<ffb01773>] (do_panic+0x2f/0x48)
+[<ffb01773>] (do_panic+0x2f/0x48) from [<ffb01b0f>] (panic_no_stacktrace+0x1/0x12)
+[<ffb01b0f>] (panic_no_stacktrace+0x1/0x12) from [<ffb4d9c9>] (enomem_panic+0x29/0x34)
+[<ffb4d9c9>] (enomem_panic+0x29/0x34) from [<ffb4da8f>] (xmemalign+0x11/0x12)
+[<ffb4da8f>] (xmemalign+0x11/0x12) from [<ffb327f7>] (dma_zalloc+0x9/0x18)
+[<ffb327f7>] (dma_zalloc+0x9/0x18) from [<ffb21d1b>] (fastboot_alloc_request+0x17/0x28)
+[<ffb21d1b>] (fastboot_alloc_request+0x17/0x28) from [<ffb21d3d>] (fastboot_write_usb+0x11/0x68)
+[<ffb21d3d>] (fastboot_write_usb+0x11/0x68) from [<ffb0fbc3>] (fastboot_tx_print+0x67/0x9c)
+[<ffb0fbc3>] (fastboot_tx_print+0x67/0x9c) from [<ffb21ca5>] (fastboot_do_work+0x11/0x38)
+[<ffb21ca5>] (fastboot_do_work+0x11/0x38) from [<ffb02289>] (wq_do_all_works+0x4d/0x68)
+[<ffb02289>] (wq_do_all_works+0x4d/0x68) from [<ffb0a5c5>] (resched+0x25/0x40)
+[<ffb0a5c5>] (resched+0x25/0x40) from [<ffb50a6b>] (readline+0x6b/0x6b4)
+[<ffb50a6b>] (readline+0x6b/0x6b4) from [<ffb0bb1b>] (file_get+0x93/0x1ac)
+[<ffb0bb1b>] (file_get+0x93/0x1ac) from [<ffb0ae6d>] (parse_stream.constprop.0+0x21/0x388)
+[<ffb0ae6d>] (parse_stream.constprop.0+0x21/0x388) from [<ffb0b265>] (parse_stream_outer+0x91/0x150)
+[<ffb0b265>] (parse_stream_outer+0x91/0x150) from [<ffb0be2d>] (run_shell+0x51/0x80)
+[<ffb0be2d>] (run_shell+0x51/0x80) from [<ffb015a9>] (run_init+0x119/0x25c)
+[<ffb015a9>] (run_init+0x119/0x25c) from [<ffb01449>] (start_barebox+0x29/0x5c)
+[<ffb01449>] (start_barebox+0x29/0x5c) from [<ffb68bc9>] (barebox_non_pbl_start+0x95/0xb0)
+[<ffb68bc9>] (barebox_non_pbl_start+0x95/0xb0) from [<ffb00005>] (__bare_init_start+0x1/0xc)
+NOTICE:  CPU: STM32MP157AAC Rev.B
+NOTICE:  Model: Arrow Electronics STM32MP157A Avenger96 board
+ERROR:   nvmem node board-id not found
+NOTICE:  BL2: v2.13.0(release):v2.13.0-1063-g7a0a320df
+NOTICE:  BL2: Built : 21:19:18, Nov 12 2025
+NOTICE:  BL2: Booting BL32
+NOTICE:  SP_MIN: v2.13.0(release):v2.13.0-1063-g7a0a320df
+NOTICE:  SP_MIN: Built : 21:19:22, Nov 12 2025
+
+
+barebox 2025.11.0-00085-g789d0ce1c5f4-dirty #1 Wed Nov 26 18:06:42 CET 2025
+
+
+Board: Arrow Electronics STM32MP157A Avenger96 board
+STM32 RCC reset reason POR (MP_RSTSR: 0x00000015)
+netconsole: registered as netconsole-1
+psci psci.of: detected version 1.1
+stpmic1-i2c stpmic10: PMIC Chip Version: 0x10
+vdd: Bringing 3300000uV into 2900000-2900000uV
+vdda: Bringing 1800000uV into 2900000-2900000uV
+v2v8: Bringing 1800000uV into 2800000-2800000uV
+v1v8: Bringing 1000000uV into 1800000-1800000uV
+stm32_sdmmc 58005000.mmc@58005000.of: registered as mmc0
+mmc0: detected SD card version 2.0
+mmc0: registered mmc0
+stm32_sdmmc 58007000.mmc@58007000.of: registered as mmc1
+mmc1: detected MMC card version 5.1
+mmc1: registered mmc1.boot0
+mmc1: registered mmc1.boot1
+mmc1: registered mmc1
+stm32-usbphyc 5a006000.usbphyc@5a006000.of: registered rev:1.0
+ehci 5800d000.usb@5800d000.of: USB EHCI 1.00
+fbconsole: registered as fbconsole0-1
+stm32-iwdg 5a002000.watchdog@5a002000.of: probed
+stm32_sdmmc 48004000.mmc@48004000.of: registered as mmc2
+m25p80 flash@00: w25q16dw (2048 Kbytes)
+mdio_bus: miibus0: probed
+remoteproc0: 10000000.m4@10000000.of is available
+malloc space: 0xdfd80000 -> 0xffafffff (size 509.5 MiB)
+------------------------------------
+433333
+usbgadget: Command not found
+------------------------------------
+
+Hit m for menu or any to stop autoboot:    0
+bootdef: resolved to mmc0
+Nothing bootable found on 'bootsource'
+Booting entry 'net'
+eth0: 1000Mbps full duplex link detected
+eth0: 1000Mbps full d
+
+===============================================================================
 
