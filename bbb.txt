@@ -7,27 +7,6 @@ https://git.beagleboard.org/beagleboard
 
 https://forum.beagleboard.org/t/beagleboneblack-debian-source-distribution/34024
 
-https://github.com/beagleboard/bb.org-overlays
-
-https://github.com/beagleboard/linux
-	git branch: v5.10.168-ti-r72
-	v5.10.168-ti-r72 $ tig arch/arm/boot/dts/
-
-	# Add BeagleBoard.org Device Tree Changes
-	$ git show acb7d16ba0cf12ccf5390d80720fb10f73c82914
-
-	# Mirrors
-	https://github.com/beagleboard/mirror-ti-linux-kernel
-	https://github.com/beagleboard/mirror-linux-stable
-
-
-I want to see most recent repos they are updating:
-	https://git.beagleboard.org/beagleboard/?sort=latest_activity_desc
-
-Capes Overlays
-	https://github.com/beagleboard/capes
-
-Understanding uEnv.txt
-	https://elinux.org/Beagleboard:U-boot_partitioning_layout_2.0
-
+Just list all repos from BBB community and describe each one of them:
+https://github.com/smalinux/md/blob/main/content/Understand%20BBB%20Debian.md
 
