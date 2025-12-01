@@ -79,3 +79,19 @@ https://github.com/beagleboard/cc1352-flasher
 
 https://github.com/beagleboard/image-builder
 https://github.com/smalinux/md/blob/main/content/image-builder.md
+
+
+
+
+
+
+
+###############################################################################
+# Commands
+###############################################################################
+$ apt-cache pkgnames	  List all installed packages in Debian
+
+
+
+
+
