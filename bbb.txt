@@ -94,4 +94,24 @@ $ apt-cache pkgnames	  List all installed packages in Debian
 
 
 
+###############################################################################
+# Build kernel for bbb Debian
+###############################################################################
 
+git clone https://github.com/RobertCNelson/bb-kernel
+> Read the doc of this repo to know how to build the kernel and modify it
+> you will get at the end kernel.deb
+>
+> rebuild cycle:
+> Firt time, only once: ./build_kernel.sh
+> Then ./tools/rebuild.sh && ./tools/rebuild_deb.sh
+
+Sending the .deb
+#####################
+# From your build machine
+scp my-kernel.deb debian@192.168.7.2:/home/debian/
+
+# Then SSH to the board and install
+ssh debian@192.168.7.2
+sudo dpkg -i /home/debian/my-kernel.deb
+sudo reboot
