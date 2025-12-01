@@ -28,3 +28,18 @@ https://elinux.org/BeagleBoardDebian
 
 https://github.com/smalinux/md/blob/main/content/Understand%20BBB%20Debian.md
 https://github.com/smalinux/md/blob/main/content/image-builder.md
+
+
+###############################################################################
+# Official repos: https://github.com/orgs/beagleboard/
+###############################################################################
+https://github.com/beagleboard/xuantie-ubuntu
+	Weekly BUILDS for Debian and Ubuntu
+
+https://github.com/beagleboard/boot-firmware
+	Scripts for building uboot for ~all platforms
+
+https://github.com/beagleboard/bb-imager
+	Tool for flashing image to SDcard
+
+
