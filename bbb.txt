@@ -1,6 +1,7 @@
 
 
-
+# this is tutorial to just do what 'image-builder' does manually!:
+	# ref: https://forum.beagleboard.org/t/creating-custom-beaglebone-black-image/32257
 https://forum.digikey.com/t/debian-getting-started-with-the-beaglebone-black/12967
 
 https://git.beagleboard.org/beagleboard
@@ -15,3 +16,15 @@ https://docs.beagleboard.org/intro/support/getting-started.html
 https://github.com/mvduin/py-uio
 
 https://github.com/beagleboard/image-builder
+
+https://elinux.org/BeagleBoard_Community
+
+https://wiki.debian.org/InstallingDebianOn/TI/BeagleBoard
+
+https://elinux.org/BeagleBoardUbuntu
+
+https://www.youtube.com/watch?v=hk1bndjaGr4
+https://elinux.org/BeagleBoardDebian
+
+https://github.com/smalinux/md/blob/main/content/Understand%20BBB%20Debian.md
+https://github.com/smalinux/md/blob/main/content/image-builder.md
