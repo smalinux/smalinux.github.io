@@ -1,0 +1,7 @@
+
+
+tools for building debian distro for embedded systems:
+	- https://github.com/Linutronix/elbe -- https://elbe-rfs.org
+	- https://github.com/go-debos/debos
+	- https://github.com/ilbers/isar
+	- multistrap or debootstrap for more manual/custom builds
