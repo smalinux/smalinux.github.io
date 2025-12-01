@@ -15,7 +15,6 @@ https://docs.beagleboard.org/intro/support/getting-started.html
 
 https://github.com/mvduin/py-uio
 
-https://github.com/beagleboard/image-builder
 
 https://elinux.org/BeagleBoard_Community
 
@@ -27,8 +26,13 @@ https://www.youtube.com/watch?v=hk1bndjaGr4
 https://elinux.org/BeagleBoardDebian
 
 https://github.com/smalinux/md/blob/main/content/Understand%20BBB%20Debian.md
-https://github.com/smalinux/md/blob/main/content/image-builder.md
 
+All repos
+	https://openbeagle.org
+
+https://github.com/smalinux/beaglebone-debian-dev.git
+	I wrote this custom repo to recover my setup on debian after installing
+	fresh image quickly, similar like dotfile repo...
 
 ###############################################################################
 # Official repos: https://github.com/orgs/beagleboard/
@@ -72,3 +76,6 @@ https://github.com/beagleboard/cc1352-flasher
 	Instruments CC13xx SoCs (System on Chips) on BeaglePlay or BeagleConnect
 	Freedom. It can be used to erase, program, verify and read the flash of
 	those SoCs with a simple USB to serial converter.
+
+https://github.com/beagleboard/image-builder
+https://github.com/smalinux/md/blob/main/content/image-builder.md
