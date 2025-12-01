@@ -41,5 +41,34 @@ https://github.com/beagleboard/boot-firmware
 
 https://github.com/beagleboard/bb-imager
 	Tool for flashing image to SDcard
+	It's an end-user GUI tool for flashing pre-built BeagleBoard images to SD
+	cards or eMMC, not a build system for creating images. Think of it as the
+	counterpart to balenaEtcher or Raspberry Pi Imager.
 
+https://github.com/beagleboard/bb-imager-rs
+	Similar to bb-imager but written in Rust.
 
+Linux variant
+	https://github.com/beagleboard/mirror-linux
+		just another a mirror?!
+	https://github.com/beagleboard/mirror-linux-stable
+		just another a mirror?!
+	https://github.com/beagleboard/arm64-mainline-linux
+		custom scripts for building linux
+
+U-boot
+	https://github.com/beagleboard/mirror-ti-u-boot
+
+Firmwares
+	https://github.com/beagleboard/mirror-linux-firmware
+
+https://github.com/beagleboard/bb.org-overlays
+	Device Tree Blob Overlays (.dtbo files) that enable/configure hardware
+	features on BeagleBone boards dynamically at boot time without recompiling
+	the kernel.
+
+https://github.com/beagleboard/cc1352-flasher
+	a python script that communicates with the boot loader of the Texas
+	Instruments CC13xx SoCs (System on Chips) on BeaglePlay or BeagleConnect
+	Freedom. It can be used to erase, program, verify and read the flash of
+	those SoCs with a simple USB to serial converter.
