@@ -1,31 +1,28 @@
 
+Getting Started:
+	https://docs.beagleboard.org/intro/support/getting-started.html
+	https://git.beagleboard.org/beagleboard
 
 # this is tutorial to just do what 'image-builder' does manually!:
 	# ref: https://forum.beagleboard.org/t/creating-custom-beaglebone-black-image/32257
 https://forum.digikey.com/t/debian-getting-started-with-the-beaglebone-black/12967
 
-https://git.beagleboard.org/beagleboard
-
 https://forum.beagleboard.org/t/beagleboneblack-debian-source-distribution/34024
 
 Just list all repos from BBB community and describe each one of them:
-https://github.com/smalinux/md/blob/main/content/Understand%20BBB%20Debian.md
+	https://github.com/smalinux/md/blob/main/content/Understand%20BBB%20Debian.md
 
-https://docs.beagleboard.org/intro/support/getting-started.html
+Userspace I/O in Python:
+	https://github.com/mvduin/py-uio
 
-https://github.com/mvduin/py-uio
+Random article from debian:
+	https://wiki.debian.org/InstallingDebianOn/TI/BeagleBoard
 
+elinux:
+	IMPORTANT: https://elinux.org/BeagleBoard_Community
+	https://elinux.org/BeagleBoardUbuntu
+	https://elinux.org/BeagleBoardDebian
 
-https://elinux.org/BeagleBoard_Community
-
-https://wiki.debian.org/InstallingDebianOn/TI/BeagleBoard
-
-https://elinux.org/BeagleBoardUbuntu
-
-https://www.youtube.com/watch?v=hk1bndjaGr4
-https://elinux.org/BeagleBoardDebian
-
-https://github.com/smalinux/md/blob/main/content/Understand%20BBB%20Debian.md
 
 All repos
 	https://openbeagle.org

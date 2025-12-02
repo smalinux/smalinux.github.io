@@ -1,8 +1,19 @@
 
-
-
 https://libre.computer/products/aml-s905x-cc/
 
+
+Getting started:
+	https://hub.libre.computer/t/libre-computer-start-here-guide/2422
+	https://hub.libre.computer/t/aml-s905x-cc-le-potato-overview-resources-and-guides/288
+
+
+Uboot page: https://docs.u-boot.org/en/latest/board/amlogic/boot-flow.html
+
+
+Flashing tools:
+	- pyamlboot
+	- aml-flash-tool
+	- burn-tool
 
 
 
