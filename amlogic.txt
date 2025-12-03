@@ -1,13 +1,13 @@
 
 https://libre.computer/products/aml-s905x-cc/
+https://github.com/libre-computer-project
+
 
 
 Getting started:
 	https://hub.libre.computer/t/libre-computer-start-here-guide/2422
 	https://hub.libre.computer/t/aml-s905x-cc-le-potato-overview-resources-and-guides/288
-
-
-Uboot page: https://docs.u-boot.org/en/latest/board/amlogic/boot-flow.html
+	https://hub.libre.computer/t/gpio-pinout-header-maps-and-wiring-tool-for-libre-computer-boards/28
 
 
 Flashing tools:
@@ -15,6 +15,31 @@ Flashing tools:
 	- aml-flash-tool
 	- burn-tool
 
+Pin header:
+https://docs.google.com/spreadsheets/d/1Ho4OXLqECX-Hy3DQ7zY0UbvHj-qfWhi_P0kPF80lTp4/edit?usp=sharing
+
+Schematics:
+https://drive.google.com/file/d/1BP6VmoZ1LD49whInKIxSEK8ztO7GzCgu/view
+
+Libre Computer Wiring Tool
+https://hub.libre.computer/t/libre-computer-wiring-tool/40
+
+Debian
+https://hub.libre.computer/t/libre-computer-operating-systems-images-and-release-note-links/2602
+
+pinmux
+https://hub.libre.computer/t/libre-computer-cc-boards-gpio-pinmux-compatibility-matrix/2855
+
+$ ldto
+$ lgpio
+https://github.com/libre-computer-project/libretech-wiring-tool
+
+Performance Data
+https://hub.libre.computer/t/libre-computer-board-performance-test-data-and-power-consumption/2833
 
 
+===============================================================================
+Uboot
+
+https://docs.u-boot.org/en/latest/board/amlogic/boot-flow.html
 
