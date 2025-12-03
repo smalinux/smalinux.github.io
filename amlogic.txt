@@ -2,6 +2,10 @@
 https://libre.computer/products/aml-s905x-cc/
 https://github.com/libre-computer-project
 
+Linux for Amlogic
+https://linux-meson.com/index.html
+
+https://github.com/repk/gxlimg ???
 
 
 Getting started:
@@ -43,3 +47,5 @@ Uboot
 
 https://docs.u-boot.org/en/latest/board/amlogic/boot-flow.html
 
+
+The S905D3 is an SM1 SoC (part of G12 family), so you need to use the boot-g12.py tool.
