@@ -1,10 +1,15 @@
 
-
+Yocto
+===================
 https://github.com/JeffyCN/yocto-conf (X) (Not needed)
 https://github.com/JeffyCN/meta-rockchip (DONE)
 
+Buildroot
+===================
 http://git.neardi.com/linux/linux/buildroot/-/tree/rk3562  (buildroot)
 
+
+===================
 http://opensource.rock-chips.com/wiki_Upgradetool
 http://opensource.rock-chips.com/wiki_Rockusb
 http://opensource.rock-chips.com/wiki_Rkdeveloptool
@@ -13,10 +18,27 @@ http://opensource.rock-chips.com/wiki_Main_Page
 https://github.com/rockchip-linux/rkdeveloptool
 
 u-boot
-https://docs.u-boot.org/en/latest/board/rockchip/index.html
+===================
 https://github.com/rockchip-linux/u-boot      (Uboot rk3562_defconfig)
+https://docs.u-boot.org/en/latest/board/rockchip/index.html
+	Google: binman?
 
-ATF:
+	sudo dd if=idbloader.img of=/dev/sda seek=64
+	sudo dd if=trust.img of=/dev/sda seek=24576
+	sudo dd if=uboot.img of=/dev/sda seek=16384
+
+
+tf-a:
+===================
+https://github.com/rockchip-linux/rkbin
+	https://github.com/rockchip-linux/rkbin/blob/master/doc/release/RK3562_EN.md
+
+	find -name "*rk3562*"
+
+	$ ack 3562
+	f px30_miniloader*.bin
+
+
 https://trustedfirmware-a.readthedocs.io/en/latest/plat/rockchip.html
 
 
@@ -27,5 +49,8 @@ https://optee.readthedocs.io/en/latest/general/platforms.html
 ===============================================================================
 
 
-Company sells system on module
+<- Company sells system on module
 	https://neardi.com/cms/en/index.html
+
+Where is tf-a rep? in yocto build
+	https://github.com/rockchip-linux/rkbin
