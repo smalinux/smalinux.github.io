@@ -1,24 +1,24 @@
 
 
+https://github.com/JeffyCN/yocto-conf (X) (Not needed)
+https://github.com/JeffyCN/meta-rockchip (DONE)
+
+
+http://opensource.rock-chips.com/wiki_Upgradetool
+http://opensource.rock-chips.com/wiki_Rockusb
+http://opensource.rock-chips.com/wiki_Rkdeveloptool
 https://opensource.rock-chips.com/wiki_Boot_option
-https://www.forlinx.net/industrial-news/rk3562-buildroot-include-files-724.html
-https://github.com/as-jackson/Rockchip-Docs
+http://opensource.rock-chips.com/wiki_Main_Page
+
+
 https://git.yoctoproject.org/meta-rockchip
 https://www.kickpi.com/product/k3/
 https://github.com/rockchip-linux/u-boot
-https://forum.pine64.org/showthread.php?tid=14507
 https://docs.u-boot.org/en/latest/board/rockchip/index.html
 https://docs.u-boot.org/en/latest/board/rockchip/rockchip.html#rockchip-boards
 https://trustedfirmware-a.readthedocs.io/en/latest/plat/rockchip.html
 https://doc.coreboot.org/releases/coreboot-4.5-relnotes.html
-http://opensource.rock-chips.com/wiki_Main_Page
 http://git.neardi.com/linux/linux/buildroot/-/tree/rk3562
-https://hackaday.io/page/399297-how-to-boot-the-rk3562j-on-the-m-core
 https://optee.readthedocs.io/en/latest/general/platforms.html
-https://github.com/JeffyCN/yocto-conf
-https://github.com/JeffyCN/meta-rockchip?tab=readme-ov-file
-http://opensource.rock-chips.com/wiki_Upgradetool
-http://opensource.rock-chips.com/wiki_Rockusb
-http://opensource.rock-chips.com/wiki_Rkdeveloptool
 https://github.com/rockchip-linux/rkdeveloptool
 ===============================================================================
