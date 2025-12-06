@@ -21,11 +21,18 @@ u-boot
 ===================
 https://github.com/rockchip-linux/u-boot      (Uboot rk3562_defconfig)
 https://docs.u-boot.org/en/latest/board/rockchip/index.html
-	Google: binman?
+	 2. Package the image with Rockchip miniloader
 
 	sudo dd if=idbloader.img of=/dev/sda seek=64
 	sudo dd if=trust.img of=/dev/sda seek=24576
 	sudo dd if=uboot.img of=/dev/sda seek=16384
+
+	Google: binman?
+
+
+Barebox
+===================
+https://www.barebox.org/doc/latest/boards/rockchip.html
 
 
 tf-a:
@@ -54,3 +61,5 @@ https://optee.readthedocs.io/en/latest/general/platforms.html
 
 Where is tf-a rep? in yocto build
 	https://github.com/rockchip-linux/rkbin
+
+
