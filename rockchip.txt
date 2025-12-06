@@ -12,13 +12,20 @@ https://opensource.rock-chips.com/wiki_Boot_option
 http://opensource.rock-chips.com/wiki_Main_Page
 https://github.com/rockchip-linux/rkdeveloptool
 
+u-boot
+https://docs.u-boot.org/en/latest/board/rockchip/index.html
+https://github.com/rockchip-linux/u-boot      (Uboot rk3562_defconfig)
+
+ATF:
+https://trustedfirmware-a.readthedocs.io/en/latest/plat/rockchip.html
+
 
 https://git.yoctoproject.org/meta-rockchip
 https://www.kickpi.com/product/k3/
-https://github.com/rockchip-linux/u-boot
-https://docs.u-boot.org/en/latest/board/rockchip/index.html
-https://docs.u-boot.org/en/latest/board/rockchip/rockchip.html#rockchip-boards
-https://trustedfirmware-a.readthedocs.io/en/latest/plat/rockchip.html
 https://doc.coreboot.org/releases/coreboot-4.5-relnotes.html
 https://optee.readthedocs.io/en/latest/general/platforms.html
 ===============================================================================
+
+
+Company sells system on module
+	https://neardi.com/cms/en/index.html
