@@ -10,11 +10,7 @@ http://git.neardi.com/linux/linux/buildroot/-/tree/rk3562  (buildroot)
 
 
 ===================
-http://opensource.rock-chips.com/wiki_Upgradetool
-http://opensource.rock-chips.com/wiki_Rockusb
-http://opensource.rock-chips.com/wiki_Rkdeveloptool
-https://opensource.rock-chips.com/wiki_Boot_option
-http://opensource.rock-chips.com/wiki_Main_Page
+https://opensource.rock-chips.com/wiki_Special:AllPages
 https://github.com/rockchip-linux/rkdeveloptool
 
 u-boot
