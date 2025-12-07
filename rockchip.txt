@@ -357,3 +357,12 @@ Ubuntu@yocto-rk3562 $ rkdeveloptool read-chip-info
 Chip Info:  32 36 35 33 0 0 0 0 0 0 0 0 0 0 0 0
 
 
+===============================================================================
+
+=> Flash Andriod image again:
+rkdeveloptool boot loader.bin
+sleep 3
+rkdeveloptool list
+rkdeveloptool write 0x0 update-rk3562-kickpi-k3-android-2024062608.img
+rkdeveloptool reboot
+
