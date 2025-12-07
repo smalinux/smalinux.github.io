@@ -28,6 +28,7 @@ https://opensource.rock-chips.com/wiki_Special:AllPages
 	Status Matrix
 	U-Boot
 	Uboot
+	Software habits
 https://github.com/rockchip-linux/rkdeveloptool
 https://github.com/linux-rockchip/rkflashtool (important level =>1)
 
