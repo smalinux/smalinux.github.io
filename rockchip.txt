@@ -10,8 +10,15 @@ http://git.neardi.com/linux/linux/buildroot/-/tree/rk3562  (buildroot)
 
 
 ===================
-https://opensource.rock-chips.com/wiki_Special:AllPages
 https://github.com/rockchip-linux/rkdeveloptool
+https://opensource.rock-chips.com/wiki_Special:AllPages
+	ATF (important level =>1)
+	Boot Logo (important level =>4)
+	Boot Time (important level =>3)
+	Boot option (important level =>1)
+
+
+
 
 u-boot
 ===================
@@ -54,9 +61,21 @@ https://optee.readthedocs.io/en/latest/general/platforms.html
 ===============================================================================
 
 
-<- Company sells system on module
+<- board vendors && Company sells system on module
 	https://neardi.com/cms/en/index.html
 	https://www.phytec.com/shop/
+	Amarula Electronics: Vyasa-RK3288
+	ASUS: Tinker Board
+	Firefly: Firefly-RK3288
+	PHYTEC: phyCore-RK3288
+	Pico-ITX: RICO-3288
+	Radxa: Rock2
+	FriendlyARM
+	Khadas
+	Orange Pi
+	Pine64
+	Theobroma Systems
+	Vmars
 
 Where is tf-a rep? in yocto build
 	https://github.com/rockchip-linux/rkbin
