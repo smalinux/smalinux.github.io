@@ -168,3 +168,17 @@ Special Image:
 │  │ Used for: Full system updates via USB/SD recovery        │  │
 │  └──────────────────────────────────────────────────────────┘  │
 └────────────────────────────────────────────────────────────────┘
+
+
+
+===============================================================================
+
+
+buildroot:
+
+
+>>>   Sanity check in overlay board/rockchip/common/base
+>>>   Sanity check in overlay board/rockchip/rk3562/fs-overlay/
+>>>   Copying overlay board/rockchip/common/base
+>>>   Copying overlay board/rockchip/rk3562/fs-overlay/
+>>>   Executing post-build script board/rockchip/common/post-build.sh
