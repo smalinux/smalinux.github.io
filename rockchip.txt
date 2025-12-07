@@ -1,14 +1,17 @@
 
-Yocto
+=> printenv
+
+=> Yocto
 ===================
 https://github.com/JeffyCN/yocto-conf (X) (Not needed)
 https://github.com/JeffyCN/meta-rockchip (DONE)
 
-Buildroot
+=> Buildroot
 ===================
 http://git.neardi.com/linux/linux/buildroot/-/tree/rk3562  (buildroot)
 
 
+=> DOCS
 ===================
 https://opensource.rock-chips.com/wiki_Special:AllPages
 	ATF (important level =>1)
@@ -36,7 +39,7 @@ https://github.com/linux-rockchip/rkflashtool (important level =>1)
 
 
 
-u-boot
+=> u-boot
 ===================
 https://github.com/rockchip-linux/u-boot      (Uboot rk3562_defconfig)
 https://github.com/u-boot/u-boot/blob/master/doc/README.rockchip (Old)
@@ -50,13 +53,13 @@ https://docs.u-boot.org/en/latest/board/rockchip/index.html
 	Google: binman?
 
 
-Barebox
+=> Barebox
 ===================
 https://www.barebox.org/doc/latest/boards/rockchip.html
 https://www.barebox.org/doc/latest/boards/rk3288.html
 
 
-tf-a:
+=> tf-a:
 ===================
 https://github.com/rockchip-linux/rkbin
 	https://github.com/rockchip-linux/rkbin/blob/master/doc/release/RK3562_EN.md
@@ -182,3 +185,175 @@ buildroot:
 >>>   Copying overlay board/rockchip/common/base
 >>>   Copying overlay board/rockchip/rk3562/fs-overlay/
 >>>   Executing post-build script board/rockchip/common/post-build.sh
+===============================================================================
+
+=> printenv
+===============================================================================
+=> printenv
+arch=arm
+autoload=no
+baudrate=1500000
+board=evb_rk3562
+board_name=evb_rk3562
+boot_a_script=load ${devtype} ${devnum}:${distro_bootpart} ${scriptaddr} ${prefix}${script}; source ${scriptaddr}
+boot_extlinux=sysboot ${devtype} ${devnum}:${distro_bootpart} any ${scriptaddr} ${prefix}extlinux/extlinux.conf
+boot_net_usb_start=usb start
+boot_prefixes=/ /boot/
+boot_script_dhcp=boot.scr.uimg
+boot_scripts=boot.scr.uimg boot.scr
+boot_targets=mmc1 mmc0 mtd2 mtd1 mtd0 usb0 pxe dhcp
+bootargs=storagemedia=emmc androidboot.storagemedia=emmc androidboot.mode=normal  androidboot.dtb_idx=0
+bootcmd=boot_android ${devtype} ${devnum};boot_fit;bootrkp;run distro_bootcmd;
+bootcmd_dhcp=run boot_net_usb_start; if dhcp ${scriptaddr} ${boot_script_dhcp}; then source ${scriptaddr}; fi;
+bootcmd_mmc0=setenv devnum 0; run mmc_boot
+bootcmd_mmc1=setenv devnum 1; run mmc_boot
+bootcmd_mtd0=setenv devnum 0; run mtd_boot
+bootcmd_mtd1=setenv devnum 1; run mtd_boot
+bootcmd_mtd2=setenv devnum 2; run mtd_boot
+bootcmd_pxe=run boot_net_usb_start; dhcp; if pxe get; then pxe boot; fi
+bootcmd_usb0=setenv devnum 0; run usb_boot
+bootdelay=0
+cpu=armv8
+devnum=0
+devtype=mmc
+distro_bootcmd=for target in ${boot_targets}; do run bootcmd_${target}; done
+eth1addr=2e:5e:c6:42:04:b4
+ethaddr=2a:5e:c6:42:04:b4
+fdt_addr_r=0x08300000
+kernel_addr_c=0x04080000
+kernel_addr_r=0x00400000
+mmc_boot=if mmc dev ${devnum}; then setenv devtype mmc; run scan_dev_for_boot_part; fi
+partitions=uuid_disk=${uuid_gpt_disk};name=uboot,start=8MB,size=4MB,uuid=${uuid_gpt_loader2};name=trust,size=4M,uuid=${uuid_gpt_atf};name=misc,size=4MB,uuid=${uuid_gpt_misc};name=resource,size=16MB,uuid=${uuid_gpt_resource};name=kernel,size=32M,uuid=${uuid_gpt_kernel};name=boot,size=32M,bootable,uuid=${uuid_gpt_boot};name=recovery,size=32M,uuid=${uuid_gpt_recovery};name=backup,size=112M,uuid=${uuid_gpt_backup};name=cache,size=512M,uuid=${uuid_gpt_cache};name=system,size=2048M,uuid=${uuid_gpt_system};name=metadata,size=16M,uuid=${uuid_gpt_metadata};name=vendor,size=32M,uuid=${uuid_gpt_vendor};name=oem,size=32M,uuid=${uuid_gpt_oem};name=frp,size=512K,uuid=${uuid_gpt_frp};name=security,size=2M,uuid=${uuid_gpt_security};name=userdata,size=-,uuid=${uuid_gpt_userdata};
+pxefile_addr_r=0x00e00000
+ramdisk_addr_r=0x0a200000
+rkimg_bootdev=if mmc dev 1 && rkimgtest mmc 1; then setenv devtype mmc; setenv devnum 1; echo Boot from SDcard;elif mmc dev 0; then setenv devtype mmc; setenv devnum 0;elif mtd_blk dev 0; then setenv devtype mtd; setenv devnum 0;elif mtd_blk dev 1; then setenv devtype mtd; setenv devnum 1;elif mtd_blk dev 2; then setenv devtype mtd; setenv devnum 2;elif rknand dev 0; then setenv devtype rknand; setenv devnum 0;elif rksfc dev 0; then setenv devtype spinand; setenv devnum 0;elif rksfc dev 1; then setenv devtype spinor; setenv devnum 1;else;setenv devtype ramdisk; setenv devnum 0;fi;
+scan_dev_for_boot=echo Scanning ${devtype} ${devnum}:${distro_bootpart}...; for prefix in ${boot_prefixes}; do run scan_dev_for_extlinux; run scan_dev_for_scripts; done;
+scan_dev_for_boot_part=part list ${devtype} ${devnum} -bootable devplist; env exists devplist || setenv devplist 1; for distro_bootpart in ${devplist}; do if fstype ${devtype} ${devnum}:${distro_bootpart} bootfstype; then run scan_dev_for_boot; fi; done
+scan_dev_for_extlinux=if test -e ${devtype} ${devnum}:${distro_bootpart} ${prefix}extlinux/extlinux.conf; then echo Found ${prefix}extlinux/extlinux.conf; run boot_extlinux; echo SCRIPT FAILED: continuing...; fi
+scan_dev_for_scripts=for script in ${boot_scripts}; do if test -e ${devtype} ${devnum}:${distro_bootpart} ${prefix}${script}; then echo Found U-Boot script ${prefix}${script}; run boot_a_script; echo SCRIPT FAILED: continuing...; fi; done
+scriptaddr=0x00c00000
+serial#=49e3a31c1b4e7c07
+soc=rockchip
+stderr=vidconsole
+stdin=serial
+stdout=vidconsole
+usb_boot=usb start; if usb dev ${devnum}; then setenv devtype usb; run scan_dev_for_boot_part; fi
+vendor=rockchip
+
+Environment size: 4043/32764 bytes
+=>
+===============================================================================
+
+=> mmc part
+
+Partition Map for MMC device 0  --   Partition Type: EFI
+
+Part    Start LBA       End LBA         Name
+        Attributes
+        Type GUID
+        Partition GUID
+  1     0x00002000      0x00003fff      "security"
+        attrs:  0x0000000000000000
+        type:   373e0000-0000-4f07-8000-2451000022f0
+        guid:   80050000-0000-4810-8000-3db6000048c3
+  2     0x00004000      0x00005fff      "uboot"
+        attrs:  0x0000000000000000
+        type:   59100000-0000-4233-8000-24c300002d19
+        guid:   c2070000-0000-4012-8000-4519000060e3
+  3     0x00006000      0x00007fff      "trust"
+        attrs:  0x0000000000000000
+        type:   fe0d0000-0000-415f-8000-6b9a00006651
+        guid:   8c0b0000-0000-4826-8000-1166000008d4
+  4     0x00008000      0x00009fff      "misc"
+        attrs:  0x0000000000000000
+        type:   2e020000-0000-451e-8000-36df0000221e
+        guid:   e55f0000-0000-497f-8000-24a500007520
+  5     0x0000a000      0x0000bfff      "dtbo"
+        attrs:  0x0000000000000000
+        type:   f2420000-0000-4547-8000-48990000770b
+        guid:   d6580000-0000-4a15-8000-00dc0000214e
+  6     0x0000c000      0x0000c7ff      "vbmeta"
+        attrs:  0x0000000000000000
+        type:   51220000-0000-4973-8000-68d00000419d
+        guid:   664d0000-0000-4326-8000-2f15000048e7
+  7     0x0000c800      0x000207ff      "boot"
+        attrs:  0x0000000000000000
+        type:   547b0000-0000-4901-8000-618c00001e5e
+        guid:   9d190000-0000-4d31-8000-3d5700006c72
+  8     0x00020800      0x000507ff      "recovery"
+        attrs:  0x0000000000000000
+        type:   022c0000-0000-4e12-8000-01d6000072d5
+        guid:   831e0000-0000-4e7a-8000-3cab00005277
+  9     0x00050800      0x001107ff      "backup"
+        attrs:  0x0000000000000000
+        type:   63150000-0000-4f0d-8000-1bb50000648a
+        guid:   213d0000-0000-410a-8000-3f170000037f
+ 10     0x00110800      0x001d07ff      "cache"
+        attrs:  0x0000000000000000
+        type:   7f1d0000-0000-441c-8000-063200006006
+        guid:   7e600000-0000-4b2c-8000-5fa600004d11
+ 11     0x001d0800      0x001d87ff      "metadata"
+        attrs:  0x0000000000000000
+        type:   5f2d0000-0000-462d-8000-1b54000013d0
+        guid:   a2710000-0000-4671-8000-3a5d000040b5
+ 12     0x001d8800      0x001d8bff      "frp"
+        attrs:  0x0000000000000000
+        type:   0a320000-0000-4c73-8000-3b2300007270
+        guid:   96600000-0000-492c-8000-6f46000031f3
+ 13     0x001d8c00      0x001d93ff      "baseparameter"
+        attrs:  0x0000000000000000
+        type:   88200000-0000-4e63-8000-47a70000346f
+        guid:   61210000-0000-4d77-8000-246800003a54
+ 14     0x001d9400      0x007ed3ff      "super"
+        attrs:  0x0000000000000000
+        type:   e26a0000-0000-4537-8000-26e900005454
+        guid:   0b2b0000-0000-482d-8000-00cb0000385f
+ 15     0x007ed400      0x03a3ffbf      "userdata"
+        attrs:  0x0000000000000000
+        type:   1f0b0000-0000-486f-8000-43f0000010a7
+        guid:   9d7a0000-0000-456e-8000-317800004c9d
+=>
+
+===============================================================================
+
+sudo apt install rkdeveloptool
+
+===============================================================================
+
+Ubuntu@yocto-rk3562 $ rkdeveloptool list-partitions
+#   LBA start (sectors)  LBA end (sectors)  Size (bytes)       Name
+00                 8192              16383       4194304       security
+01                16384              24575       4194304       uboot
+02                24576              32767       4194304       trust
+03                32768              40959       4194304       misc
+04                40960              49151       4194304       dtbo
+05                49152              51199       1048576       vbmeta
+06                51200             133119      41943040       boot
+07               133120             329727     100663296       recovery
+08               329728            1116159     402653184       backup
+09              1116160            1902591     402653184       cache
+10              1902592            1935359      16777216       metadata
+11              1935360            1936383        524288       frp
+12              1936384            1938431       1048576       baseparameter
+13              1938432            8311807    3263168512       super
+14              8311808           61079487   27017052160       userdata
+
+
+Ubuntu@yocto-rk3562 $ rkdeveloptool read-flash-info
+Flash Info:
+        Manufacturer: SAMSUNG, value=00
+        Flash Size: 29824 MB
+        Flash Size: 61079552 Sectors
+        Block Size: 512 KB
+        Page Size: 2 KB
+        ECC Bits: 0
+        Access Time: 40
+        Flash CS: Flash<0>
+
+Ubuntu@yocto-rk3562 $ rkdeveloptool read-flash-id
+Flash ID: 45 4D 4D 43 20
+
+Ubuntu@yocto-rk3562 $ rkdeveloptool read-chip-info
+Chip Info:  32 36 35 33 0 0 0 0 0 0 0 0 0 0 0 0
+
+
