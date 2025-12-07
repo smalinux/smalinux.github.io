@@ -20,6 +20,7 @@ https://github.com/rockchip-linux/rkdeveloptool
 u-boot
 ===================
 https://github.com/rockchip-linux/u-boot      (Uboot rk3562_defconfig)
+https://github.com/u-boot/u-boot/blob/master/doc/README.rockchip
 https://docs.u-boot.org/en/latest/board/rockchip/index.html
 	 2. Package the image with Rockchip miniloader
 
@@ -33,6 +34,7 @@ https://docs.u-boot.org/en/latest/board/rockchip/index.html
 Barebox
 ===================
 https://www.barebox.org/doc/latest/boards/rockchip.html
+https://www.barebox.org/doc/latest/boards/rk3288.html
 
 
 tf-a:
@@ -58,6 +60,7 @@ https://optee.readthedocs.io/en/latest/general/platforms.html
 
 <- Company sells system on module
 	https://neardi.com/cms/en/index.html
+	https://www.phytec.com/shop/
 
 Where is tf-a rep? in yocto build
 	https://github.com/rockchip-linux/rkbin
