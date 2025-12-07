@@ -10,12 +10,27 @@ http://git.neardi.com/linux/linux/buildroot/-/tree/rk3562  (buildroot)
 
 
 ===================
-https://github.com/rockchip-linux/rkdeveloptool
 https://opensource.rock-chips.com/wiki_Special:AllPages
 	ATF (important level =>1)
 	Boot Logo (important level =>4)
 	Boot Time (important level =>3)
 	Boot option (important level =>1)
+	Fastboot
+	Upstream Kernel (important level =>1)
+	Rockchip Kernel (important level =>1)
+		Rockchip RK3036 Kernel
+	Kernel (important level =>1)
+	RK3036-U-Boot
+	Partitions
+	Recovery
+	Rkdeveloptool
+	Rockusb
+	Status Matrix
+	U-Boot
+	Uboot
+https://github.com/rockchip-linux/rkdeveloptool
+https://github.com/linux-rockchip/rkflashtool (important level =>1)
+
 
 
 
@@ -83,15 +98,6 @@ Where is tf-a rep? in yocto build
 
 
 ===============================================================================
-miniloader, trusted-os, arm-trust-firmware
-
-rkimage
-rksd
-rkspi
-rockusb
-Upgradetool
-rkdeveloptool
-	https://github.com/rockchip-linux/rkdeveloptool
 
 
 0x00000040  idblock.img       (SPL + DDR init)
