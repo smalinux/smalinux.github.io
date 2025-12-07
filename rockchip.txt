@@ -20,7 +20,7 @@ https://github.com/rockchip-linux/rkdeveloptool
 u-boot
 ===================
 https://github.com/rockchip-linux/u-boot      (Uboot rk3562_defconfig)
-https://github.com/u-boot/u-boot/blob/master/doc/README.rockchip
+https://github.com/u-boot/u-boot/blob/master/doc/README.rockchip (Old)
 https://docs.u-boot.org/en/latest/board/rockchip/index.html
 	 2. Package the image with Rockchip miniloader
 
@@ -66,3 +66,83 @@ Where is tf-a rep? in yocto build
 	https://github.com/rockchip-linux/rkbin
 
 
+
+===============================================================================
+miniloader, trusted-os, arm-trust-firmware
+
+rkimage
+rksd
+rkspi
+rockusb
+Upgradetool
+rkdeveloptool
+	https://github.com/rockchip-linux/rkdeveloptool
+
+
+0x00000040  idblock.img       (SPL + DDR init)
+0x00004000  uboot.img         (U-Boot proper)
+0x00006000  trust.img         (ATF/OP-TEE - if present)
+0x00008000  boot.img          (Kernel + initramfs)
+0x00400000  rootfs.img        (Root filesystem)
+
+
+┌────────────────────────────────────────────────────────────────┐
+│                     Flash Memory Layout                        │
+├──────────┬─────────────────────────────────────────────────────┤
+│ Offset   │ Content                                             │
+├──────────┼─────────────────────────────────────────────────────┤
+│ 0x0000   │ ╔═══════════════════════════════════════════════╗   │
+│          │ ║  GPT Header / MBR (Reserved)                  ║   │
+│          │ ╚═══════════════════════════════════════════════╝   │
+├──────────┼─────────────────────────────────────────────────────┤
+│ 0x0040   │ ┌───────────────────────────────────────────────┐   │
+│  (64)    │ │  idblock.img / loader.bin                     │   │
+│          │ │  (SPL + DDR init + BootROM header)            │   │
+│          │ │  Size: ~256KB                                 │   │
+│          │ └───────────────────────────────────────────────┘   │
+├──────────┼─────────────────────────────────────────────────────┤
+│ 0x4000   │ ┌───────────────────────────────────────────────┐   │
+│ (16K)    │ │  uboot.img / uboot-rockchip-rk3562-evb.bin    │   │
+│          │ │  (U-Boot proper)                              │   │
+│          │ │  Size: ~2MB                                   │   │
+│          │ └───────────────────────────────────────────────┘   │
+├──────────┼─────────────────────────────────────────────────────┤
+│ 0x6000   │ ┌───────────────────────────────────────────────┐   │
+│ (24K)    │ │  trust.img (Optional)                         │   │
+│          │ │  (ARM Trusted Firmware / OP-TEE)              │   │
+│          │ │  Size: ~2MB                                   │   │
+│          │ └───────────────────────────────────────────────┘   │
+├──────────┼─────────────────────────────────────────────────────┤
+│ 0x8000   │ ┌───────────────────────────────────────────────┐   │
+│ (32K)    │ │  boot.img / Image / zboot.img                 │   │
+│          │ │  (Linux Kernel 6.1 + DTB + initramfs)         │   │
+│          │ │  Size: ~10-30MB                               │   │
+│          │ └───────────────────────────────────────────────┘   │
+├──────────┼─────────────────────────────────────────────────────┤
+│ 0x400000 │ ┌───────────────────────────────────────────────┐   │
+│  (4MB)   │ │  rootfs.img                                   │   │
+│          │ │  (Root filesystem - ext4/squashfs/etc)        │   │
+│          │ │  Size: Variable (100MB - several GB)          │   │
+│          │ │                                               │   │
+│          │ │  core-image-minimal-rockchip-rk3562-evb...    │   │
+│          │ └───────────────────────────────────────────────┘   │
+├──────────┼─────────────────────────────────────────────────────┤
+│          │ ┌───────────────────────────────────────────────┐   │
+│          │ │  User Data Partitions (optional)              │   │
+│          │ └───────────────────────────────────────────────┘   │
+└──────────┴─────────────────────────────────────────────────────┘
+
+Special Image:
+┌────────────────────────────────────────────────────────────────┐
+│  update.img                                                    │
+│  ┌──────────────────────────────────────────────────────────┐  │
+│  │ Complete firmware package containing:                    │  │
+│  │ • idblock.img                                            │  │
+│  │ • uboot.img                                              │  │
+│  │ • boot.img                                               │  │
+│  │ • rootfs.img                                             │  │
+│  │ • parameter.txt (partition table)                        │  │
+│  │                                                          │  │
+│  │ Used for: Full system updates via USB/SD recovery        │  │
+│  └──────────────────────────────────────────────────────────┘  │
+└────────────────────────────────────────────────────────────────┘
