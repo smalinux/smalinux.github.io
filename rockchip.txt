@@ -371,3 +371,12 @@ dts
 
 /src/yocto-rk3562/build/tmp/work/cortexa53-poky-linux/linux-libc-headers/6.1-custom/sources/linux-libc-headers-6.1-custom/arch/arm64/boot/dts/rockchip
 
+ 5221  rkdeveloptool list
+ 5222  sudo rkdeveloptool db loader.bin
+ 5223  sudo rkdeveloptool wl 0x40 idblock.img
+ 5224  sudo rkdeveloptool wl 0x4000 uboot.img
+ 5225  sudo rkdeveloptool wl 0x8000 Image
+ 5226  sudo rkdeveloptool wl 0x10000 rk3562-evb1-lp4x-v10-linux.dtb
+ 5227  sudo rkdeveloptool wl 0x40000 core-image-minimal-*.rootfs.ext4
+ 5228  sudo rkdeveloptool rd
+
