@@ -366,3 +366,8 @@ rkdeveloptool list
 rkdeveloptool write 0x0 update-rk3562-kickpi-k3-android-2024062608.img
 rkdeveloptool reboot
 
+===============================================================================
+dts
+
+/src/yocto-rk3562/build/tmp/work/cortexa53-poky-linux/linux-libc-headers/6.1-custom/sources/linux-libc-headers-6.1-custom/arch/arm64/boot/dts/rockchip
+
