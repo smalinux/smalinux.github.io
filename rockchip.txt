@@ -8,6 +8,7 @@ Howto build it: https://doc.kickpi.com/OurProducts/K3/SDK_Compilation/BuildLINUX
 	$ echo 'BB_NUMBER_THREADS = "1"' > conf/local.conf
 	$ echo 'PARALLEL_MAKE = "-j 1"' >> conf/local.conf
 
+	poky/meta/recipes-devtools/rust/
 
 
 
@@ -441,3 +442,86 @@ Running mk-updateimg.sh - build_updateimg succeeded.
 Running 99-all.sh - build_all succeeded.
 Running 99-all.sh - build_allsave succeeded.
  ==============================================================================
+
+
+Ubuntu@rk356x-linux $ ./build.sh help
+Usage: build.sh [OPTIONS]
+Available options:
+chip[:<chip>[:<config>]]                choose chip
+defconfig[:<config>]                    choose defconfig
+ *_defconfig                            switch to specified defconfig
+    available defconfigs:
+        rockchip_defconfig
+        rockchip_rk3562_kickpi_k3_buildroot_defconfig
+        rockchip_rk3562_kickpi_k3_debian_defconfig
+        rockchip_rk3562_kickpi_k3_ubuntu_defconfig
+        rockchip_rk3568_kickpi_k1_buildroot_defconfig
+        rockchip_rk3568_kickpi_k1_debian_defconfig
+        rockchip_rk3568_kickpi_k1_ubuntu_defconfig
+        rockchip_rk3568_kickpi_k1b_buildroot_defconfig
+        rockchip_rk3568_kickpi_k1b_debian_defconfig
+        rockchip_rk3568_kickpi_k1b_ubuntu_defconfig
+ olddefconfig                           resolve any unresolved symbols in .config
+ savedefconfig                          save current config to defconfig
+ menuconfig                             interactive curses-based configurator
+config                                  modify SDK defconfig
+shell                                   setup a shell for developing
+print-parts                             print partitions
+mod-parts                               interactive partition table modify
+edit-parts                              edit raw partitions
+new-parts:<offset>:<name>:<size>...     re-create partitions
+insert-part:<idx>:<name>[:<size>]       insert partition
+del-part:(<idx>|<name>)                 delete partition
+move-part:(<idx>|<name>):<idx>          move partition
+rename-part:(<idx>|<name>):<name>       rename partition
+resize-part:(<idx>|<name>):<size>       resize partition
+kernel[:cmds]                           build kernel
+modules[:cmds]                          build kernel modules
+linux-headers[:cmds]                    build linux-headers
+kernel-config[:cmds]                    modify kernel defconfig
+kernel-make[:<arg1>:<arg2>]             run kernel make (alias kmake)
+wifibt[:<dst dir>[:<chip>]]             build Wifi/BT
+rtos                                    build and pack RTOS
+buildroot-config[:<config>]             modify buildroot defconfig
+buildroot-make[:<arg1>:<arg2>]          run buildroot make (alias bmake)
+rootfs[:<rootfs type>]                  build default rootfs
+buildroot                               build buildroot rootfs
+yocto                                   build yocto rootfs
+debian                                  build debian rootfs
+recovery                                build recovery
+pcba                                    build PCBA
+security_check                          check contidions for security boot
+createkeys                              build security boot keys
+security_ramboot                        build security ramboot
+security_uboot                          build uboot with security
+security_boot                           build boot with security
+security_recovery                       build recovery with security
+security_rootfs                         build rootfs with security
+loader[:cmds]                           build loader (uboot)
+uboot[:cmds]                            build u-boot
+uefi[:cmds]                             build uefi
+firmware                                pack and check firmwares
+edit-package-file                       edit package-file
+edit-ota-package-file                   edit A/B OTA package-file
+updateimg                               build update image
+otapackage                              build A/B OTA update image
+all                                     build all images
+save                                    save images and build info
+allsave                                 build all images and save them
+cleanall                                cleanup
+clean[:module[:module]]...              cleanup modules
+    available modules:
+        all
+        config
+        firmware
+        kernel
+        loader
+        pcba
+        recovery
+        rootfs
+        updateimg
+post-rootfs <rootfs dir>                trigger post-rootfs hook scripts
+help                                    usage
+
+Default option is 'allsave'.
+Ubuntu@rk356x-linux $
