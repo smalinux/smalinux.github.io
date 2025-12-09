@@ -1,5 +1,8 @@
+=> SDK:
+===================
+https://www.kickpi.com/product/k3/
+Howto build it: https://doc.kickpi.com/OurProducts/K3/SDK_Compilation/BuildLINUX_SDKSourceCode/
 
-=> printenv
 
 => Yocto
 ===================
@@ -74,7 +77,6 @@ https://trustedfirmware-a.readthedocs.io/en/latest/plat/rockchip.html
 
 
 https://git.yoctoproject.org/meta-rockchip
-https://www.kickpi.com/product/k3/
 https://doc.coreboot.org/releases/coreboot-4.5-relnotes.html
 https://optee.readthedocs.io/en/latest/general/platforms.html
 ===============================================================================
