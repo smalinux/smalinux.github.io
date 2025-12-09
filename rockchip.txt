@@ -2,6 +2,13 @@
 ===================
 https://www.kickpi.com/product/k3/
 Howto build it: https://doc.kickpi.com/OurProducts/K3/SDK_Compilation/BuildLINUX_SDKSourceCode/
+	$ sudo apt install python-is-python3
+	$ sudo ln -s $(which python) /usr/bin/python2
+	$ Ubuntu@rk356x-linux $ bash source-git.sh
+	$ echo 'BB_NUMBER_THREADS = "1"' > conf/local.conf
+	$ echo 'PARALLEL_MAKE = "-j 1"' >> conf/local.conf
+
+
 
 
 => Yocto
@@ -382,3 +389,55 @@ dts
  5227  sudo rkdeveloptool wl 0x40000 core-image-minimal-*.rootfs.ext4
  5228  sudo rkdeveloptool rd
 
+ ==============================================================================
+ SDK buildroot output:
+
+
+
+==========================================
+Generating package-file for update:
+# NAME  PATH
+package-file    package-file
+parameter       parameter.txt
+bootloader      MiniLoaderAll.bin
+uboot   uboot.img
+misc    misc.img
+boot    boot.img
+recovery        recovery.img
+backup  RESERVED
+rootfs  rootfs.img
+Packing /home/smalinux/Downloads/kickpi/rk356x-linux/rockdev/update.img for update...
+Android Firmware Package Tool v2.2
+------ PACKAGE ------
+Add file: ./package-file
+package-file,Add file: ./package-file done,offset=0x800,size=0xbf,userspace=0x1
+Add file: ./parameter.txt
+parameter,Add file: ./parameter.txt done,offset=0x1000,size=0x1bd,userspace=0x1,flash_address=0x00000000
+Add file: ./MiniLoaderAll.bin
+bootloader,Add file: ./MiniLoaderAll.bin done,offset=0x1800,size=0x719c0,userspace=0xe4
+Add file: ./uboot.img
+uboot,Add file: ./uboot.img done,offset=0x73800,size=0x400000,userspace=0x800,flash_address=0x00004000
+Add file: ./misc.img
+misc,Add file: ./misc.img done,offset=0x473800,size=0xc000,userspace=0x18,flash_address=0x00006000
+Add file: ./boot.img
+boot,Add file: ./boot.img done,offset=0x47f800,size=0x276ee00,userspace=0x4ede,flash_address=0x00008000
+Add file: ./recovery.img
+recovery,Add file: ./recovery.img done,offset=0x2bee800,size=0x2dcaa00,userspace=0x5b96,flash_address=0x00028000
+Add file: ./rootfs.img
+rootfs,Add file: ./rootfs.img done,offset=0x59b9800,size=0x2d400000,userspace=0x5a800,flash_address=0x00078000
+Add CRC...
+Make firmware OK!
+------ OK ------
+********rkImageMaker ver 2.23********
+Generating new image, please wait...
+Writing head info...
+Writing boot file...
+Writing firmware...
+Generating MD5 data...
+MD5 data generated successfully!
+New image generated successfully!
+/home/smalinux/Downloads/kickpi/rk356x-linux/output/firmware/update-rk3562-kickpi-k3-linux-buildroot--20251209-202923.img
+Running mk-updateimg.sh - build_updateimg succeeded.
+Running 99-all.sh - build_all succeeded.
+Running 99-all.sh - build_allsave succeeded.
+ ==============================================================================
