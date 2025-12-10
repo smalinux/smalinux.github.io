@@ -525,3 +525,23 @@ help                                    usage
 
 Default option is 'allsave'.
 Ubuntu@rk356x-linux $
+
+
+
+
+================================================================================
+
+=> download old perl and switch to it
+sudo apt install perlbrew
+perlbrew install perl-5.38.0
+
+=> change default g++ and gcc  to old version
+   sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-10 10
+   sudo update-alternatives --set g++ /usr/bin/g++-10
+
+=> switch back later
+# See all available versions
+sudo update-alternatives --config g++
+
+# Switch back to g++-13
+sudo update-alternatives --set g++ /usr/bin/g++-13
