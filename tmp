@@ -1,0 +1,8 @@
+
+
+faild:
+	bitbake rockchip-mpp
+	bitbake clang-native
+
+
+
