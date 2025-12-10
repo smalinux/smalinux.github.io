@@ -393,4 +393,6 @@ eth0: 1000Mbps full d
 
 ===============================================================================
 
-
+Disk analysis
+$ sudo apt install baobab
+$ baobab
