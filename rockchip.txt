@@ -533,7 +533,9 @@ Ubuntu@rk356x-linux $
 
 => download old perl and switch to it
 sudo apt install perlbrew
-perlbrew install perl-5.38.0
+perlbrew install perl-5.36.3
+perlbrew switch perl-5.36.3
+perl --version
 
 => change default g++ and gcc  to old version
    sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-10 10
@@ -545,3 +547,24 @@ sudo update-alternatives --config g++
 
 # Switch back to g++-13
 sudo update-alternatives --set g++ /usr/bin/g++-13
+
+
+=> make sure all bitbake tools are old too!: build/tmp/hosttools/
+	cd ~/Downloads/kickpi/rk356x-linux/yocto/build
+	rm tmp/hosttools/perl
+	ln -s ~/perl5/perlbrew/perls/perl-5.36.3/bin/perl tmp/hosttools/perl
+
+=> Perfect! You have aarch64-linux-gnu-gcc. But wait - Node.js needs to build
+host tools (for x86) AND target binaries (for ARM). The error shows it's trying
+to compile host tools (.host.mk) with ARM flags. The issue is that Node.js V8
+builds native tools on x86 first, then cross-compiles for ARM. You can't use ARM
+cross-compiler for the host tools.
+
+	BUILD_CXXFLAGS:remove:pn-nodejs = "-msign-return-address=all"
+	BUILD_CFLAGS:remove:pn-nodejs = "-msign-return-address=all"
+
+
+Wow:
+0: perl-5.34.1-r0 do_compile - 31s (pid 3709527)
+1: python3-3.10.9-r0 do_package - 3s (pid 3734503)
+2: nodejs-16.19.1-r0 do_compile - 1s (pid 3735832)
