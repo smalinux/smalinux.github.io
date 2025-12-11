@@ -2164,3 +2164,16 @@ Wow:
 
 
 
+===============================================================================
+Buildroot sdk
+=================
+
+
+ 6417  TOOL=./tools/linux/Linux_Upgrade_Tool/Linux_Upgrade_Tool/upgrade_tool
+ 6418  $TOOL di -p rockdev/parameter.txt
+ 6419  $TOOL di -uboot rockdev/uboot.img
+ 6420  $TOOL di -boot rockdev/boot.img
+ 6459  cp output/rootfs/rootfs.ext2 rockdev/rootfs.img
+ 6460  $TOOL wl 0x78000 /home/smalinux/Downloads/kickpi/rk356x-linux/rockdev/rootfs.img
+ 6461  $TOOL rd
+ 6462  history
