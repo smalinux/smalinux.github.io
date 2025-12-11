@@ -568,3 +568,1599 @@ Wow:
 0: perl-5.34.1-r0 do_compile - 31s (pid 3709527)
 1: python3-3.10.9-r0 do_package - 3s (pid 3734503)
 2: nodejs-16.19.1-r0 do_compile - 1s (pid 3735832)
+
+================================================================================
+!!! Table of content !!!
+========================
+
+>>> host-skeleton  Extracting
+>>> host-skeleton  Patching
+>>> host-skeleton  Configuring
+>>> host-skeleton  Building
+>>> host-skeleton  Installing to host directory
+>>> host-ccache 3.7.12 Extracting
+>>> host-ccache 3.7.12 Patching
+>>> host-ccache 3.7.12 Updating config.sub and config.guess
+>>> host-ccache 3.7.12 Patching libtool
+>>> host-ccache 3.7.12 Configuring
+>>> host-ccache 3.7.12 Building
+>>> host-ccache 3.7.12 Installing to host directory
+>>> host-attr 2.5.1 Extracting
+>>> host-attr 2.5.1 Patching
+>>> host-attr 2.5.1 Updating config.sub and config.guess
+>>> host-attr 2.5.1 Patching libtool
+>>> host-attr 2.5.1 Configuring
+>>> host-attr 2.5.1 Building
+>>> host-attr 2.5.1 Installing to host directory
+>>> host-acl 2.3.1 Extracting
+>>> host-acl 2.3.1 Patching
+>>> host-acl 2.3.1 Updating config.sub and config.guess
+>>> host-acl 2.3.1 Patching libtool
+>>> host-acl 2.3.1 Configuring
+>>> host-acl 2.3.1 Building
+>>> host-acl 2.3.1 Installing to host directory
+>>> host-fakeroot 1.26 Extracting
+>>> host-fakeroot 1.26 Patching
+>>> host-fakeroot 1.26 Updating config.sub and config.guess
+>>> host-fakeroot 1.26 Patching libtool
+>>> host-fakeroot 1.26 Configuring
+>>> host-fakeroot 1.26 Building
+>>> host-fakeroot 1.26 Installing to host directory
+>>> host-makedevs  Extracting
+>>> host-makedevs  Patching
+>>> host-makedevs  Configuring
+>>> host-makedevs  Building
+>>> host-makedevs  Installing to host directory
+>>> host-mkpasswd  Extracting
+>>> host-mkpasswd  Patching
+>>> host-mkpasswd  Configuring
+>>> host-mkpasswd  Building
+>>> host-mkpasswd  Installing to host directory
+>>> host-m4 1.4.19 Extracting
+>>> host-m4 1.4.19 Patching
+>>> host-m4 1.4.19 Updating config.sub and config.guess
+>>> host-m4 1.4.19 Patching libtool
+>>> host-m4 1.4.19 Configuring
+>>> host-m4 1.4.19 Building
+>>> host-m4 1.4.19 Installing to host directory
+>>> host-bison 3.8.2 Extracting
+>>> host-bison 3.8.2 Patching
+>>> host-bison 3.8.2 Updating config.sub and config.guess
+>>> host-bison 3.8.2 Patching libtool
+>>> host-bison 3.8.2 Configuring
+>>> host-bison 3.8.2 Building
+>>> host-bison 3.8.2 Installing to host directory
+>>> host-gawk 5.1.0 Extracting
+>>> host-gawk 5.1.0 Patching
+>>> host-gawk 5.1.0 Updating config.sub and config.guess
+>>> host-gawk 5.1.0 Patching libtool
+>>> host-gawk 5.1.0 Configuring
+>>> host-gawk 5.1.0 Building
+>>> host-gawk 5.1.0 Installing to host directory
+>>> host-binutils 2.40 Extracting
+>>> host-binutils 2.40 Patching
+>>> host-binutils 2.40 Updating config.sub and config.guess
+>>> host-binutils 2.40 Patching libtool
+>>> host-binutils 2.40 Configuring
+>>> host-binutils 2.40 Building
+>>> host-binutils 2.40 Installing to host directory
+>>> host-gmp 6.2.1 Extracting
+>>> host-gmp 6.2.1 Patching
+>>> host-gmp 6.2.1 Updating config.sub and config.guess
+>>> host-gmp 6.2.1 Patching libtool
+>>> host-gmp 6.2.1 Configuring
+>>> host-gmp 6.2.1 Building
+>>> host-gmp 6.2.1 Installing to host directory
+>>> host-mpfr 4.1.0 Extracting
+>>> host-mpfr 4.1.0 Patching
+>>> host-mpfr 4.1.0 Updating config.sub and config.guess
+>>> host-mpfr 4.1.0 Patching libtool
+>>> host-mpfr 4.1.0 Configuring
+>>> host-mpfr 4.1.0 Building
+>>> host-mpfr 4.1.0 Installing to host directory
+>>> host-mpc 1.2.1 Extracting
+>>> host-mpc 1.2.1 Patching
+>>> host-mpc 1.2.1 Updating config.sub and config.guess
+>>> host-mpc 1.2.1 Patching libtool
+>>> host-mpc 1.2.1 Configuring
+>>> host-mpc 1.2.1 Building
+>>> host-mpc 1.2.1 Installing to host directory
+>>> host-gcc-initial 12.3.0 Extracting
+>>> host-gcc-initial 12.3.0 Patching
+>>> host-gcc-initial 12.3.0 Updating config.sub and config.guess
+>>> host-gcc-initial 12.3.0 Patching libtool
+>>> host-gcc-initial 12.3.0 Configuring
+>>> host-gcc-initial 12.3.0 Building
+>>> host-gcc-initial 12.3.0 Installing to host directory
+>>> host-gettext-tiny 0.3.2 Extracting
+>>> host-gettext-tiny 0.3.2 Patching
+>>> host-gettext-tiny 0.3.2 Configuring
+>>> host-gettext-tiny 0.3.2 Building
+>>> host-gettext-tiny 0.3.2 Installing to host directory
+>>> host-gettext  Extracting
+>>> host-gettext  Patching
+>>> host-gettext  Configuring
+>>> host-gettext  Building
+>>> host-gettext  Installing to host directory
+>>> host-libtool 2.4.6 Extracting
+>>> host-libtool 2.4.6 Patching
+>>> host-libtool 2.4.6 Updating config.sub and config.guess
+>>> host-libtool 2.4.6 Configuring
+>>> host-libtool 2.4.6 Building
+>>> host-libtool 2.4.6 Installing to host directory
+>>> host-autoconf 2.71 Extracting
+>>> host-autoconf 2.71 Patching
+>>> host-autoconf 2.71 Updating config.sub and config.guess
+>>> host-autoconf 2.71 Patching libtool
+>>> host-autoconf 2.71 Configuring
+>>> host-autoconf 2.71 Building
+>>> host-autoconf 2.71 Installing to host directory
+>>> host-automake 1.16.5 Extracting
+>>> host-automake 1.16.5 Patching
+>>> host-automake 1.16.5 Updating config.sub and config.guess
+>>> host-automake 1.16.5 Patching libtool
+>>> host-automake 1.16.5 Configuring
+>>> host-automake 1.16.5 Building
+>>> host-automake 1.16.5 Installing to host directory
+>>> host-libffi 3.4.2 Extracting
+>>> host-libffi 3.4.2 Patching
+>>> host-libffi 3.4.2 Updating config.sub and config.guess
+>>> host-libffi 3.4.2 Configuring
+>>> host-libffi 3.4.2 Autoreconfiguring
+>>> host-libffi 3.4.2 Patching libtool
+>>> host-libffi 3.4.2 Building
+>>> host-libffi 3.4.2 Installing to host directory
+>>> host-pkgconf 1.6.3 Extracting
+>>> host-pkgconf 1.6.3 Patching
+>>> host-pkgconf 1.6.3 Updating config.sub and config.guess
+>>> host-pkgconf 1.6.3 Patching libtool
+>>> host-pkgconf 1.6.3 Configuring
+>>> host-pkgconf 1.6.3 Building
+>>> host-pkgconf 1.6.3 Installing to host directory
+>>> host-ninja 1.10.2 Extracting
+>>> host-ninja 1.10.2 Patching
+>>> host-ninja 1.10.2 Configuring
+>>> host-ninja 1.10.2 Building
+>>> host-ninja 1.10.2 Installing to host directory
+>>> host-autoconf-archive 2021.02.19 Extracting
+>>> host-autoconf-archive 2021.02.19 Patching
+>>> host-autoconf-archive 2021.02.19 Updating config.sub and config.guess
+>>> host-autoconf-archive 2021.02.19 Patching libtool
+>>> host-autoconf-archive 2021.02.19 Configuring
+>>> host-autoconf-archive 2021.02.19 Building
+>>> host-autoconf-archive 2021.02.19 Installing to host directory
+>>> host-expat 2.4.1 Extracting
+>>> host-expat 2.4.1 Patching
+>>> host-expat 2.4.1 Updating config.sub and config.guess
+>>> host-expat 2.4.1 Patching libtool
+>>> host-expat 2.4.1 Configuring
+>>> host-expat 2.4.1 Building
+>>> host-expat 2.4.1 Installing to host directory
+>>> host-libzlib 1.2.11 Extracting
+>>> host-libzlib 1.2.11 Patching
+>>> host-libzlib 1.2.11 Configuring
+>>> host-libzlib 1.2.11 Building
+>>> host-libzlib 1.2.11 Installing to host directory
+>>> host-zlib  Extracting
+>>> host-zlib  Patching
+>>> host-zlib  Configuring
+>>> host-zlib  Building
+>>> host-zlib  Installing to host directory
+>>> host-libopenssl 1.1.1l Extracting
+>>> host-libopenssl 1.1.1l Patching
+>>> host-libopenssl 1.1.1l Configuring
+>>> host-libopenssl 1.1.1l Building
+>>> host-libopenssl 1.1.1l Installing to host directory
+>>> host-openssl  Extracting
+>>> host-openssl  Patching
+>>> host-openssl  Configuring
+>>> host-openssl  Building
+>>> host-openssl  Installing to host directory
+>>> host-python3 3.10.5 Extracting
+>>> host-python3 3.10.5 Patching
+>>> host-python3 3.10.5 Updating config.sub and config.guess
+>>> host-python3 3.10.5 Configuring
+>>> host-python3 3.10.5 Autoreconfiguring
+>>> host-python3 3.10.5 Patching libtool
+>>> host-python3 3.10.5 Building
+>>> host-python3 3.10.5 Installing to host directory
+>>> host-python-setuptools 62.6.0 Extracting
+>>> host-python-setuptools 62.6.0 Patching
+>>> host-python-setuptools 62.6.0 Configuring
+>>> host-python-setuptools 62.6.0 Building
+>>> host-python-setuptools 62.6.0 Installing to host directory
+>>> host-meson 1.2.0 Extracting
+>>> host-meson 1.2.0 Patching
+>>> host-meson 1.2.0 Configuring
+>>> host-meson 1.2.0 Building
+>>> host-meson 1.2.0 Installing to host directory
+>>> host-pcre2 10.42 Extracting
+>>> host-pcre2 10.42 Patching
+>>> host-pcre2 10.42 Updating config.sub and config.guess
+>>> host-pcre2 10.42 Patching libtool
+>>> host-pcre2 10.42 Configuring
+>>> host-pcre2 10.42 Building
+>>> host-pcre2 10.42 Installing to host directory
+>>> host-util-linux 2.39.1 Extracting
+>>> host-util-linux 2.39.1 Patching
+>>> host-util-linux 2.39.1 Updating config.sub and config.guess
+>>> host-util-linux 2.39.1 Configuring
+>>> host-util-linux 2.39.1 Autoreconfiguring
+>>> host-util-linux 2.39.1 Patching libtool
+>>> host-util-linux 2.39.1 Building
+>>> host-util-linux 2.39.1 Installing to host directory
+>>> host-libglib2 2.76.1 Extracting
+>>> host-libglib2 2.76.1 Patching
+>>> host-libglib2 2.76.1 Configuring
+>>> host-libglib2 2.76.1 Building
+>>> host-libglib2 2.76.1 Installing to host directory
+>>> host-pixman 0.42.2 Extracting
+>>> host-pixman 0.42.2 Patching
+>>> host-pixman 0.42.2 Updating config.sub and config.guess
+>>> host-pixman 0.42.2 Configuring
+>>> host-pixman 0.42.2 Autoreconfiguring
+>>> host-pixman 0.42.2 Patching libtool
+>>> host-pixman 0.42.2 Building
+>>> host-pixman 0.42.2 Installing to host directory
+>>> host-qemu 6.1.0 Extracting
+>>> host-qemu 6.1.0 Patching
+>>> host-qemu 6.1.0 Configuring
+>>> host-qemu 6.1.0 Building
+>>> host-qemu 6.1.0 Installing to host directory
+>>> skeleton-init-common  Extracting
+>>> skeleton-init-common  Patching
+>>> skeleton-init-common  Configuring
+>>> skeleton-init-common  Building
+>>> skeleton-init-common  Installing to staging directory
+>>> skeleton-init-common  Fixing libtool files
+>>> skeleton-init-common  Installing to target
+>>> skeleton-init-sysv  Extracting
+>>> skeleton-init-sysv  Patching
+>>> skeleton-init-sysv  Configuring
+>>> skeleton-init-sysv  Building
+>>> skeleton-init-sysv  Installing to target
+>>> skeleton  Extracting
+>>> skeleton  Patching
+>>> skeleton  Configuring
+>>> skeleton  Building
+>>> skeleton  Installing to target
+>>> linux-headers custom Syncing from source dir /home/smalinux/Downloads/kickpi/rk356x-linux/buildroot/../kernel
+>>> linux-headers custom Configuring
+>>> linux-headers custom Building
+>>> linux-headers custom Installing to staging directory
+>>> linux-headers custom Fixing libtool files
+>>> linux-headers custom Installing to target
+>>> glibc 2.37-2-g9f8513dc64119a424b312db97cef5d87d376defa Extracting
+>>> glibc 2.37-2-g9f8513dc64119a424b312db97cef5d87d376defa Patching
+>>> glibc 2.37-2-g9f8513dc64119a424b312db97cef5d87d376defa Updating config.sub and config.guess
+>>> glibc 2.37-2-g9f8513dc64119a424b312db97cef5d87d376defa Patching libtool
+>>> glibc 2.37-2-g9f8513dc64119a424b312db97cef5d87d376defa Configuring
+>>> glibc 2.37-2-g9f8513dc64119a424b312db97cef5d87d376defa Building
+>>> glibc 2.37-2-g9f8513dc64119a424b312db97cef5d87d376defa Installing to staging directory
+>>> glibc 2.37-2-g9f8513dc64119a424b312db97cef5d87d376defa Fixing libtool files
+>>> glibc 2.37-2-g9f8513dc64119a424b312db97cef5d87d376defa Installing to target
+>>> host-gcc-final 12.3.0 Extracting
+>>> host-gcc-final 12.3.0 Patching
+>>> host-gcc-final 12.3.0 Updating config.sub and config.guess
+>>> host-gcc-final 12.3.0 Patching libtool
+>>> host-gcc-final 12.3.0 Configuring
+>>> host-gcc-final 12.3.0 Building
+>>> host-gcc-final 12.3.0 Installing to host directory
+>>> toolchain-buildroot  Extracting
+>>> toolchain-buildroot  Patching
+>>> toolchain-buildroot  Configuring
+>>> toolchain-buildroot  Building
+>>> toolchain-buildroot  Installing to target
+>>> toolchain  Extracting
+>>> toolchain  Patching
+>>> toolchain  Configuring
+>>> toolchain  Building
+>>> toolchain  Installing to staging directory
+>>> toolchain  Fixing libtool files
+>>> toolchain  Installing to target
+>>> alsa-lib 1.2.7.2 Extracting
+>>> alsa-lib 1.2.7.2 Patching
+>>> alsa-lib 1.2.7.2 Updating config.sub and config.guess
+>>> alsa-lib 1.2.7.2 Configuring
+>>> alsa-lib 1.2.7.2 Autoreconfiguring
+>>> alsa-lib 1.2.7.2 Patching libtool
+>>> alsa-lib 1.2.7.2 Building
+>>> alsa-lib 1.2.7.2 Installing to staging directory
+>>> alsa-lib 1.2.7.2 Fixing libtool files
+>>> alsa-lib 1.2.7.2 Installing to target
+>>> expat 2.4.1 Extracting
+>>> expat 2.4.1 Patching
+>>> expat 2.4.1 Updating config.sub and config.guess
+>>> expat 2.4.1 Patching libtool
+>>> expat 2.4.1 Configuring
+>>> expat 2.4.1 Building
+>>> expat 2.4.1 Installing to staging directory
+>>> expat 2.4.1 Fixing libtool files
+>>> expat 2.4.1 Installing to target
+>>> dbus 1.12.20 Extracting
+>>> dbus 1.12.20 Patching
+>>> dbus 1.12.20 Updating config.sub and config.guess
+>>> dbus 1.12.20 Patching libtool
+>>> dbus 1.12.20 Configuring
+>>> dbus 1.12.20 Building
+>>> dbus 1.12.20 Installing to staging directory
+>>> dbus 1.12.20 Fixing libtool files
+>>> dbus 1.12.20 Installing to target
+>>> libffi 3.4.2 Extracting
+>>> libffi 3.4.2 Patching
+>>> libffi 3.4.2 Updating config.sub and config.guess
+>>> libffi 3.4.2 Configuring
+>>> libffi 3.4.2 Autoreconfiguring
+>>> libffi 3.4.2 Patching libtool
+>>> libffi 3.4.2 Building
+>>> libffi 3.4.2 Installing to staging directory
+>>> libffi 3.4.2 Fixing libtool files
+>>> libffi 3.4.2 Installing to target
+>>> pcre2 10.42 Extracting
+>>> pcre2 10.42 Patching
+>>> pcre2 10.42 Updating config.sub and config.guess
+>>> pcre2 10.42 Patching libtool
+>>> pcre2 10.42 Configuring
+>>> pcre2 10.42 Building
+>>> pcre2 10.42 Installing to staging directory
+>>> pcre2 10.42 Fixing package configuration files
+>>> pcre2 10.42 Fixing libtool files
+>>> pcre2 10.42 Installing to target
+>>> util-linux-libs 2.39.1 Extracting
+>>> util-linux-libs 2.39.1 Patching
+>>> util-linux-libs 2.39.1 Updating config.sub and config.guess
+>>> util-linux-libs 2.39.1 Patching libtool
+>>> util-linux-libs 2.39.1 Configuring
+>>> util-linux-libs 2.39.1 Building
+>>> util-linux-libs 2.39.1 Installing to staging directory
+>>> util-linux-libs 2.39.1 Fixing libtool files
+>>> util-linux-libs 2.39.1 Installing to target
+>>> libzlib 1.2.11 Extracting
+>>> libzlib 1.2.11 Patching
+>>> libzlib 1.2.11 Configuring
+>>> libzlib 1.2.11 Building
+>>> libzlib 1.2.11 Installing to staging directory
+>>> libzlib 1.2.11 Fixing libtool files
+>>> libzlib 1.2.11 Installing to target
+>>> zlib  Extracting
+>>> zlib  Patching
+>>> zlib  Configuring
+>>> zlib  Building
+>>> zlib  Installing to target
+>>> libglib2 2.76.1 Extracting
+>>> libglib2 2.76.1 Patching
+>>> libglib2 2.76.1 Configuring
+>>> libglib2 2.76.1 Building
+>>> libglib2 2.76.1 Installing to staging directory
+>>> libglib2 2.76.1 Fixing libtool files
+>>> libglib2 2.76.1 Installing to target
+>>> host-ncurses 6.1 Extracting
+>>> host-ncurses 6.1 Patching
+>>> host-ncurses 6.1 Updating config.sub and config.guess
+>>> host-ncurses 6.1 Patching libtool
+>>> host-ncurses 6.1 Configuring
+>>> host-ncurses 6.1 Building
+>>> host-ncurses 6.1 Installing to host directory
+>>> ncurses 6.1 Extracting
+>>> ncurses 6.1 Patching
+>>> ncurses 6.1 Updating config.sub and config.guess
+>>> ncurses 6.1 Patching libtool
+>>> ncurses 6.1 Configuring
+>>> ncurses 6.1 Building
+>>> ncurses 6.1 Installing to staging directory
+>>> ncurses 6.1 Fixing package configuration files
+>>> ncurses 6.1 Fixing libtool files
+>>> ncurses 6.1 Installing to target
+>>> readline 8.1 Extracting
+>>> readline 8.1 Patching
+>>> readline 8.1 Updating config.sub and config.guess
+>>> readline 8.1 Patching libtool
+>>> readline 8.1 Configuring
+>>> readline 8.1 Building
+>>> readline 8.1 Installing to staging directory
+>>> readline 8.1 Fixing libtool files
+>>> readline 8.1 Installing to target
+>>> host-gperf 3.1 Extracting
+>>> host-gperf 3.1 Patching
+>>> host-gperf 3.1 Updating config.sub and config.guess
+>>> host-gperf 3.1 Patching libtool
+>>> host-gperf 3.1 Configuring
+>>> host-gperf 3.1 Building
+>>> host-gperf 3.1 Installing to host directory
+>>> libopenssl 1.1.1l Extracting
+>>> libopenssl 1.1.1l Patching
+>>> libopenssl 1.1.1l Configuring
+>>> libopenssl 1.1.1l Building
+>>> libopenssl 1.1.1l Installing to staging directory
+>>> libopenssl 1.1.1l Fixing libtool files
+>>> libopenssl 1.1.1l Installing to target
+>>> openssl  Extracting
+>>> openssl  Patching
+>>> openssl  Configuring
+>>> openssl  Building
+>>> openssl  Installing to target
+>>> kmod 29 Extracting
+>>> kmod 29 Patching
+>>> kmod 29 Updating config.sub and config.guess
+>>> kmod 29 Patching libtool
+>>> kmod 29 Configuring
+>>> kmod 29 Building
+>>> kmod 29 Installing to staging directory
+>>> kmod 29 Fixing libtool files
+>>> kmod 29 Installing to target
+>>> eudev 3.2.10 Extracting
+>>> eudev 3.2.10 Patching
+>>> eudev 3.2.10 Updating config.sub and config.guess
+>>> eudev 3.2.10 Patching libtool
+>>> eudev 3.2.10 Configuring
+>>> eudev 3.2.10 Building
+>>> eudev 3.2.10 Installing to staging directory
+>>> eudev 3.2.10 Fixing libtool files
+>>> eudev 3.2.10 Installing to target
+>>> udev  Extracting
+>>> udev  Patching
+>>> udev  Configuring
+>>> udev  Building
+>>> udev  Installing to target
+>>> bluez5_utils 5.62 Extracting
+>>> bluez5_utils 5.62 Patching
+>>> bluez5_utils 5.62 Updating config.sub and config.guess
+>>> bluez5_utils 5.62 Patching libtool
+>>> bluez5_utils 5.62 Configuring
+>>> bluez5_utils 5.62 Building
+>>> bluez5_utils 5.62 Installing to staging directory
+>>> bluez5_utils 5.62 Fixing libtool files
+>>> bluez5_utils 5.62 Installing to target
+>>> libogg 1.3.5 Extracting
+>>> libogg 1.3.5 Patching
+>>> libogg 1.3.5 Updating config.sub and config.guess
+>>> libogg 1.3.5 Patching libtool
+>>> libogg 1.3.5 Configuring
+>>> libogg 1.3.5 Building
+>>> libogg 1.3.5 Installing to staging directory
+>>> libogg 1.3.5 Fixing libtool files
+>>> libogg 1.3.5 Installing to target
+>>> flac 1.3.3 Extracting
+>>> flac 1.3.3 Patching
+>>> flac 1.3.3 Updating config.sub and config.guess
+>>> flac 1.3.3 Configuring
+>>> flac 1.3.3 Autoreconfiguring
+>>> flac 1.3.3 Patching libtool
+>>> flac 1.3.3 Building
+>>> flac 1.3.3 Installing to staging directory
+>>> flac 1.3.3 Fixing libtool files
+>>> flac 1.3.3 Installing to target
+>>> libvorbis 1.3.7 Extracting
+>>> libvorbis 1.3.7 Patching
+>>> libvorbis 1.3.7 Updating config.sub and config.guess
+>>> libvorbis 1.3.7 Patching libtool
+>>> libvorbis 1.3.7 Configuring
+>>> libvorbis 1.3.7 Building
+>>> libvorbis 1.3.7 Installing to staging directory
+>>> libvorbis 1.3.7 Fixing libtool files
+>>> libvorbis 1.3.7 Installing to target
+>>> opus 1.3.1 Extracting
+>>> opus 1.3.1 Patching
+>>> opus 1.3.1 Updating config.sub and config.guess
+>>> opus 1.3.1 Patching libtool
+>>> opus 1.3.1 Configuring
+>>> opus 1.3.1 Building
+>>> opus 1.3.1 Installing to staging directory
+>>> opus 1.3.1 Fixing libtool files
+>>> opus 1.3.1 Installing to target
+>>> libsndfile 1.0.31 Extracting
+>>> libsndfile 1.0.31 Patching
+>>> libsndfile 1.0.31 Updating config.sub and config.guess
+>>> libsndfile 1.0.31 Patching libtool
+>>> libsndfile 1.0.31 Configuring
+>>> libsndfile 1.0.31 Building
+>>> libsndfile 1.0.31 Installing to staging directory
+>>> libsndfile 1.0.31 Fixing libtool files
+>>> libsndfile 1.0.31 Installing to target
+>>> libtool 2.4.6 Extracting
+>>> libtool 2.4.6 Patching
+>>> libtool 2.4.6 Updating config.sub and config.guess
+>>> libtool 2.4.6 Patching libtool
+>>> libtool 2.4.6 Configuring
+>>> libtool 2.4.6 Building
+>>> libtool 2.4.6 Installing to staging directory
+>>> libtool 2.4.6 Fixing libtool files
+>>> libtool 2.4.6 Installing to target
+>>> sbc 1.5 Extracting
+>>> sbc 1.5 Patching
+>>> sbc 1.5 Updating config.sub and config.guess
+>>> sbc 1.5 Patching libtool
+>>> sbc 1.5 Configuring
+>>> sbc 1.5 Building
+>>> sbc 1.5 Installing to staging directory
+>>> sbc 1.5 Fixing libtool files
+>>> sbc 1.5 Installing to target
+>>> speex 1.2.0 Extracting
+>>> speex 1.2.0 Patching
+>>> speex 1.2.0 Updating config.sub and config.guess
+>>> speex 1.2.0 Patching libtool
+>>> speex 1.2.0 Configuring
+>>> speex 1.2.0 Building
+>>> speex 1.2.0 Installing to staging directory
+>>> speex 1.2.0 Fixing libtool files
+>>> speex 1.2.0 Installing to target
+>>> pulseaudio 14.2 Extracting
+>>> pulseaudio 14.2 Patching
+>>> pulseaudio 14.2 Updating config.sub and config.guess
+>>> pulseaudio 14.2 Patching libtool
+>>> pulseaudio 14.2 Configuring
+>>> pulseaudio 14.2 Building
+>>> pulseaudio 14.2 Installing to staging directory
+>>> pulseaudio 14.2 Fixing libtool files
+>>> pulseaudio 14.2 Installing to target
+>>> alsa-plugins 1.2.6 Extracting
+>>> alsa-plugins 1.2.6 Patching
+>>> alsa-plugins 1.2.6 Updating config.sub and config.guess
+>>> alsa-plugins 1.2.6 Patching libtool
+>>> alsa-plugins 1.2.6 Configuring
+>>> alsa-plugins 1.2.6 Building
+>>> alsa-plugins 1.2.6 Installing to target
+>>> alsa-ucm-conf v1.2.6.3 Extracting
+>>> alsa-ucm-conf v1.2.6.3 Patching
+>>> alsa-ucm-conf v1.2.6.3 Configuring
+>>> alsa-ucm-conf v1.2.6.3 Building
+>>> alsa-ucm-conf v1.2.6.3 Installing to target
+>>> alsa-utils 1.2.7 Extracting
+>>> alsa-utils 1.2.7 Patching
+>>> alsa-utils 1.2.7 Updating config.sub and config.guess
+>>> alsa-utils 1.2.7 Configuring
+>>> alsa-utils 1.2.7 Autoreconfiguring
+>>> alsa-utils 1.2.7 Patching libtool
+>>> alsa-utils 1.2.7 Building
+>>> alsa-utils 1.2.7 Installing to staging directory
+>>> alsa-utils 1.2.7 Fixing libtool files
+>>> alsa-utils 1.2.7 Installing to target
+>>> android-tools 4.2.2+git20130218 Extracting
+>>> android-tools 4.2.2+git20130218 Patching
+>>> android-tools 4.2.2+git20130218 Configuring
+>>> android-tools 4.2.2+git20130218 Building
+>>> android-tools 4.2.2+git20130218 Installing to target
+>>> libxml2 2.9.14 Extracting
+>>> libxml2 2.9.14 Patching
+>>> libxml2 2.9.14 Updating config.sub and config.guess
+>>> libxml2 2.9.14 Patching libtool
+>>> libxml2 2.9.14 Configuring
+>>> libxml2 2.9.14 Building
+>>> libxml2 2.9.14 Installing to staging directory
+>>> libxml2 2.9.14 Fixing package configuration files
+>>> libxml2 2.9.14 Fixing libtool files
+>>> libxml2 2.9.14 Installing to target
+>>> at-spi2-core 2.48.3 Extracting
+>>> at-spi2-core 2.48.3 Patching
+>>> at-spi2-core 2.48.3 Configuring
+>>> at-spi2-core 2.48.3 Building
+>>> at-spi2-core 2.48.3 Installing to staging directory
+>>> at-spi2-core 2.48.3 Fixing libtool files
+>>> at-spi2-core 2.48.3 Installing to target
+>>> bash 5.1.16 Extracting
+>>> bash 5.1.16 Patching
+>>> bash 5.1.16 Updating config.sub and config.guess
+>>> bash 5.1.16 Patching libtool
+>>> bash 5.1.16 Configuring
+>>> bash 5.1.16 Building
+>>> bash 5.1.16 Installing to target
+>>> libbsd 0.10.0 Extracting
+>>> libbsd 0.10.0 Patching
+>>> libbsd 0.10.0 Updating config.sub and config.guess
+>>> libbsd 0.10.0 Patching libtool
+>>> libbsd 0.10.0 Configuring
+>>> libbsd 0.10.0 Building
+>>> libbsd 0.10.0 Installing to staging directory
+>>> libbsd 0.10.0 Fixing libtool files
+>>> libbsd 0.10.0 Installing to target
+>>> mpg123 1.25.15 Extracting
+>>> mpg123 1.25.15 Patching
+>>> mpg123 1.25.15 Updating config.sub and config.guess
+>>> mpg123 1.25.15 Patching libtool
+>>> mpg123 1.25.15 Configuring
+>>> mpg123 1.25.15 Building
+>>> mpg123 1.25.15 Installing to staging directory
+>>> mpg123 1.25.15 Fixing libtool files
+>>> mpg123 1.25.15 Installing to target
+>>> bluez-alsa 4.0.0 Extracting
+>>> bluez-alsa 4.0.0 Patching
+>>> bluez-alsa 4.0.0 Updating config.sub and config.guess
+>>> bluez-alsa 4.0.0 Configuring
+>>> bluez-alsa 4.0.0 Autoreconfiguring
+>>> bluez-alsa 4.0.0 Patching libtool
+>>> bluez-alsa 4.0.0 Building
+>>> bluez-alsa 4.0.0 Installing to target
+>>> coreutils 9.0 Extracting
+>>> coreutils 9.0 Patching
+>>> coreutils 9.0 Updating config.sub and config.guess
+>>> coreutils 9.0 Patching libtool
+>>> coreutils 9.0 Configuring
+>>> coreutils 9.0 Building
+>>> coreutils 9.0 Installing to target
+>>> dosfstools 4.2 Extracting
+>>> dosfstools 4.2 Patching
+>>> dosfstools 4.2 Updating config.sub and config.guess
+>>> dosfstools 4.2 Patching libtool
+>>> dosfstools 4.2 Configuring
+>>> dosfstools 4.2 Building
+>>> dosfstools 4.2 Installing to target
+>>> util-linux 2.39.1 Extracting
+>>> util-linux 2.39.1 Patching
+>>> util-linux 2.39.1 Updating config.sub and config.guess
+>>> util-linux 2.39.1 Configuring
+>>> util-linux 2.39.1 Autoreconfiguring
+>>> util-linux 2.39.1 Patching libtool
+>>> util-linux 2.39.1 Building
+>>> util-linux 2.39.1 Installing to staging directory
+>>> util-linux 2.39.1 Fixing libtool files
+>>> util-linux 2.39.1 Installing to target
+>>> e2fsprogs 1.46.5 Extracting
+>>> e2fsprogs 1.46.5 Patching
+>>> e2fsprogs 1.46.5 Updating config.sub and config.guess
+>>> e2fsprogs 1.46.5 Patching libtool
+>>> e2fsprogs 1.46.5 Configuring
+>>> e2fsprogs 1.46.5 Building
+>>> e2fsprogs 1.46.5 Installing to staging directory
+>>> e2fsprogs 1.46.5 Fixing libtool files
+>>> e2fsprogs 1.46.5 Installing to target
+>>> i2c-tools 4.3 Extracting
+>>> i2c-tools 4.3 Patching
+>>> i2c-tools 4.3 Configuring
+>>> i2c-tools 4.3 Building
+>>> i2c-tools 4.3 Installing to staging directory
+>>> i2c-tools 4.3 Fixing libtool files
+>>> i2c-tools 4.3 Installing to target
+>>> iputils 20210722 Extracting
+>>> iputils 20210722 Patching
+>>> iputils 20210722 Configuring
+>>> iputils 20210722 Building
+>>> iputils 20210722 Installing to target
+>>> libtirpc 1.3.2 Extracting
+>>> libtirpc 1.3.2 Patching
+>>> libtirpc 1.3.2 Updating config.sub and config.guess
+>>> libtirpc 1.3.2 Patching libtool
+>>> libtirpc 1.3.2 Configuring
+>>> libtirpc 1.3.2 Building
+>>> libtirpc 1.3.2 Installing to staging directory
+>>> libtirpc 1.3.2 Fixing libtool files
+>>> libtirpc 1.3.2 Installing to target
+>>> libevent 2.1.12 Extracting
+>>> libevent 2.1.12 Patching
+>>> libevent 2.1.12 Updating config.sub and config.guess
+>>> libevent 2.1.12 Patching libtool
+>>> libevent 2.1.12 Configuring
+>>> libevent 2.1.12 Building
+>>> libevent 2.1.12 Installing to staging directory
+>>> libevent 2.1.12 Fixing libtool files
+>>> libevent 2.1.12 Installing to target
+>>> ntp 4.2.8p15 Extracting
+>>> ntp 4.2.8p15 Patching
+>>> ntp 4.2.8p15 Updating config.sub and config.guess
+>>> ntp 4.2.8p15 Configuring
+>>> ntp 4.2.8p15 Autoreconfiguring
+>>> ntp 4.2.8p15 Patching libtool
+>>> ntp 4.2.8p15 Building
+>>> ntp 4.2.8p15 Installing to target
+>>> procps-ng 3.3.17 Extracting
+>>> procps-ng 3.3.17 Patching
+>>> procps-ng 3.3.17 Updating config.sub and config.guess
+>>> procps-ng 3.3.17 Configuring
+>>> procps-ng 3.3.17 Autoreconfiguring
+>>> procps-ng 3.3.17 Patching libtool
+>>> procps-ng 3.3.17 Building
+>>> procps-ng 3.3.17 Installing to staging directory
+>>> procps-ng 3.3.17 Fixing libtool files
+>>> procps-ng 3.3.17 Installing to target
+>>> busybox 1.36.0 Extracting
+>>> busybox 1.36.0 Patching
+>>> busybox 1.36.0 Configuring
+>>> busybox 1.36.0 Building
+>>> busybox 1.36.0 Installing to target
+>>> libpng 1.6.37 Extracting
+>>> libpng 1.6.37 Patching
+>>> libpng 1.6.37 Updating config.sub and config.guess
+>>> libpng 1.6.37 Patching libtool
+>>> libpng 1.6.37 Configuring
+>>> libpng 1.6.37 Building
+>>> libpng 1.6.37 Installing to staging directory
+>>> libpng 1.6.37 Fixing package configuration files
+>>> libpng 1.6.37 Fixing libtool files
+>>> libpng 1.6.37 Installing to target
+>>> freetype 2.10.4 Extracting
+>>> freetype 2.10.4 Patching
+>>> freetype 2.10.4 Updating config.sub and config.guess
+>>> freetype 2.10.4 Patching libtool
+>>> freetype 2.10.4 Configuring
+>>> freetype 2.10.4 Building
+>>> freetype 2.10.4 Installing to staging directory
+>>> freetype 2.10.4 Fixing package configuration files
+>>> freetype 2.10.4 Fixing libtool files
+>>> freetype 2.10.4 Installing to target
+>>> fontconfig 2.13.1 Extracting
+>>> fontconfig 2.13.1 Patching
+>>> fontconfig 2.13.1 Updating config.sub and config.guess
+>>> fontconfig 2.13.1 Configuring
+>>> fontconfig 2.13.1 Autoreconfiguring
+>>> fontconfig 2.13.1 Patching libtool
+>>> fontconfig 2.13.1 Building
+>>> fontconfig 2.13.1 Installing to staging directory
+>>> fontconfig 2.13.1 Fixing libtool files
+>>> fontconfig 2.13.1 Installing to target
+>>> libpthread-stubs 0.4 Extracting
+>>> libpthread-stubs 0.4 Patching
+>>> libpthread-stubs 0.4 Updating config.sub and config.guess
+>>> libpthread-stubs 0.4 Patching libtool
+>>> libpthread-stubs 0.4 Configuring
+>>> libpthread-stubs 0.4 Building
+>>> libpthread-stubs 0.4 Installing to staging directory
+>>> libpthread-stubs 0.4 Fixing libtool files
+>>> libpthread-stubs 0.4 Installing to target
+>>> libdrm 2.4.115 Extracting
+>>> libdrm 2.4.115 Patching
+>>> libdrm 2.4.115 Configuring
+>>> libdrm 2.4.115 Building
+>>> libdrm 2.4.115 Installing to staging directory
+>>> libdrm 2.4.115 Fixing libtool files
+>>> libdrm 2.4.115 Installing to target
+>>> host-libxml2 2.9.14 Extracting
+>>> host-libxml2 2.9.14 Patching
+>>> host-libxml2 2.9.14 Updating config.sub and config.guess
+>>> host-libxml2 2.9.14 Patching libtool
+>>> host-libxml2 2.9.14 Configuring
+>>> host-libxml2 2.9.14 Building
+>>> host-libxml2 2.9.14 Installing to host directory
+>>> host-wayland 1.22.0 Extracting
+>>> host-wayland 1.22.0 Patching
+>>> host-wayland 1.22.0 Configuring
+>>> host-wayland 1.22.0 Building
+>>> host-wayland 1.22.0 Installing to host directory
+>>> wayland 1.22.0 Extracting
+>>> wayland 1.22.0 Patching
+>>> wayland 1.22.0 Configuring
+>>> wayland 1.22.0 Building
+>>> wayland 1.22.0 Installing to staging directory
+>>> wayland 1.22.0 Fixing libtool files
+>>> wayland 1.22.0 Installing to target
+>>> rockchip-mali master Syncing from source dir /home/smalinux/Downloads/kickpi/rk356x-linux/buildroot/../external/libmali
+>>> rockchip-mali master Configuring
+>>> rockchip-mali master Building
+>>> rockchip-mali master Installing to staging directory
+>>> rockchip-mali master Fixing libtool files
+>>> rockchip-mali master Installing to target
+>>> libgles  Extracting
+>>> libgles  Patching
+>>> libgles  Configuring
+>>> libgles  Building
+>>> libgles  Installing to target
+>>> rockchip-rga master Syncing from source dir /home/smalinux/Downloads/kickpi/rk356x-linux/buildroot/../external/linux-rga
+>>> rockchip-rga master Configuring
+>>> rockchip-rga master Building
+>>> rockchip-rga master Installing to staging directory
+>>> rockchip-rga master Fixing libtool files
+>>> rockchip-rga master Installing to target
+>>> pixman 0.42.2 Extracting
+>>> pixman 0.42.2 Patching
+>>> pixman 0.42.2 Updating config.sub and config.guess
+>>> pixman 0.42.2 Configuring
+>>> pixman 0.42.2 Autoreconfiguring
+>>> pixman 0.42.2 Patching libtool
+>>> pixman 0.42.2 Building
+>>> pixman 0.42.2 Installing to staging directory
+>>> pixman 0.42.2 Fixing libtool files
+>>> pixman 0.42.2 Installing to target
+>>> cairo 1.16.0 Extracting
+>>> cairo 1.16.0 Patching
+>>> cairo 1.16.0 Updating config.sub and config.guess
+>>> cairo 1.16.0 Patching libtool
+>>> cairo 1.16.0 Configuring
+>>> cairo 1.16.0 Building
+>>> cairo 1.16.0 Installing to staging directory
+>>> cairo 1.16.0 Fixing libtool files
+>>> cairo 1.16.0 Installing to target
+>>> chromium-wayland 88.0.4324.150 Extracting
+>>> chromium-wayland 88.0.4324.150 Patching
+>>> chromium-wayland 88.0.4324.150 Configuring
+>>> chromium-wayland 88.0.4324.150 Building
+>>> chromium-wayland 88.0.4324.150 Installing to target
+>>> dejavu 2.37 Extracting
+>>> dejavu 2.37 Patching
+>>> dejavu 2.37 Configuring
+>>> dejavu 2.37 Building
+>>> dejavu 2.37 Installing to target
+>>> dhcpcd 9.4.1 Extracting
+>>> dhcpcd 9.4.1 Patching
+>>> dhcpcd 9.4.1 Configuring
+>>> dhcpcd 9.4.1 Building
+>>> dhcpcd 9.4.1 Installing to target
+>>> dhrystone 2 Extracting
+>>> dhrystone 2 Patching
+>>> dhrystone 2 Configuring
+>>> dhrystone 2 Building
+>>> dhrystone 2 Installing to target
+>>> dnsmasq 2.85 Extracting
+>>> dnsmasq 2.85 Patching
+>>> dnsmasq 2.85 Configuring
+>>> dnsmasq 2.85 Building
+>>> dnsmasq 2.85 Installing to target
+>>> dropbear 2022.82 Extracting
+>>> dropbear 2022.82 Patching
+>>> dropbear 2022.82 Updating config.sub and config.guess
+>>> dropbear 2022.82 Patching libtool
+>>> dropbear 2022.82 Configuring
+>>> dropbear 2022.82 Building
+>>> dropbear 2022.82 Installing to target
+>>> host-e2fsprogs 1.46.5 Extracting
+>>> host-e2fsprogs 1.46.5 Patching
+>>> host-e2fsprogs 1.46.5 Updating config.sub and config.guess
+>>> host-e2fsprogs 1.46.5 Patching libtool
+>>> host-e2fsprogs 1.46.5 Configuring
+>>> host-e2fsprogs 1.46.5 Building
+>>> host-e2fsprogs 1.46.5 Installing to host directory
+>>> host-environment-setup  Extracting
+>>> host-environment-setup  Patching
+>>> host-environment-setup  Configuring
+>>> host-environment-setup  Building
+>>> host-environment-setup  Installing to host directory
+>>> host-eudev 3.2.10 Extracting
+>>> host-eudev 3.2.10 Patching
+>>> host-eudev 3.2.10 Updating config.sub and config.guess
+>>> host-eudev 3.2.10 Patching libtool
+>>> host-eudev 3.2.10 Configuring
+>>> host-eudev 3.2.10 Building
+>>> host-eudev 3.2.10 Installing to host directory
+>>> evtest 1.34 Extracting
+>>> evtest 1.34 Patching
+>>> evtest 1.34 Updating config.sub and config.guess
+>>> evtest 1.34 Configuring
+>>> evtest 1.34 Autoreconfiguring
+>>> evtest 1.34 Patching libtool
+>>> evtest 1.34 Building
+>>> evtest 1.34 Installing to target
+>>> exfat-utils 1.3.0 Extracting
+>>> exfat-utils 1.3.0 Patching
+>>> exfat-utils 1.3.0 Updating config.sub and config.guess
+>>> exfat-utils 1.3.0 Patching libtool
+>>> exfat-utils 1.3.0 Configuring
+>>> exfat-utils 1.3.0 Building
+>>> exfat-utils 1.3.0 Installing to target
+>>> libfuse 2.9.9 Extracting
+>>> libfuse 2.9.9 Patching
+>>> libfuse 2.9.9 Updating config.sub and config.guess
+>>> libfuse 2.9.9 Configuring
+>>> libfuse 2.9.9 Autoreconfiguring
+>>> libfuse 2.9.9 Patching libtool
+>>> libfuse 2.9.9 Building
+>>> libfuse 2.9.9 Installing to staging directory
+>>> libfuse 2.9.9 Fixing libtool files
+>>> libfuse 2.9.9 Installing to target
+>>> exfat 1.3.0 Extracting
+>>> exfat 1.3.0 Patching
+>>> exfat 1.3.0 Updating config.sub and config.guess
+>>> exfat 1.3.0 Patching libtool
+>>> exfat 1.3.0 Configuring
+>>> exfat 1.3.0 Building
+>>> exfat 1.3.0 Installing to target
+>>> faad2 2.10.0 Extracting
+>>> faad2 2.10.0 Patching
+>>> faad2 2.10.0 Updating config.sub and config.guess
+>>> faad2 2.10.0 Configuring
+>>> faad2 2.10.0 Autoreconfiguring
+>>> faad2 2.10.0 Patching libtool
+>>> faad2 2.10.0 Building
+>>> faad2 2.10.0 Installing to staging directory
+>>> faad2 2.10.0 Fixing libtool files
+>>> faad2 2.10.0 Installing to target
+>>> parted 3.3 Extracting
+>>> parted 3.3 Patching
+>>> parted 3.3 Updating config.sub and config.guess
+>>> parted 3.3 Patching libtool
+>>> parted 3.3 Configuring
+>>> parted 3.3 Building
+>>> parted 3.3 Installing to staging directory
+>>> parted 3.3 Fixing libtool files
+>>> parted 3.3 Installing to target
+>>> fatresize 321973ba156bbf2489e82c47c94b2bca74b16316 Extracting
+>>> fatresize 321973ba156bbf2489e82c47c94b2bca74b16316 Patching
+>>> fatresize 321973ba156bbf2489e82c47c94b2bca74b16316 Updating config.sub and config.guess
+>>> fatresize 321973ba156bbf2489e82c47c94b2bca74b16316 Configuring
+>>> fatresize 321973ba156bbf2489e82c47c94b2bca74b16316 Autoreconfiguring
+>>> fatresize 321973ba156bbf2489e82c47c94b2bca74b16316 Patching libtool
+>>> fatresize 321973ba156bbf2489e82c47c94b2bca74b16316 Building
+>>> fatresize 321973ba156bbf2489e82c47c94b2bca74b16316 Installing to target
+>>> fluidsynth 2.3.2 Extracting
+>>> fluidsynth 2.3.2 Patching
+>>> fluidsynth 2.3.2 Configuring
+>>> fluidsynth 2.3.2 Building
+>>> fluidsynth 2.3.2 Installing to staging directory
+>>> fluidsynth 2.3.2 Fixing libtool files
+>>> fluidsynth 2.3.2 Installing to target
+>>> font-awesome 4.7.0 Extracting
+>>> font-awesome 4.7.0 Patching
+>>> font-awesome 4.7.0 Configuring
+>>> font-awesome 4.7.0 Building
+>>> font-awesome 4.7.0 Installing to target
+>>> host-libjpeg 9d Extracting
+>>> host-libjpeg 9d Patching
+>>> host-libjpeg 9d Updating config.sub and config.guess
+>>> host-libjpeg 9d Patching libtool
+>>> host-libjpeg 9d Configuring
+>>> host-libjpeg 9d Building
+>>> host-libjpeg 9d Installing to host directory
+>>> host-libpng 1.6.37 Extracting
+>>> host-libpng 1.6.37 Patching
+>>> host-libpng 1.6.37 Updating config.sub and config.guess
+>>> host-libpng 1.6.37 Patching libtool
+>>> host-libpng 1.6.37 Configuring
+>>> host-libpng 1.6.37 Building
+>>> host-libpng 1.6.37 Installing to host directory
+>>> host-gdk-pixbuf 2.42.4 Extracting
+>>> host-gdk-pixbuf 2.42.4 Patching
+>>> host-gdk-pixbuf 2.42.4 Configuring
+>>> host-gdk-pixbuf 2.42.4 Building
+>>> host-gdk-pixbuf 2.42.4 Installing to host directory
+>>> jpeg-turbo 2.1.3 Extracting
+>>> jpeg-turbo 2.1.3 Patching
+>>> jpeg-turbo 2.1.3 Configuring
+>>> jpeg-turbo 2.1.3 Building
+>>> jpeg-turbo 2.1.3 Installing to staging directory
+>>> jpeg-turbo 2.1.3 Fixing libtool files
+>>> jpeg-turbo 2.1.3 Installing to target
+>>> jpeg  Extracting
+>>> jpeg  Patching
+>>> jpeg  Configuring
+>>> jpeg  Building
+>>> jpeg  Installing to target
+>>> gdk-pixbuf 2.42.4 Extracting
+>>> gdk-pixbuf 2.42.4 Patching
+>>> gdk-pixbuf 2.42.4 Configuring
+>>> gdk-pixbuf 2.42.4 Building
+>>> gdk-pixbuf 2.42.4 Installing to staging directory
+>>> gdk-pixbuf 2.42.4 Fixing libtool files
+>>> gdk-pixbuf 2.42.4 Installing to target
+>>> gesftpserver 1 Extracting
+>>> gesftpserver 1 Patching
+>>> gesftpserver 1 Updating config.sub and config.guess
+>>> gesftpserver 1 Patching libtool
+>>> gesftpserver 1 Configuring
+>>> gesftpserver 1 Building
+>>> gesftpserver 1 Installing to target
+>>> libegl  Extracting
+>>> libegl  Patching
+>>> libegl  Configuring
+>>> libegl  Building
+>>> libegl  Installing to target
+>>> libgbm  Extracting
+>>> libgbm  Patching
+>>> libgbm  Configuring
+>>> libgbm  Building
+>>> libgbm  Installing to target
+>>> wayland-protocols 1.32 Extracting
+>>> wayland-protocols 1.32 Patching
+>>> wayland-protocols 1.32 Configuring
+>>> wayland-protocols 1.32 Building
+>>> wayland-protocols 1.32 Installing to staging directory
+>>> wayland-protocols 1.32 Fixing libtool files
+>>> glmark2 2023.01 Extracting
+>>> glmark2 2023.01 Patching
+>>> glmark2 2023.01 Configuring
+>>> glmark2 2023.01 Building
+>>> glmark2 2023.01 Installing to target
+>>> host-flex 2.6.4 Extracting
+>>> host-flex 2.6.4 Patching
+>>> host-flex 2.6.4 Updating config.sub and config.guess
+>>> host-flex 2.6.4 Configuring
+>>> host-flex 2.6.4 Gettextizing
+>>> host-flex 2.6.4 Autoreconfiguring
+>>> host-flex 2.6.4 Patching libtool
+>>> host-flex 2.6.4 Building
+>>> host-flex 2.6.4 Installing to host directory
+>>> gstreamer1 1.22.2 Extracting
+>>> gstreamer1 1.22.2 Patching
+>>> gstreamer1 1.22.2 Configuring
+>>> gstreamer1 1.22.2 Building
+>>> gstreamer1 1.22.2 Installing to staging directory
+>>> gstreamer1 1.22.2 Fixing libtool files
+>>> gstreamer1 1.22.2 Installing to target
+>>> libtheora 1.1.1 Extracting
+>>> libtheora 1.1.1 Patching
+>>> libtheora 1.1.1 Updating config.sub and config.guess
+>>> libtheora 1.1.1 Configuring
+>>> libtheora 1.1.1 Autoreconfiguring
+>>> libtheora 1.1.1 Patching libtool
+>>> libtheora 1.1.1 Building
+>>> libtheora 1.1.1 Installing to staging directory
+>>> libtheora 1.1.1 Fixing libtool files
+>>> libtheora 1.1.1 Installing to target
+>>> gst1-plugins-base 1.22.2 Extracting
+>>> gst1-plugins-base 1.22.2 Patching
+>>> gst1-plugins-base 1.22.2 Configuring
+>>> gst1-plugins-base 1.22.2 Building
+>>> gst1-plugins-base 1.22.2 Installing to staging directory
+>>> gst1-plugins-base 1.22.2 Fixing libtool files
+>>> gst1-plugins-base 1.22.2 Installing to target
+>>> libmpeg2 0.5.1 Extracting
+>>> libmpeg2 0.5.1 Patching
+>>> libmpeg2 0.5.1 Updating config.sub and config.guess
+>>> libmpeg2 0.5.1 Configuring
+>>> libmpeg2 0.5.1 Autoreconfiguring
+>>> libmpeg2 0.5.1 Patching libtool
+>>> libmpeg2 0.5.1 Building
+>>> libmpeg2 0.5.1 Installing to staging directory
+>>> libmpeg2 0.5.1 Fixing libtool files
+>>> libmpeg2 0.5.1 Installing to target
+>>> mjpegtools 2.2.1 Extracting
+>>> mjpegtools 2.2.1 Patching
+>>> mjpegtools 2.2.1 Updating config.sub and config.guess
+>>> mjpegtools 2.2.1 Patching libtool
+>>> mjpegtools 2.2.1 Configuring
+>>> mjpegtools 2.2.1 Building
+>>> mjpegtools 2.2.1 Installing to staging directory
+>>> mjpegtools 2.2.1 Fixing libtool files
+>>> mjpegtools 2.2.1 Installing to target
+>>> rtmpdump c5f04a58fc2aeea6296ca7c44ee4734c18401aa3 Extracting
+>>> rtmpdump c5f04a58fc2aeea6296ca7c44ee4734c18401aa3 Patching
+>>> rtmpdump c5f04a58fc2aeea6296ca7c44ee4734c18401aa3 Configuring
+>>> rtmpdump c5f04a58fc2aeea6296ca7c44ee4734c18401aa3 Building
+>>> rtmpdump c5f04a58fc2aeea6296ca7c44ee4734c18401aa3 Installing to staging directory
+>>> rtmpdump c5f04a58fc2aeea6296ca7c44ee4734c18401aa3 Fixing libtool files
+>>> rtmpdump c5f04a58fc2aeea6296ca7c44ee4734c18401aa3 Installing to target
+>>> gst1-plugins-bad 1.22.2 Extracting
+>>> gst1-plugins-bad 1.22.2 Patching
+>>> gst1-plugins-bad 1.22.2 Configuring
+>>> gst1-plugins-bad 1.22.2 Building
+>>> gst1-plugins-bad 1.22.2 Installing to staging directory
+>>> gst1-plugins-bad 1.22.2 Fixing libtool files
+>>> gst1-plugins-bad 1.22.2 Installing to target
+>>> libgudev 236 Extracting
+>>> libgudev 236 Patching
+>>> libgudev 236 Configuring
+>>> libgudev 236 Building
+>>> libgudev 236 Installing to staging directory
+>>> libgudev 236 Fixing libtool files
+>>> libgudev 236 Installing to target
+>>> libv4l 1.22.1 Extracting
+>>> libv4l 1.22.1 Patching
+>>> libv4l 1.22.1 Updating config.sub and config.guess
+>>> libv4l 1.22.1 Configuring
+>>> libv4l 1.22.1 Autoreconfiguring
+>>> libv4l 1.22.1 Patching libtool
+>>> libv4l 1.22.1 Building
+>>> libv4l 1.22.1 Installing to staging directory
+>>> libv4l 1.22.1 Fixing libtool files
+>>> libv4l 1.22.1 Installing to target
+>>> gst1-plugins-good 1.22.2 Extracting
+>>> gst1-plugins-good 1.22.2 Patching
+>>> gst1-plugins-good 1.22.2 Configuring
+>>> gst1-plugins-good 1.22.2 Building
+>>> gst1-plugins-good 1.22.2 Installing to target
+>>> gst1-plugins-ugly 1.22.2 Extracting
+>>> gst1-plugins-ugly 1.22.2 Patching
+>>> gst1-plugins-ugly 1.22.2 Configuring
+>>> gst1-plugins-ugly 1.22.2 Building
+>>> gst1-plugins-ugly 1.22.2 Installing to target
+>>> harfbuzz 4.3.0 Extracting
+>>> harfbuzz 4.3.0 Patching
+>>> harfbuzz 4.3.0 Configuring
+>>> harfbuzz 4.3.0 Building
+>>> harfbuzz 4.3.0 Installing to staging directory
+>>> harfbuzz 4.3.0 Fixing libtool files
+>>> harfbuzz 4.3.0 Installing to target
+>>> libnl 3.5.0 Extracting
+>>> libnl 3.5.0 Patching
+>>> libnl 3.5.0 Updating config.sub and config.guess
+>>> libnl 3.5.0 Patching libtool
+>>> libnl 3.5.0 Configuring
+>>> libnl 3.5.0 Building
+>>> libnl 3.5.0 Installing to staging directory
+>>> libnl 3.5.0 Fixing libtool files
+>>> libnl 3.5.0 Installing to target
+>>> hostapd 2.9 Extracting
+>>> hostapd 2.9 Patching
+>>> hostapd 2.9 Configuring
+>>> hostapd 2.9 Building
+>>> hostapd 2.9 Installing to target
+>>> ifupdown-scripts  Extracting
+>>> ifupdown-scripts  Patching
+>>> ifupdown-scripts  Configuring
+>>> ifupdown-scripts  Building
+>>> ifupdown-scripts  Installing to target
+>>> initscripts  Extracting
+>>> initscripts  Patching
+>>> initscripts  Configuring
+>>> initscripts  Building
+>>> initscripts  Installing to target
+>>> input-event-daemon 0.1.3 Extracting
+>>> input-event-daemon 0.1.3 Patching
+>>> input-event-daemon 0.1.3 Configuring
+>>> input-event-daemon 0.1.3 Building
+>>> input-event-daemon 0.1.3 Installing to target
+>>> iperf 2.1.4 Extracting
+>>> iperf 2.1.4 Patching
+>>> iperf 2.1.4 Updating config.sub and config.guess
+>>> iperf 2.1.4 Patching libtool
+>>> iperf 2.1.4 Configuring
+>>> iperf 2.1.4 Building
+>>> iperf 2.1.4 Installing to target
+>>> iw 5.9 Extracting
+>>> iw 5.9 Patching
+>>> iw 5.9 Configuring
+>>> iw 5.9 Building
+>>> iw 5.9 Installing to target
+>>> liberation 2.1.5 Extracting
+>>> liberation 2.1.5 Patching
+>>> liberation 2.1.5 Configuring
+>>> liberation 2.1.5 Building
+>>> liberation 2.1.5 Installing to target
+>>> libevdev 1.11.0 Extracting
+>>> libevdev 1.11.0 Patching
+>>> libevdev 1.11.0 Configuring
+>>> libevdev 1.11.0 Building
+>>> libevdev 1.11.0 Installing to staging directory
+>>> libevdev 1.11.0 Fixing libtool files
+>>> libevdev 1.11.0 Installing to target
+>>> libfribidi 1.0.10 Extracting
+>>> libfribidi 1.0.10 Patching
+>>> libfribidi 1.0.10 Updating config.sub and config.guess
+>>> libfribidi 1.0.10 Patching libtool
+>>> libfribidi 1.0.10 Configuring
+>>> libfribidi 1.0.10 Building
+>>> libfribidi 1.0.10 Installing to staging directory
+>>> libfribidi 1.0.10 Fixing libtool files
+>>> libfribidi 1.0.10 Installing to target
+>>> mtdev 1.1.6 Extracting
+>>> mtdev 1.1.6 Patching
+>>> mtdev 1.1.6 Updating config.sub and config.guess
+>>> mtdev 1.1.6 Patching libtool
+>>> mtdev 1.1.6 Configuring
+>>> mtdev 1.1.6 Building
+>>> mtdev 1.1.6 Installing to staging directory
+>>> mtdev 1.1.6 Fixing libtool files
+>>> mtdev 1.1.6 Installing to target
+>>> libinput 1.19.2 Extracting
+>>> libinput 1.19.2 Patching
+>>> libinput 1.19.2 Configuring
+>>> libinput 1.19.2 Building
+>>> libinput 1.19.2 Installing to staging directory
+>>> libinput 1.19.2 Fixing libtool files
+>>> libinput 1.19.2 Installing to target
+>>> liblockfile 1.17 Extracting
+>>> liblockfile 1.17 Patching
+>>> liblockfile 1.17 Updating config.sub and config.guess
+>>> liblockfile 1.17 Configuring
+>>> liblockfile 1.17 Autoreconfiguring
+>>> liblockfile 1.17 Patching libtool
+>>> liblockfile 1.17 Building
+>>> liblockfile 1.17 Installing to staging directory
+>>> liblockfile 1.17 Fixing libtool files
+>>> liblockfile 1.17 Installing to target
+>>> libmad 0.15.1b Extracting
+>>> libmad 0.15.1b Patching
+>>> libmad 0.15.1b Updating config.sub and config.guess
+>>> libmad 0.15.1b Configuring
+>>> libmad 0.15.1b Autoreconfiguring
+>>> libmad 0.15.1b Patching libtool
+>>> libmad 0.15.1b Building
+>>> libmad 0.15.1b Installing to staging directory
+>>> libmad 0.15.1b Fixing libtool files
+>>> libmad 0.15.1b Installing to target
+>>> libnspr 4.32 Extracting
+>>> libnspr 4.32 Patching
+>>> libnspr 4.32 Updating config.sub and config.guess
+>>> libnspr 4.32 Patching libtool
+>>> libnspr 4.32 Configuring
+>>> libnspr 4.32 Building
+>>> libnspr 4.32 Installing to staging directory
+>>> libnspr 4.32 Fixing package configuration files
+>>> libnspr 4.32 Fixing libtool files
+>>> libnspr 4.32 Installing to target
+>>> sqlite 3.39.2 Extracting
+>>> sqlite 3.39.2 Patching
+>>> sqlite 3.39.2 Updating config.sub and config.guess
+>>> sqlite 3.39.2 Patching libtool
+>>> sqlite 3.39.2 Configuring
+>>> sqlite 3.39.2 Building
+>>> sqlite 3.39.2 Installing to staging directory
+>>> sqlite 3.39.2 Fixing libtool files
+>>> sqlite 3.39.2 Installing to target
+>>> libnss 3.73.1 Extracting
+>>> libnss 3.73.1 Patching
+>>> libnss 3.73.1 Configuring
+>>> libnss 3.73.1 Building
+>>> libnss 3.73.1 Installing to staging directory
+>>> libnss 3.73.1 Fixing libtool files
+>>> libnss 3.73.1 Installing to target
+>>> libvpx 1.11.0 Extracting
+>>> libvpx 1.11.0 Patching
+>>> libvpx 1.11.0 Configuring
+>>> libvpx 1.11.0 Building
+>>> libvpx 1.11.0 Installing to staging directory
+>>> libvpx 1.11.0 Fixing libtool files
+>>> libvpx 1.11.0 Installing to target
+>>> libxkbcommon 1.3.1 Extracting
+>>> libxkbcommon 1.3.1 Patching
+>>> libxkbcommon 1.3.1 Configuring
+>>> libxkbcommon 1.3.1 Building
+>>> libxkbcommon 1.3.1 Installing to staging directory
+>>> libxkbcommon 1.3.1 Fixing libtool files
+>>> libxkbcommon 1.3.1 Installing to target
+>>> libxslt 1.1.34 Extracting
+>>> libxslt 1.1.34 Patching
+>>> libxslt 1.1.34 Updating config.sub and config.guess
+>>> libxslt 1.1.34 Configuring
+>>> libxslt 1.1.34 Autoreconfiguring
+>>> libxslt 1.1.34 Patching libtool
+>>> libxslt 1.1.34 Building
+>>> libxslt 1.1.34 Installing to staging directory
+>>> libxslt 1.1.34 Fixing package configuration files
+>>> libxslt 1.1.34 Fixing libtool files
+>>> libxslt 1.1.34 Installing to target
+>>> numactl 2.0.14 Extracting
+>>> numactl 2.0.14 Patching
+>>> numactl 2.0.14 Updating config.sub and config.guess
+>>> numactl 2.0.14 Configuring
+>>> numactl 2.0.14 Autoreconfiguring
+>>> numactl 2.0.14 Patching libtool
+>>> numactl 2.0.14 Building
+>>> numactl 2.0.14 Installing to staging directory
+>>> numactl 2.0.14 Fixing libtool files
+>>> numactl 2.0.14 Installing to target
+>>> linux-tools  Extracting
+>>> linux custom Syncing from source dir /home/smalinux/Downloads/kickpi/rk356x-linux/buildroot/../kernel
+>>> linux-tools  Patching
+>>> linux-tools  Configuring
+>>> linux-tools  Building
+>>> linux-tools  Installing to staging directory
+>>> linux-tools  Fixing libtool files
+>>> linux-tools  Installing to target
+>>> lmbench 3.0-a9 Extracting
+>>> lmbench 3.0-a9 Patching
+>>> lmbench 3.0-a9 Updating config.sub and config.guess
+>>> lmbench 3.0-a9 Configuring
+>>> lmbench 3.0-a9 Building
+>>> lmbench 3.0-a9 Installing to target
+>>> lockfile-progs 0.1.19 Extracting
+>>> lockfile-progs 0.1.19 Patching
+>>> lockfile-progs 0.1.19 Configuring
+>>> lockfile-progs 0.1.19 Building
+>>> lockfile-progs 0.1.19 Installing to target
+>>> lrzsz 0.12.20 Extracting
+>>> lrzsz 0.12.20 Patching
+>>> lrzsz 0.12.20 Updating config.sub and config.guess
+>>> lrzsz 0.12.20 Patching libtool
+>>> lrzsz 0.12.20 Configuring
+>>> lrzsz 0.12.20 Building
+>>> lrzsz 0.12.20 Installing to target
+>>> make 4.2.1 Extracting
+>>> make 4.2.1 Patching
+>>> make 4.2.1 Updating config.sub and config.guess
+>>> make 4.2.1 Configuring
+>>> make 4.2.1 Autoreconfiguring
+>>> make 4.2.1 Patching libtool
+>>> make 4.2.1 Building
+>>> make 4.2.1 Installing to target
+>>> memtester 4.5.0 Extracting
+>>> memtester 4.5.0 Patching
+>>> memtester 4.5.0 Configuring
+>>> memtester 4.5.0 Building
+>>> memtester 4.5.0 Installing to target
+>>> ntfs-3g 2022.5.17 Extracting
+>>> ntfs-3g 2022.5.17 Patching
+>>> ntfs-3g 2022.5.17 Updating config.sub and config.guess
+>>> ntfs-3g 2022.5.17 Patching libtool
+>>> ntfs-3g 2022.5.17 Configuring
+>>> ntfs-3g 2022.5.17 Building
+>>> ntfs-3g 2022.5.17 Installing to staging directory
+>>> ntfs-3g 2022.5.17 Fixing libtool files
+>>> ntfs-3g 2022.5.17 Installing to target
+>>> host-ntfs-3g 2022.5.17 Extracting
+>>> host-ntfs-3g 2022.5.17 Patching
+>>> host-ntfs-3g 2022.5.17 Updating config.sub and config.guess
+>>> host-ntfs-3g 2022.5.17 Patching libtool
+>>> host-ntfs-3g 2022.5.17 Configuring
+>>> host-ntfs-3g 2022.5.17 Building
+>>> host-ntfs-3g 2022.5.17 Installing to host directory
+>>> pango 1.48.10 Extracting
+>>> pango 1.48.10 Patching
+>>> pango 1.48.10 Configuring
+>>> pango 1.48.10 Building
+>>> pango 1.48.10 Installing to staging directory
+>>> pango 1.48.10 Fixing libtool files
+>>> pango 1.48.10 Installing to target
+>>> host-patchelf 0.9 Extracting
+>>> host-patchelf 0.9 Patching
+>>> host-patchelf 0.9 Updating config.sub and config.guess
+>>> host-patchelf 0.9 Patching libtool
+>>> host-patchelf 0.9 Configuring
+>>> host-patchelf 0.9 Building
+>>> host-patchelf 0.9 Installing to host directory
+>>> perl 5.32.1 Extracting
+>>> perl 5.32.1 Patching
+>>> perl 5.32.1 Updating config.sub and config.guess
+>>> perl 5.32.1 Configuring
+>>> perl 5.32.1 Building
+>>> perl 5.32.1 Installing to staging directory
+>>> perl 5.32.1 Fixing libtool files
+>>> perl 5.32.1 Installing to target
+>>> pm-utils 1.4.1 Extracting
+>>> pm-utils 1.4.1 Patching
+>>> pm-utils 1.4.1 Updating config.sub and config.guess
+>>> pm-utils 1.4.1 Patching libtool
+>>> pm-utils 1.4.1 Configuring
+>>> pm-utils 1.4.1 Building
+>>> pm-utils 1.4.1 Installing to target
+>>> procrank_linux 21c30ab4514a5b15ac6e813e21bee0d3d714cb08 Extracting
+>>> procrank_linux 21c30ab4514a5b15ac6e813e21bee0d3d714cb08 Patching
+>>> procrank_linux 21c30ab4514a5b15ac6e813e21bee0d3d714cb08 Configuring
+>>> procrank_linux 21c30ab4514a5b15ac6e813e21bee0d3d714cb08 Building
+>>> procrank_linux 21c30ab4514a5b15ac6e813e21bee0d3d714cb08 Installing to target
+>>> camera-engine-rkaiq 1.0 Syncing from source dir /home/smalinux/Downloads/kickpi/rk356x-linux/buildroot/../external/camera_engine_rkaiq
+>>> camera-engine-rkaiq 1.0 Configuring
+>>> camera-engine-rkaiq 1.0 Building
+>>> camera-engine-rkaiq 1.0 Installing to staging directory
+>>> camera-engine-rkaiq 1.0 Fixing libtool files
+>>> camera-engine-rkaiq 1.0 Installing to target
+>>> rockchip-mpp develop Syncing from source dir /home/smalinux/Downloads/kickpi/rk356x-linux/buildroot/../external/mpp
+>>> rockchip-mpp develop Configuring
+>>> rockchip-mpp develop Building
+>>> rockchip-mpp develop Installing to staging directory
+>>> rockchip-mpp develop Fixing libtool files
+>>> rockchip-mpp develop Installing to target
+>>> gstreamer1-rockchip master Syncing from source dir /home/smalinux/Downloads/kickpi/rk356x-linux/buildroot/../external/gstreamer-rockchip
+>>> gstreamer1-rockchip master Configuring
+>>> gstreamer1-rockchip master Building
+>>> gstreamer1-rockchip master Installing to target
+>>> libv4l-rkmpp 38da407140d7de2f6cf70c613787ab44be2bbb3a Extracting
+>>> libv4l-rkmpp 38da407140d7de2f6cf70c613787ab44be2bbb3a Patching
+>>> libv4l-rkmpp 38da407140d7de2f6cf70c613787ab44be2bbb3a Configuring
+>>> libv4l-rkmpp 38da407140d7de2f6cf70c613787ab44be2bbb3a Building
+>>> libv4l-rkmpp 38da407140d7de2f6cf70c613787ab44be2bbb3a Installing to target
+>>> rknpu2 1.0.0 Syncing from source dir /home/smalinux/Downloads/kickpi/rk356x-linux/buildroot/../external/rknpu2
+>>> rknpu2 1.0.0 Configuring
+>>> rknpu2 1.0.0 Building
+>>> rknpu2 1.0.0 Installing to staging directory
+>>> rknpu2 1.0.0 Fixing libtool files
+>>> rknpu2 1.0.0 Installing to target
+>>> rkscript  Syncing from source dir /home/smalinux/Downloads/kickpi/rk356x-linux/buildroot/../external/rkscript
+>>> rkscript  Configuring
+>>> rkscript  Building
+>>> rkscript  Installing to target
+>>> rktoolkit master Syncing from source dir /home/smalinux/Downloads/kickpi/rk356x-linux/buildroot/../external/rktoolkit
+>>> rktoolkit master Configuring
+>>> rktoolkit master Building
+>>> rktoolkit master Installing to target
+>>> rkwifibt 1.0.0 Syncing from source dir /home/smalinux/Downloads/kickpi/rk356x-linux/buildroot/../external/rkwifibt
+>>> rkwifibt 1.0.0 Configuring
+>>> rkwifibt 1.0.0 Building
+>>> rkwifibt 1.0.0 Installing to target
+>>> rockchip-alsa-config 1.0 Syncing from source dir /home/smalinux/Downloads/kickpi/rk356x-linux/buildroot/../external/alsa-config
+>>> rockchip-alsa-config 1.0 Configuring
+>>> rockchip-alsa-config 1.0 Building
+>>> rockchip-alsa-config 1.0 Installing to target
+>>> rockchip-test master Syncing from source dir /home/smalinux/Downloads/kickpi/rk356x-linux/buildroot/../external/rockchip-test
+>>> rockchip-test master Configuring
+>>> rockchip-test master Building
+>>> rockchip-test master Installing to target
+>>> rt-tests 2.2 Extracting
+>>> rt-tests 2.2 Patching
+>>> rt-tests 2.2 Configuring
+>>> rt-tests 2.2 Building
+>>> rt-tests 2.2 Installing to target
+>>> host-zip 3.0 Extracting
+>>> host-zip 3.0 Patching
+>>> host-zip 3.0 Configuring
+>>> host-zip 3.0 Building
+>>> host-zip 3.0 Installing to host directory
+>>> source-han-sans-cn 2.004R Extracting
+>>> source-han-sans-cn 2.004R Patching
+>>> source-han-sans-cn 2.004R Configuring
+>>> source-han-sans-cn 2.004R Building
+>>> source-han-sans-cn 2.004R Installing to target
+>>> sox 7524160b29a476f7e87bc14fddf12d349f9a3c5e Extracting
+>>> sox 7524160b29a476f7e87bc14fddf12d349f9a3c5e Patching
+>>> sox 7524160b29a476f7e87bc14fddf12d349f9a3c5e Updating config.sub and config.guess
+>>> sox 7524160b29a476f7e87bc14fddf12d349f9a3c5e Configuring
+>>> sox 7524160b29a476f7e87bc14fddf12d349f9a3c5e Autoreconfiguring
+>>> sox 7524160b29a476f7e87bc14fddf12d349f9a3c5e Patching libtool
+>>> sox 7524160b29a476f7e87bc14fddf12d349f9a3c5e Building
+>>> sox 7524160b29a476f7e87bc14fddf12d349f9a3c5e Installing to staging directory
+>>> sox 7524160b29a476f7e87bc14fddf12d349f9a3c5e Fixing libtool files
+>>> sox 7524160b29a476f7e87bc14fddf12d349f9a3c5e Installing to target
+>>> strace 6.2 Extracting
+>>> strace 6.2 Patching
+>>> strace 6.2 Updating config.sub and config.guess
+>>> strace 6.2 Patching libtool
+>>> strace 6.2 Configuring
+>>> strace 6.2 Building
+>>> strace 6.2 Installing to target
+>>> stress-ng 0.13.01 Extracting
+>>> stress-ng 0.13.01 Patching
+>>> stress-ng 0.13.01 Configuring
+>>> stress-ng 0.13.01 Building
+>>> stress-ng 0.13.01 Installing to target
+>>> stress 1.0.4 Extracting
+>>> stress 1.0.4 Patching
+>>> stress 1.0.4 Updating config.sub and config.guess
+>>> stress 1.0.4 Patching libtool
+>>> stress 1.0.4 Configuring
+>>> stress 1.0.4 Building
+>>> stress 1.0.4 Installing to target
+>>> stressapptest 6714c57d0d67f5a2a7a9987791af6729289bf64e Extracting
+>>> stressapptest 6714c57d0d67f5a2a7a9987791af6729289bf64e Patching
+>>> stressapptest 6714c57d0d67f5a2a7a9987791af6729289bf64e Updating config.sub and config.guess
+>>> stressapptest 6714c57d0d67f5a2a7a9987791af6729289bf64e Patching libtool
+>>> stressapptest 6714c57d0d67f5a2a7a9987791af6729289bf64e Configuring
+>>> stressapptest 6714c57d0d67f5a2a7a9987791af6729289bf64e Building
+>>> stressapptest 6714c57d0d67f5a2a7a9987791af6729289bf64e Installing to target
+>>> unixbench e477bc034137f994f2bbaba52952ca6e1de53856 Extracting
+>>> unixbench e477bc034137f994f2bbaba52952ca6e1de53856 Patching
+>>> unixbench e477bc034137f994f2bbaba52952ca6e1de53856 Configuring
+>>> unixbench e477bc034137f994f2bbaba52952ca6e1de53856 Building
+>>> unixbench e477bc034137f994f2bbaba52952ca6e1de53856 Installing to target
+>>> urandom-scripts  Extracting
+>>> urandom-scripts  Patching
+>>> urandom-scripts  Configuring
+>>> urandom-scripts  Building
+>>> urandom-scripts  Installing to target
+>>> usbmount 0.0.22 Extracting
+>>> usbmount 0.0.22 Patching
+>>> usbmount 0.0.22 Configuring
+>>> usbmount 0.0.22 Building
+>>> usbmount 0.0.22 Installing to target
+>>> webp 1.2.1 Extracting
+>>> webp 1.2.1 Patching
+>>> webp 1.2.1 Updating config.sub and config.guess
+>>> webp 1.2.1 Patching libtool
+>>> webp 1.2.1 Configuring
+>>> webp 1.2.1 Building
+>>> webp 1.2.1 Installing to staging directory
+>>> webp 1.2.1 Fixing libtool files
+>>> webp 1.2.1 Installing to target
+>>> weston 12.0.1 Extracting
+>>> weston 12.0.1 Patching
+>>> weston 12.0.1 Configuring
+>>> weston 12.0.1 Building
+>>> weston 12.0.1 Installing to staging directory
+>>> weston 12.0.1 Fixing libtool files
+>>> weston 12.0.1 Installing to target
+>>> whetstone 1.2 Extracting
+>>> whetstone 1.2 Patching
+>>> whetstone 1.2 Configuring
+>>> whetstone 1.2 Building
+>>> whetstone 1.2 Installing to target
+>>> wireless_tools 30.pre9 Extracting
+>>> wireless_tools 30.pre9 Patching
+>>> wireless_tools 30.pre9 Configuring
+>>> wireless_tools 30.pre9 Building
+>>> wireless_tools 30.pre9 Installing to staging directory
+>>> wireless_tools 30.pre9 Fixing libtool files
+>>> wireless_tools 30.pre9 Installing to target
+>>> wpa_supplicant 2.9 Extracting
+>>> wpa_supplicant 2.9 Patching
+>>> wpa_supplicant 2.9 Configuring
+>>> wpa_supplicant 2.9 Building
+>>> wpa_supplicant 2.9 Installing to staging directory
+>>> wpa_supplicant 2.9 Fixing libtool files
+>>> wpa_supplicant 2.9 Installing to target
+>>> host-libxslt 1.1.34 Extracting
+>>> host-libxslt 1.1.34 Patching
+>>> host-libxslt 1.1.34 Updating config.sub and config.guess
+>>> host-libxslt 1.1.34 Configuring
+>>> host-libxslt 1.1.34 Autoreconfiguring
+>>> host-libxslt 1.1.34 Patching libtool
+>>> host-libxslt 1.1.34 Building
+>>> host-libxslt 1.1.34 Installing to host directory
+>>> host-xcb-proto 1.15.2 Extracting
+>>> host-xcb-proto 1.15.2 Patching
+>>> host-xcb-proto 1.15.2 Updating config.sub and config.guess
+>>> host-xcb-proto 1.15.2 Patching libtool
+>>> host-xcb-proto 1.15.2 Configuring
+>>> host-xcb-proto 1.15.2 Building
+>>> host-xcb-proto 1.15.2 Installing to host directory
+>>> host-xorgproto 2022.1 Extracting
+>>> host-xorgproto 2022.1 Patching
+>>> host-xorgproto 2022.1 Updating config.sub and config.guess
+>>> host-xorgproto 2022.1 Patching libtool
+>>> host-xorgproto 2022.1 Configuring
+>>> host-xorgproto 2022.1 Building
+>>> host-xorgproto 2022.1 Installing to host directory
+>>> host-xutil_util-macros 1.19.3 Extracting
+>>> host-xutil_util-macros 1.19.3 Patching
+>>> host-xutil_util-macros 1.19.3 Updating config.sub and config.guess
+>>> host-xutil_util-macros 1.19.3 Patching libtool
+>>> host-xutil_util-macros 1.19.3 Configuring
+>>> host-xutil_util-macros 1.19.3 Building
+>>> host-xutil_util-macros 1.19.3 Installing to host directory
+>>> host-xlib_libXau 1.0.9 Extracting
+>>> host-xlib_libXau 1.0.9 Patching
+>>> host-xlib_libXau 1.0.9 Updating config.sub and config.guess
+>>> host-xlib_libXau 1.0.9 Patching libtool
+>>> host-xlib_libXau 1.0.9 Configuring
+>>> host-xlib_libXau 1.0.9 Building
+>>> host-xlib_libXau 1.0.9 Installing to host directory
+>>> host-xlib_libXdmcp 1.1.3 Extracting
+>>> host-xlib_libXdmcp 1.1.3 Patching
+>>> host-xlib_libXdmcp 1.1.3 Updating config.sub and config.guess
+>>> host-xlib_libXdmcp 1.1.3 Patching libtool
+>>> host-xlib_libXdmcp 1.1.3 Configuring
+>>> host-xlib_libXdmcp 1.1.3 Building
+>>> host-xlib_libXdmcp 1.1.3 Installing to host directory
+>>> host-libxcb 1.15 Extracting
+>>> host-libxcb 1.15 Patching
+>>> host-libxcb 1.15 Updating config.sub and config.guess
+>>> host-libxcb 1.15 Patching libtool
+>>> host-libxcb 1.15 Configuring
+>>> host-libxcb 1.15 Building
+>>> host-libxcb 1.15 Installing to host directory
+>>> host-xlib_xtrans 1.4.0 Extracting
+>>> host-xlib_xtrans 1.4.0 Patching
+>>> host-xlib_xtrans 1.4.0 Updating config.sub and config.guess
+>>> host-xlib_xtrans 1.4.0 Patching libtool
+>>> host-xlib_xtrans 1.4.0 Configuring
+>>> host-xlib_xtrans 1.4.0 Building
+>>> host-xlib_xtrans 1.4.0 Installing to host directory
+>>> host-xlib_libX11 1.8.1 Extracting
+>>> host-xlib_libX11 1.8.1 Patching
+>>> host-xlib_libX11 1.8.1 Updating config.sub and config.guess
+>>> host-xlib_libX11 1.8.1 Patching libtool
+>>> host-xlib_libX11 1.8.1 Configuring
+>>> host-xlib_libX11 1.8.1 Building
+>>> host-xlib_libX11 1.8.1 Installing to host directory
+>>> host-xlib_libxkbfile 1.1.0 Extracting
+>>> host-xlib_libxkbfile 1.1.0 Patching
+>>> host-xlib_libxkbfile 1.1.0 Updating config.sub and config.guess
+>>> host-xlib_libxkbfile 1.1.0 Patching libtool
+>>> host-xlib_libxkbfile 1.1.0 Configuring
+>>> host-xlib_libxkbfile 1.1.0 Building
+>>> host-xlib_libxkbfile 1.1.0 Installing to host directory
+>>> host-xapp_xkbcomp 1.4.5 Extracting
+>>> host-xapp_xkbcomp 1.4.5 Patching
+>>> host-xapp_xkbcomp 1.4.5 Updating config.sub and config.guess
+>>> host-xapp_xkbcomp 1.4.5 Patching libtool
+>>> host-xapp_xkbcomp 1.4.5 Configuring
+>>> host-xapp_xkbcomp 1.4.5 Building
+>>> host-xapp_xkbcomp 1.4.5 Installing to host directory
+>>> xkeyboard-config 2.36 Extracting
+>>> xkeyboard-config 2.36 Patching
+>>> xkeyboard-config 2.36 Configuring
+>>> xkeyboard-config 2.36 Building
+>>> xkeyboard-config 2.36 Installing to staging directory
+>>> xkeyboard-config 2.36 Fixing libtool files
+>>> xkeyboard-config 2.36 Installing to target
+>>> host-lz4 1.9.3 Extracting
+>>> host-lz4 1.9.3 Patching
+>>> host-lz4 1.9.3 Configuring
+>>> host-lz4 1.9.3 Building
+>>> host-lz4 1.9.3 Installing to host directory
+>>> host-lzo 2.10 Extracting
+>>> host-lzo 2.10 Patching
+>>> host-lzo 2.10 Configuring
+>>> host-lzo 2.10 Building
+>>> host-lzo 2.10 Installing to host directory
+>>> host-xz 5.2.5 Extracting
+>>> host-xz 5.2.5 Patching
+>>> host-xz 5.2.5 Updating config.sub and config.guess
+>>> host-xz 5.2.5 Patching libtool
+>>> host-xz 5.2.5 Configuring
+>>> host-xz 5.2.5 Building
+>>> host-xz 5.2.5 Installing to host directory
+>>> host-zstd 1.5.0 Extracting
+>>> host-zstd 1.5.0 Patching
+>>> host-zstd 1.5.0 Configuring
+>>> host-zstd 1.5.0 Building
+>>> host-zstd 1.5.0 Installing to host directory
+>>> host-squashfs 4.4 Extracting
+>>> host-squashfs 4.4 Patching
+>>> host-squashfs 4.4 Configuring
+>>> host-squashfs 4.4 Building
+>>> host-squashfs 4.4 Installing to host directory
+>>>   Finalizing host directory
+>>>   Finalizing target directory
+>>>   Sanitizing RPATH in target tree
+>>>   Sanity check in overlay board/rockchip/common/base
+>>>   Sanity check in overlay board/rockchip/rk3562/fs-overlay/
+>>>   Copying overlay board/rockchip/common/base
+>>>   Copying overlay board/rockchip/rk3562/fs-overlay/
+>>>   Executing post-build script board/rockchip/common/post-build.sh
+
+
+
