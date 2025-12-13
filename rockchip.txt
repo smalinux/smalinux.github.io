@@ -2177,3 +2177,32 @@ Buildroot sdk
  6460  $TOOL wl 0x78000 /home/smalinux/Downloads/kickpi/rk356x-linux/rockdev/rootfs.img
  6461  $TOOL rd
  6462  history
+
+===============================================================================
+minimal yocto-docker image
+===============================================================================
+# Put device in maskrom/loader mode (usually by holding recovery button while powering on)
+
+# Download the boot loader
+sudo rkdeveloptool db /path/to/rkbin/rk356x_spl_loader_v1.xx.bin
+
+# Write boot partition
+sudo rkdeveloptool wl 0x4000 Volume/build-rockchip-rk3562-evb/tmp/deploy/images/rockchip-rk3562-evb/boot.img
+
+# Write rootfs (you'll need to extract it first)
+cd Volume/build-rockchip-rk3562-evb/tmp/deploy/images/rockchip-rk3562-evb/
+mkdir -p /tmp/rootfs
+sudo tar -xzf core-image-minimal-rockchip-rk3562-evb.rootfs.tar.gz -C /tmp/rootfs
+
+# Create ext4 image from rootfs
+dd if=/dev/zero of=/tmp/rootfs.img bs=1M count=512
+mkfs.ext4 /tmp/rootfs.img
+sudo mount /tmp/rootfs.img /mnt
+sudo cp -a /tmp/rootfs/* /mnt/
+sudo umount /mnt
+
+# Flash rootfs
+sudo rkdeveloptool wl 0x8000 /tmp/rootfs.img
+
+# Reboot device
+sudo rkdeveloptool rd
