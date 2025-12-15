@@ -2256,10 +2256,23 @@ Uboot erese everything
 => mmc erase 0 0x1000000
 
 
-Start fastboot in U-boot
-=> fastboot usb 0
-$ sudo fastboot devices
-$ fastboot flash ram hello.txt
+Start TFTP in U-boot
+----------------------
+setenv ipaddr 192.168.0.200
+setenv serverip 192.168.0.134
+setenv netmask 255.255.255.0
+setenv gatewayip 192.168.0.1
+saveenv
+
+# Test connectivity
+=> ping 192.168.0.134
+
+# Now try TFTP again
+=> tftp 0x10000000 hostname
+=> md.b 0x10000000 20
+
+
+setenv ipaddr 192.168.0.200; setenv serverip 192.168.0.134; setenv netmask 255.255.255.0; setenv gatewayip 192.168.0.1; ping 192.168.0.134
 
 ===============================================================================
 Barebox port:
