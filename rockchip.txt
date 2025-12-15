@@ -2206,3 +2206,52 @@ sudo rkdeveloptool wl 0x8000 /tmp/rootfs.img
 
 # Reboot device
 sudo rkdeveloptool rd
+
+
+===============================================================================
+===============================================================================
+===============================================================================
+===============================================================================
+Uboot development
+------------------
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$ sudo upgrade_tool db rk3562_spl_loader_v1.07.106.bin
+$ sudo upgrade_tool wl 0x4000 uboot.img
+$ sudo upgrade_tool ul rk3562_spl_loader_v1.07.106.bin
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+
+
+# Loads loader to RAM
+$ sudo upgrade_tool db rk3562_spl_loader_v1.07.106.bin
+
+# Boot from RAM loader!
+$ sudo upgrade_tool ul rk3562_spl_loader_v1.07.106.bin
+
+# Writes U-Boot to eMMC
+$ sudo upgrade_tool wl 0x40 rk3562_spl_loader_v1.07.106.bin
+$ sudo upgrade_tool wl 0x4000 uboot.img
+
+
+### What Each Command Does
+
+1. **`db` (download boot)**: Downloads the loader to device RAM (doesn't write to flash)
+   - Device enters maskrom/loader mode
+   - Loader runs from RAM temporarily
+
+2. **`wl` (write LBA)**: Writes U-Boot image to eMMC at offset 0x4000
+   - This is U-Boot proper, not the early boot stages
+   - Offset 0x4000 = sector 0x4000 (8KB offset)
+
+3. **`ul` (upgrade loader)**: Actually writes the full loader chain to eMMC **AND** boots from it
+   - Writes TPL/SPL/loader to proper offsets (0x40, 0x4000, etc.)
+   - Includes the idbloader.img equivalent
+   - Kicks off the boot sequence
+
+
+Uboot erese everything
+----------------------
+=> mmc dev 0
+=> mmc info
+=> mmc erase 0 0x1000000
+
