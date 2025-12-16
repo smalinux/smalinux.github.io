@@ -2281,3 +2281,5 @@ Barebox port:
 => dts
 /home/smalinux/Downloads/kickpi/rk356x-linux/kernel/arch/arm64/boot/dts/rockchip/rk3562-kickpi-k3-linux.dts
 
+Upstream
+$LINUX/arch/arm64/boot/dts/rockchip/rk3562.dtsi
