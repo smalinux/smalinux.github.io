@@ -2283,3 +2283,17 @@ Barebox port:
 
 Upstream
 $LINUX/arch/arm64/boot/dts/rockchip/rk3562.dtsi
+
+CONFIG_CONSOLE_ACTIVATE_NONE
+
+
+
+port the correct device tree:
+=============================
+$ rg -l 3562 | rg evb2
+	arch/arm/dts/rk3562-evb2-v10.dts <--------------------------
+	arch/arm/boards/rockchip-rk3562-evb2/board.c
+	arch/arm/boards/rockchip-rk3562-evb2/lowlevel.c
+	dts/src/arm64/rockchip/rk3562-evb2-v10.dts
+
+
