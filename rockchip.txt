@@ -2297,3 +2297,82 @@ $ rg -l 3562 | rg evb2
 	dts/src/arm64/rockchip/rk3562-evb2-v10.dts
 
 
+device tree
+Ubuntu@kernel $ f 3562 | rg dts$
+	arch/arm64/boot/dts/rockchip/rk3562-rk817-tablet-v10.dts
+	arch/arm64/boot/dts/rockchip/rk3562-evb2-ddr4-v10-linux.dts
+		#include "rk3562-evb2-ddr4-v10.dtsi"
+		#include "rk3562-linux.dtsi"
+		#include "rk3562-rk809.dtsi"
+		#include "rk3562-evb2-cam.dtsi"
+
+	arch/arm64/boot/dts/rockchip/rk3562-iotest-lp3-v10-dsm.dts
+	arch/arm64/boot/dts/rockchip/rk3562-evb1-lp4x-v10-rgb2lvds.dts
+	arch/arm64/boot/dts/rockchip/rk3562-evb2-ddr4-v10.dts   <----------- x
+		#include "rk3562-evb2-ddr4-v10.dtsi"
+		#include "rk3562-android.dtsi"
+		#include "rk3562-rk809.dtsi"
+		#include "rk3562-evb2-cam.dtsi"
+
+	arch/arm64/boot/dts/rockchip/rk3562-evb1-lp4x-v10-sii9022-rgb2hdmi.dts
+	arch/arm64/boot/dts/rockchip/rk3562-iotest-lp3-v10-linux.dts
+	arch/arm64/boot/dts/rockchip/rk3562-kickpi-k3-linux.dts  <-----
+		#include "rk3562-kickpi-k3.dtsi"
+			#include "rk3562.dtsi"
+				#include <dt-bindings/clock/rk3562-cru.h>
+				#include <dt-bindings/interrupt-controller/arm-gic.h>
+				#include <dt-bindings/interrupt-controller/irq.h>
+				#include <dt-bindings/phy/phy.h>
+				#include <dt-bindings/power/rk3562-power.h>
+				#include <dt-bindings/pinctrl/rockchip.h>
+				#include <dt-bindings/soc/rockchip,boot-mode.h>
+				#include <dt-bindings/soc/rockchip-system-status.h>
+				#include <dt-bindings/suspend/rockchip-rk3562.h>
+				#include <dt-bindings/thermal/thermal.h>
+				#include "rk3562-pinctrl.dtsi"
+					#include "rockchip-pinconf.dtsi"
+			#include "rk3562-kickpi-evb.dtsi"
+			#include "rk3562-rk809.dtsi"
+			#include <dt-bindings/gpio/gpio.h>
+			#include <dt-bindings/pinctrl/rockchip.h>
+			#include <dt-bindings/sensor-dev.h>
+			#include "rk3562-kickpi-usb.dtsi"
+			#include "rk3562-kickpi-ir-pwm3.dtsi"
+			#include "rk3562-kickpi-wifibt.dtsi"
+			#include "rk3562-kickpi-pcie-m2.dtsi"
+			#include "rk3562-kickpi-extend-20pin.dtsi"
+			#include "rk3562-kickpi-gmac0.dtsi"
+			#include "rk3562-kickpi-gmac1.dtsi"
+			//#include "rk3562-kickpi-dual-mipi-camera-gc5035.dtsi"
+			#include "rk3562-kickpi-mipi-camera0.dtsi"
+			#include "rk3562-kickpi-mipi-camera1.dtsi"
+		#include "rk3562-linux.dtsi"
+	arch/arm64/boot/dts/rockchip/rk3562-evb2-ddr4-v10-pdm-mic-array.dts
+	arch/arm64/boot/dts/rockchip/rk3562j-core-ddr4-v10.dts
+	arch/arm64/boot/dts/rockchip/rk3562-evb2-ddr4-v10-dual-camera.dts
+	arch/arm64/boot/dts/rockchip/rk3562-kickpi-k3-android.dts
+	arch/arm64/boot/dts/rockchip/rk3562-evb1-lp4x-v10.dts
+	arch/arm64/boot/dts/rockchip/rk3562-test2-ddr4-v10.dts
+	arch/arm64/boot/dts/rockchip/rk3562-evb1-lp4x-v10-rgb-FX070-DHM11BOE-A.dts
+	arch/arm64/boot/dts/rockchip/rk3562-evb1-lp4x-v10-mcu-k350c4516t.dts
+	arch/arm64/boot/dts/rockchip/rk3562-iotest-lp3-v10.dts
+	arch/arm64/boot/dts/rockchip/rk3562-evb2-ddr4-v10-sii9022-bt1120-to-hdmi.dts
+	arch/arm64/boot/dts/rockchip/rk3562-evb1-lp4x-v10-lvds.dts
+	arch/arm64/boot/dts/rockchip/rk3562-test1-ddr3-v10.dts
+	arch/arm64/boot/dts/rockchip/rk3562-dictpen-test3-v20.dts
+	arch/arm64/boot/dts/rockchip/rk3562-evb1-lp4x-v10-rgb-k350c4516t.dts
+	arch/arm64/boot/dts/rockchip/rk3562-evb1-lp4x-v10-spdif.dts
+	arch/arm64/boot/dts/rockchip/rk3562-evb2-ddr4-v10-image-reverse.dts
+	arch/arm64/boot/dts/rockchip/rk3562-evb1-lp4x-v10-linux.dts
+	arch/arm64/boot/dts/rockchip/rk3562-evb1-lp4x-v10-linux-amp.dts
+
+
+maybe I will copy this later:
+	dts/include/dt-bindings/soc/rockchip,boot-mode.h
+
+dts/include/dt-bindings/clock/rk3562-cru.h
+dts/include/dt-bindings/display/drm_mipi_dsi.h
+dts/include/dt-bindings/power/rk3562-power.h
+dts/include/dt-bindings/sensor-dev.h
+dts/include/dt-bindings/soc/rockchip-system-status.h
+dts/include/dt-bindings/suspend/rockchip-rk3562.h
