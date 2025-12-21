@@ -2386,21 +2386,22 @@ All rk3562 dts from the Vendor
 	dts/include/dt-bindings/sensor-dev.h
 	dts/include/dt-bindings/soc/rockchip-system-status.h
 	dts/include/dt-bindings/suspend/rockchip-rk3562.h
-	dts/src/arm64/rockchip/rk3562-kickpi-evb.dtsi
-	dts/src/arm64/rockchip/rk3562-kickpi-extend-20pin.dtsi
-	dts/src/arm64/rockchip/rk3562-kickpi-gmac0.dtsi
-	dts/src/arm64/rockchip/rk3562-kickpi-gmac1.dtsi
-	dts/src/arm64/rockchip/rk3562-kickpi-ir-pwm3.dtsi
-	dts/src/arm64/rockchip/rk3562-kickpi-k3-linux.dts
-	dts/src/arm64/rockchip/rk3562-kickpi-k3.dtsi
-	dts/src/arm64/rockchip/rk3562-kickpi-lcd-mipi-10.1-800-1280-v2.dtsi
-	dts/src/arm64/rockchip/rk3562-kickpi-mipi-camera0.dtsi
-	dts/src/arm64/rockchip/rk3562-kickpi-mipi-camera1.dtsi
-	dts/src/arm64/rockchip/rk3562-kickpi-pcie-m2.dtsi
-	dts/src/arm64/rockchip/rk3562-kickpi-usb.dtsi
-	dts/src/arm64/rockchip/rk3562-kickpi-wifibt.dtsi
-	dts/src/arm64/rockchip/rk3562-linux.dtsi
-	dts/src/arm64/rockchip/rk3562-rk809.dtsi
+
+	dts/src/arm64/rockchip/rk3562-kickpi-evb.dtsi <--------------- DONE
+	dts/src/arm64/rockchip/rk3562-kickpi-extend-20pin.dtsi <------ DONE
+	dts/src/arm64/rockchip/rk3562-kickpi-gmac0.dtsi <------------- DONE
+	dts/src/arm64/rockchip/rk3562-kickpi-gmac1.dtsi <------------- DONE
+	dts/src/arm64/rockchip/rk3562-kickpi-ir-pwm3.dtsi <----------- DONE
+	dts/src/arm64/rockchip/rk3562-kickpi-k3-linux.dts <----------- DONE
+	dts/src/arm64/rockchip/rk3562-kickpi-k3.dtsi <---------------- DONE
+	dts/src/arm64/rockchip/rk3562-kickpi-lcd-mipi-10.1-800-1280-v2.dtsi <--- DONE
+	dts/src/arm64/rockchip/rk3562-kickpi-mipi-camera0.dtsi <------ DONE
+	dts/src/arm64/rockchip/rk3562-kickpi-mipi-camera1.dtsi <------ DONE
+	dts/src/arm64/rockchip/rk3562-kickpi-pcie-m2.dtsi <----------- DONE
+	dts/src/arm64/rockchip/rk3562-kickpi-usb.dtsi <-------------- DONE
+	dts/src/arm64/rockchip/rk3562-kickpi-wifibt.dtsi <----------- DONE
+	dts/src/arm64/rockchip/rk3562-linux.dtsi <-------------------- DONE
+	dts/src/arm64/rockchip/rk3562-rk809.dtsi <------------------- DONE
 
 All dts files you need from Linux upstream dts related to rk3562
 ===============================
