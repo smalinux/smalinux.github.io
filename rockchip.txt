@@ -2380,9 +2380,9 @@ dts/include/dt-bindings/suspend/rockchip-rk3562.h
 
 All rk3562 dts from the Vendor
 ===============================
-	dts/include/dt-bindings/clock/rk3562-cru.h
+	dts/include/dt-bindings/clock/rk3562-cru.h   -> /src/linux/include/dt-bindings/clock/rockchip,rk3562-cru.h
 	dts/include/dt-bindings/display/drm_mipi_dsi.h
-	dts/include/dt-bindings/power/rk3562-power.h
+	dts/include/dt-bindings/power/rk3562-power.h -> include/dt-bindings/power/rockchip,rk3562-power.h (upstream)
 	dts/include/dt-bindings/sensor-dev.h
 	dts/include/dt-bindings/soc/rockchip-system-status.h
 	dts/include/dt-bindings/suspend/rockchip-rk3562.h
@@ -2427,3 +2427,6 @@ dts/src/arm64/rockchip/rk3562-pinctrl.dtsi <---------- Added by Sascha
 TODO:
 	Change this compatible to: kickpi-k3
 	compatible = "rockchip,rk3562-evb2-ddr4-v10", "rockchip,rk3562";
+
+
+dts/include/dt-bindings/clock/rk3562-cru.h
