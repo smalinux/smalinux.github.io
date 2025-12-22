@@ -1,3 +1,13 @@
+Read later:
+===================
+https://docs.u-boot.org/en/latest/board/rockchip/rockchip.html
+https://github.com/rockchip-linux/u-boot/blob/next-dev/doc/README.rockchip
+https://github.com/rockchip-linux/u-boot/blob/next-dev/configs/README.rockchip
+https://opensource.rock-chips.com/wiki_Rkdeveloptool
+https://opensource.rock-chips.com/wiki_Upgradetool
+
+
+
 => SDK:
 ===================
 https://www.kickpi.com/product/k3/

@@ -1,3 +1,18 @@
+Where is the reference manual?!
+=======================
+http://www.jerstvbox.com/amlogic-s905x3-specifications-block-diagram/
+https://discourse.coreelec.org/t/amlogic-s905x3-s905y3-s905d3-thread/4655
+https://www.manualslib.com/manual/1652119/Amlogic-S905d3.html
+https://www.cnx-software.com/2019/04/12/amlogic-s905x3-specifications-block-diagram/
+chrome-extension://oemmndcbldboiebfnladdacbdfmadadm/https://www.scs.stanford.edu/~zyedidia/docs/amlogic/s905x.pdf
+chrome-extension://oemmndcbldboiebfnladdacbdfmadadm/https://dl.khadas.com/products/vim3l/datasheet/s905d3_quick_reference_manual_06_wesion.pdf
+https://wiki.postmarketos.org/wiki/Libre_Computer_Cottonwood_(librecomputer-cottonwood)
+chrome-extension://oemmndcbldboiebfnladdacbdfmadadm/https://dn.odroid.com/S905/DataSheet/S905_Public_Datasheet_V1.1.4.pdf
+
+
+
+
+
 
 https://libre.computer/products/aml-s905x-cc/
 https://github.com/libre-computer-project
