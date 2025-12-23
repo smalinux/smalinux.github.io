@@ -2446,3 +2446,136 @@ dts/include/dt-bindings/clock/rk3562-cru.h
 Heartbeat
 
 LED_TRIGGERS
+CONFIG_LED_TRIGGERS=y
+
+
+
+===============================================================================
+net stack
+
+CONFIG_DRIVER_NET_DESIGNWARE_EQOS=y
+CONFIG_DRIVER_NET_DESIGNWARE_ROCKCHIP=y
+CONFIG_DRIVER_NET_RTL8169=y
+
+
+CONFIG_NET_USB=y
+CONFIG_NET_USB_ASIX=y
+CONFIG_USB_NET_AX88179_178A=y
+CONFIG_NET_USB_SMSC95XX=y
+CONFIG_NET_USB_RTL8152=y
+
+
+!!!!ENABLE THIS!!!!
+CONSOLE_ACTIVATE_ALL
+CONFIG_CONSOLE_ACTIVATE_ALL
+CMD_PARTED
+CMD_CREATENV
+	CONFIG_NET_FASTBOOT
+
+
+CONFIG_MOTORCOMM_PHY
+CONFIG_ROCKCHIP_PHY=y
+
+
+	User Commands
+		|
+		| (ifup, dhcp, ping, tftp)
+		|
+		v
+	+----------------------------------+
+	|        NET CORE (net/)           |
+	|  - net_receive()                 |
+	|  - net_transmit()                |
+	|  - DHCP client                   |
+	|  - TFTP client                   |
+	+----------------------------------+
+		|
+		| eth_ops: send(), recv(), open(), halt()
+		|
+		v
+	+----------------------------------+
+	|   ETHERNET DRIVER (drivers/net/) |
+	|   - designware_eqos.c            | <-- Your GMAC driver
+	|   - designware_rockchip.c        |
+	|                                  |
+	|   Functions:                     |
+	|   - eqos_probe()                 |
+	|   - eqos_start()                 |
+	|   - eqos_send()                  |
+	|   - eqos_recv()                  |
+	+----------------------------------+
+		|
+		| PHY operations: read(), write(), config(), startup()
+		|
+		v
+	+----------------------------------+
+	|   PHYLIB (drivers/net/phy/)      |
+	|   - phy_device_create()          |
+	|   - phy_connect()                |
+	|   - phy_startup()                |
+	|   - genphy_config()              |
+	+----------------------------------+
+		|
+		| Calls specific PHY driver methods
+		|
+		v
+	+----------------------------------+
+	|   PHY DRIVER (drivers/net/phy/)  |
+	|   - realtek.c                    | <-- CONFIG_REALTEK_PHY
+	|   - motorcomm.c                  | <-- CONFIG_MOTORCOMM_PHY
+	|   - micrel.c                     |
+	|   - at803x.c                     |
+	|                                  |
+	|   Functions:                     |
+	|   - rtl8211f_config()            |
+	|   - rtl8211f_startup()           |
+	+----------------------------------+
+		|
+		| MDIO bus operations: read(), write()
+		|
+		v
+	+----------------------------------+
+	|   MDIO BUS (drivers/net/phy/)    |
+	|   - mdio_bus.c                   |
+	|   - Part of MAC driver           |
+	|                                  |
+	|   Operations:                    |
+	|   - mdio_register()              |
+	|   - mdiobus_read()               |
+	|   - mdiobus_write()              |
+	+----------------------------------+
+		|
+		| Hardware register access (MII management)
+		|
+		v
+	+----------------------------------+
+	|   MAC HARDWARE REGISTERS         |
+	|   - GMAC0: 0xfe1b0000            |
+	|   - GMAC1: 0xfe1c0000            |
+	|   - MDIO registers               |
+	+----------------------------------+
+		|
+		| RGMII/RMII electrical signals
+		|
+		v
+	+----------------------------------+
+	|   PHY HARDWARE CHIP              |
+	|   - RTL8211F / YT8531 / etc      |
+	|   - MDIO address 0x1             |
+	+----------------------------------+
+		|
+		| MII/RGMII/RMII data signals
+		|
+		v
+	+----------------------------------+
+	|   ETHERNET CABLE / SWITCH        |
+	+----------------------------------+
+
+
+
+
+
+
+
+
+
