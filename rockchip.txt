@@ -2440,3 +2440,9 @@ TODO:
 
 
 dts/include/dt-bindings/clock/rk3562-cru.h
+
+
+===============================================================================
+Heartbeat
+
+LED_TRIGGERS
