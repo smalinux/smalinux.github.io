@@ -2654,3 +2654,10 @@ ifup command
                                     |
                                     └─> Read PHY status (link up/down, speed, duplex)
 
+
+ERROR: eqos-rockchip ffa80000.ethernet@ffa80000.of: Failed to get clk 'mac_clk_rx': -2
+ERROR: eqos-rockchip ffa80000.ethernet@ffa80000.of: Failed to get clks: No such file or directory
+ERROR: eqos-rockchip ffa80000.ethernet@ffa80000.of: probe failed: No such file or directory
+ERROR: eqos-rockchip ffb30000.ethernet@ffb30000.of: Failed to get clk 'mac_clk_rx': -2
+ERROR: eqos-rockchip ffb30000.ethernet@ffb30000.of: Failed to get clks: No such file or directory
+ERROR: eqos-rockchip ffb30000.ethernet@ffb30000.of: probe failed: No such file or directory
