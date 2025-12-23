@@ -2577,5 +2577,80 @@ CONFIG_ROCKCHIP_PHY=y
 
 
 
+CONFIG Dependencies:
+====================
 
+CONFIG_NET=y
+    └── CONFIG_NET_DHCP=y
+    └── CONFIG_NET_IFUP=y
+    └── CONFIG_DRIVER_NET_DESIGNWARE_EQOS=y
+            └── CONFIG_PHYLIB=y
+                    ├── CONFIG_REALTEK_PHY=y
+                    ├── CONFIG_MOTORCOMM_PHY=y (optional)
+                    ├── CONFIG_MICREL_PHY=y (optional)
+                    └── CONFIG_SMSC_PHY=y
+
+
+Function Call Chain (Network TX):
+==================================
+
+ping command
+    |
+    └─> net_ping()
+            |
+            └─> net_send_packet()
+                    |
+                    └─> eth->send()  [eth_ops]
+                            |
+                            └─> eqos_send()  [MAC driver]
+                                    |
+                                    └─> DMA descriptor setup
+                                            |
+                                            └─> Hardware transmission
+
+
+Function Call Chain (Network RX):
+==================================
+
+eth->recv()  [polling or IRQ]
+    |
+    └─> eqos_recv()  [MAC driver]
+            |
+            └─> DMA descriptor check
+                    |
+                    └─> net_receive()  [NET core]
+                            |
+                            └─> Protocol handler (IP/ARP/etc)
+
+
+PHY Link Setup Chain:
+======================
+
+ifup command
+    |
+    └─> eth_open()
+            |
+            └─> eqos_start()  [MAC driver]
+                    |
+                    ├─> phy_connect()  [PHYLIB]
+                    |       |
+                    |       └─> mdiobus_scan()
+                    |               |
+                    |               └─> phy_device_create()
+                    |                       |
+                    |                       └─> Match PHY ID to driver
+                    |                               |
+                    |                               └─> rtl8211f_driver (if Realtek)
+                    |
+                    └─> phy_startup()
+                            |
+                            ├─> phy_driver->config()
+                            |       |
+                            |       └─> rtl8211f_config()
+                            |               |
+                            |               └─> Configure PHY registers
+                            |
+                            └─> genphy_update_link()
+                                    |
+                                    └─> Read PHY status (link up/down, speed, duplex)
 
