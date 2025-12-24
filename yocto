@@ -1,0 +1,4 @@
+
+
+
+bitbake -c compile virtual/kernel -v
