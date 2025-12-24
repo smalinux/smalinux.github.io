@@ -2676,3 +2676,8 @@ Ram size:
 >rockchip-dmc: rockchip_sdram_size(reg2=1000e2c1, reg3=30000001)
 rockchip-dmc: rank 1 cs0_col 10 bk 3 cs0_row 16 bw 2 row_3_4 0
 rockchip-dmc: rk3562_ram0_size() = 2147483648
+
+
+/home/smalinux/Volume/build/tmp/work/kickpi_k3-poky-linux/rockchip-rkbin-tf-a/git/sources/rockchip-rkbin-tf-a-git/bin/rk35/rk3562_bl31_v1.22.elf
+
+

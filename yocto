@@ -6,3 +6,4 @@ bitbake linux-upstream  -v
 bitbake -e u-boot | grep "^SRC_URI="
 bitbake -c cleansstate u-boot
 
+sudo bmaptool copy yourimagename.wic /dev/sdX
