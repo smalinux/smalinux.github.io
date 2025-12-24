@@ -2472,6 +2472,12 @@ CMD_PARTED
 CMD_CREATENV
 CONFIG_NET_FASTBOOT
 CONFIG_CMD_BFETCH=y
+CONSOLE_ACTIVATE_ALL=y
+CONFIG_CONSOLE_ACTIVATE_ALL=y
+CONFIG_CMD_PARTED=y
+CONFIG_CMD_CREATENV=y
+CONFIG_CONFIG_NET_FASTBOOT=y
+CONFIG_DSA=y
 
 
 CONFIG_MOTORCOMM_PHY
@@ -2679,5 +2685,22 @@ rockchip-dmc: rk3562_ram0_size() = 2147483648
 
 
 /home/smalinux/Volume/build/tmp/work/kickpi_k3-poky-linux/rockchip-rkbin-tf-a/git/sources/rockchip-rkbin-tf-a-git/bin/rk35/rk3562_bl31_v1.22.elf
+
+-rw-r--r-- 1 smalinux smalinux 336672 Dec 24 16:37 rk3562_bl31_v1.21.elf
+-rw-r--r-- 1 smalinux smalinux 473472 Dec 24 16:37 rk3562_bl32_v1.07.bin
+-rw-r--r-- 1 smalinux smalinux  58096 Dec 24 16:37 rk3562_ddr_1056MHz_ultra_v1.06.bin
+-rw-r--r-- 1 smalinux smalinux  58064 Dec 24 16:37 rk3562_ddr_1056MHz_v1.07.bin
+-rw-r--r-- 1 smalinux smalinux  56568 Dec 24 16:37 rk3562_ddr_1332MHz_D3_LP3_eyescan_v1.07.bin
+-rw-r--r-- 1 smalinux smalinux  59208 Dec 24 16:37 rk3562_ddr_1332MHz_D4_LP4_4x_eyescan_v1.07.bin
+-rw-r--r-- 1 smalinux smalinux  58064 Dec 24 16:37 rk3562_ddr_1332MHz_v1.07.bin
+-rw-r--r-- 1 smalinux smalinux  58064 Dec 24 16:37 rk3562_ddr_1392MHz_v1.07.bin
+-rw-r--r-- 1 smalinux smalinux  58064 Dec 24 16:37 rk3562_ddr_1560MHz_v1.07.bin
+-rw-r--r-- 1 smalinux smalinux  58064 Dec 24 16:37 rk3562_ddr_920MHz_v1.07.bin
+-rw-r--r-- 1 smalinux smalinux  16936 Dec 24 16:37 rk3562_mcu_v1.00.bin
+-rw-r--r-- 1 smalinux smalinux 260464 Dec 24 16:37 rk3562_spl_v1.07.bin
+-rw-r--r-- 1 smalinux smalinux  89932 Dec 24 16:37 rk3562_usbplug_v1.04.bin
+-rw-r--r-- 1 smalinux smalinux  57632 Dec 24 16:37 rk3566_ddr_1056MHz_D3_LP3_eyescan_v1.23.bin
+-rw-r--r-- 1 smalinux smalinux  60272 Dec 24 16:37 rk3566_ddr_1056MHz_D4_LP4_4x_eyescan_v1.23.bin
+-rw-r--r-- 1 smalinux smalinux  59392 Dec 24 16:37 rk3566_ddr_1056MHz_ultra_v1.20.bin
 
 
