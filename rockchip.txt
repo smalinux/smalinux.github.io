@@ -2671,30 +2671,16 @@ create env partition:
 2-using parted:
 
 
-===============================================================================
-Ram size:
->rockchip-dmc: rockchip_sdram_size(reg2=1000e2c1, reg3=30000001)
-rockchip-dmc: rank 1 cs0_col 10 bk 3 cs0_row 16 bw 2 row_3_4 0
-rockchip-dmc: rk3562_ram0_size() = 2147483648
 
 
-/home/smalinux/Volume/build/tmp/work/kickpi_k3-poky-linux/rockchip-rkbin-tf-a/git/sources/rockchip-rkbin-tf-a-git/bin/rk35/rk3562_bl31_v1.22.elf
+-> what is NVMEM OTP and how to test it as a user?
 
--rw-r--r-- 1 smalinux smalinux 336672 Dec 24 16:37 rk3562_bl31_v1.21.elf
--rw-r--r-- 1 smalinux smalinux 473472 Dec 24 16:37 rk3562_bl32_v1.07.bin
--rw-r--r-- 1 smalinux smalinux  58096 Dec 24 16:37 rk3562_ddr_1056MHz_ultra_v1.06.bin
--rw-r--r-- 1 smalinux smalinux  58064 Dec 24 16:37 rk3562_ddr_1056MHz_v1.07.bin
--rw-r--r-- 1 smalinux smalinux  56568 Dec 24 16:37 rk3562_ddr_1332MHz_D3_LP3_eyescan_v1.07.bin
--rw-r--r-- 1 smalinux smalinux  59208 Dec 24 16:37 rk3562_ddr_1332MHz_D4_LP4_4x_eyescan_v1.07.bin
--rw-r--r-- 1 smalinux smalinux  58064 Dec 24 16:37 rk3562_ddr_1332MHz_v1.07.bin
--rw-r--r-- 1 smalinux smalinux  58064 Dec 24 16:37 rk3562_ddr_1392MHz_v1.07.bin
--rw-r--r-- 1 smalinux smalinux  58064 Dec 24 16:37 rk3562_ddr_1560MHz_v1.07.bin
--rw-r--r-- 1 smalinux smalinux  58064 Dec 24 16:37 rk3562_ddr_920MHz_v1.07.bin
--rw-r--r-- 1 smalinux smalinux  16936 Dec 24 16:37 rk3562_mcu_v1.00.bin
--rw-r--r-- 1 smalinux smalinux 260464 Dec 24 16:37 rk3562_spl_v1.07.bin
--rw-r--r-- 1 smalinux smalinux  89932 Dec 24 16:37 rk3562_usbplug_v1.04.bin
--rw-r--r-- 1 smalinux smalinux  57632 Dec 24 16:37 rk3566_ddr_1056MHz_D3_LP3_eyescan_v1.23.bin
--rw-r--r-- 1 smalinux smalinux  60272 Dec 24 16:37 rk3566_ddr_1056MHz_D4_LP4_4x_eyescan_v1.23.bin
--rw-r--r-- 1 smalinux smalinux  59392 Dec 24 16:37 rk3566_ddr_1056MHz_ultra_v1.20.bin
-
-
+	barebox@Kickpi K3 Board:/ md -s /dev/rockchip-otp0
+	00000000: 62354b52 21fe0002 344d1108 39393952                RK5b...!..M4R999
+	00000010: 00000000 07000000 1a15121f 00010804                ................
+	00000020: 00000000 00000000 02000000 00000000                ................
+	00000030: 00000000 00000000 00000000 00000000                ................
+	00000040: 00000000 057e0000 03560362 00ff0000                ......~.b.V.....
+	00000050: 00000000 00000000 00000000 00000000                ................
+	00000060: 00000000 00000000 00000000 00000000                ................
+	00000070: 00000000 00000000 00000000 00000000                ................
