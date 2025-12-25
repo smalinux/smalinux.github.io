@@ -2698,5 +2698,9 @@ Vendor change vs Linux upstream diff
 
 Linux rk3562-buildroot 5.10.160 #6 SMP Sat Dec 13 22:07:38 CET 2025 aarch64 GNU/Linux
 
+ 13497 files changed, 9244448 insertions(+), 40224 deletions(-)
+
+===========================================================================
+
 
 
