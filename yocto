@@ -48,3 +48,6 @@ D="/home/smalinux/Volume/build/tmp/work/kickpi_k3-poky-linux/rockchip-rkbin/git/
 
 /home/smalinux/Volume/build/tmp/work/kickpi_k3-poky-linux/rockchip-rkbin/git/deploy-rockchip-rkbin/tee-rk3562.bin
 
+
+
+./build/tmp/deploy/images/kickpi-k3/barebox-rk3562-kickpi-k3.img
