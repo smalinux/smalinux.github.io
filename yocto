@@ -7,3 +7,44 @@ bitbake -e u-boot | grep "^SRC_URI="
 bitbake -c cleansstate u-boot
 
 sudo bmaptool copy yourimagename.wic /dev/sdX
+
+
+
+
+$ bitbake -e rockchip-rkbin | grep "^SYSROOT_DIRS="
+SYSROOT_DIRS="     /usr/include     /usr/lib     /lib     /lib     /usr/share     /sysroot-only  /usr/share/barebox"
+
+$ bitbake -e barebox | grep "^SYSROOT_DIRS="
+SYSROOT_DIRS="     /usr/include     /usr/lib     /lib     /lib     /usr/share     /sysroot-only "
+
+---------------------------------------
+
+$ bitbake -e rockchip-rkbin | grep "^RECIPE_SYSROOT="
+RECIPE_SYSROOT="/home/smalinux/Volume/build/tmp/work/kickpi_k3-poky-linux/rockchip-rkbin/git/recipe-sysroot"
+
+$ bitbake -e barebox | grep "^RECIPE_SYSROOT="
+RECIPE_SYSROOT="/home/smalinux/Volume/build/tmp/work/kickpi_k3-poky-linux/barebox/git/recipe-sysroot"
+
+
+---------------------------------------
+
+$ bitbake -e rockchip-rkbin | grep "^S="
+S="/home/smalinux/Volume/build/tmp/work/kickpi_k3-poky-linux/rockchip-rkbin/git/sources/rockchip-rkbin-git"
+
+$ bitbake -e barebox | grep "^S="
+S="/home/smalinux/Volume/build/tmp/work/kickpi_k3-poky-linux/barebox/git/sources/barebox-git"
+--------------------------------------------------------------------
+
+$ bitbake -e rockchip-rkbin | grep "^DEPLOYDIR=" >>>>>>>>>>> yes my files is here :::::::: source
+DEPLOYDIR="/home/smalinux/Volume/build/tmp/work/kickpi_k3-poky-linux/rockchip-rkbin/git/deploy-rockchip-rkbin"
+
+$ bitbake -e barebox | grep "^DEPLOYDIR="
+DEPLOYDIR="/home/smalinux/Volume/build/tmp/work/kickpi_k3-poky-linux/barebox/git/deploy-barebox"
+
+
+-----------------------------------------------
+smalinux@88264c1e92bf:~/Volume/build$ bitbake -e rockchip-rkbin | grep "^D="
+D="/home/smalinux/Volume/build/tmp/work/kickpi_k3-poky-linux/rockchip-rkbin/git/image"
+
+/home/smalinux/Volume/build/tmp/work/kickpi_k3-poky-linux/rockchip-rkbin/git/deploy-rockchip-rkbin/tee-rk3562.bin
+
