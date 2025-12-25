@@ -54,3 +54,21 @@ D="/home/smalinux/Volume/build/tmp/work/kickpi_k3-poky-linux/rockchip-rkbin/git/
 
 >>>>>
 cf7903cf-6edd-4ffd-9b02-4337cd4a7738
+
+
+
+
+Linux kernel dev cycle in yocto:
+===========================================================
+SRCREV = "${AUTOREV}"
+bitbake -c fetch -f virtual/kernel
+bitbake -c clean virtual/kernel
+bitbake virtual/kernel
+
+
+devtool modify virtual/kernel     => workspace/sources/linux/
+devtool build virtual/kernel
+devtool deploy-target virtual/kernel <ip-of-target>
+devtool finish virtual/kernel <layer-name>
+
+
