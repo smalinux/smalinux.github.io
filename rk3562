@@ -1,0 +1,175 @@
+> Kickpi
+	rk3562-kickpi-evb.dtsi                         CPY
+	rk3562-kickpi-extend-20pin.dtsi                CPY
+	rk3562-kickpi-gmac0.dtsi                       CPY
+	rk3562-kickpi-gmac1.dtsi                       CPY
+	rk3562-kickpi-ir-pwm3.dtsi                     CPY
+	rk3562-kickpi-k3-android.dts                   NO
+	rk3562-kickpi-k3.dtsi                          NO  <<<< Important
+	rk3562-linux.dtsi NO <<< Important (I will use upstream but I will look here see what they change)
+	rk3562.dtsi NO <<< Important (I will use upstream but I will look here see what they change)
+	rk3562-kickpi-k3-linux.dts NO <<<< Important
+	rk3562j-core-ddr4-v10.dts NO
+	rk3562j.dtsi NO
+	rk3562j-electric.dtsi NO
+	rk3562-evb.dtsi NO (diff this vs upstream)
+	rk3562-kickpi-lcd-duallvds-6-1920-1080.dtsi
+	rk3562-kickpi-lcd-lvds-7-1024-600.dtsi
+	rk3562-kickpi-lcd-mipi-10.1-800-1280.dtsi
+	rk3562-kickpi-lcd-mipi-10.1-800-1280-v2.dtsi
+	rk3562-kickpi-lcd-mipi-5-720-1280.dtsi
+	rk3562-kickpi-lcd-mipi-8-800-1280.dtsi
+	rk3562-kickpi-mipi-camera0.dtsi
+	rk3562-kickpi-mipi-camera1.dtsi
+	rk3562-kickpi-pcie-m2.dtsi
+	rk3562-kickpi-usb.dtsi
+	rk3562-kickpi-wifibt.dtsi
+
+clk-rk3562.c
+rk3562-amp.dtsi
+rk3562-android.dtsi
+rk3562-dictpen-test3-v20.dts
+rk3562-evb1-cam.dtsi
+rk3562-evb1-lp4x-v10.dts
+rk3562-evb1-lp4x-v10.dtsi
+rk3562-evb1-lp4x-v10-linux-amp.dts
+rk3562-evb1-lp4x-v10-linux.dts
+rk3562-evb1-lp4x-v10-lvds.dts
+rk3562-evb1-lp4x-v10-mcu-k350c4516t.dts
+rk3562-evb1-lp4x-v10-rgb2lvds.dts
+rk3562-evb1-lp4x-v10-rgb-FX070-DHM11BOE-A.dts
+rk3562-evb1-lp4x-v10-rgb-k350c4516t.dts
+rk3562-evb1-lp4x-v10-sii9022-rgb2hdmi.dts
+rk3562-evb1-lp4x-v10-spdif.dts
+rk3562-evb2-cam.dtsi
+rk3562-evb2-ddr4-v10.dts
+rk3562-evb2-ddr4-v10.dtsi
+rk3562-evb2-ddr4-v10-dual-camera.dts
+rk3562-evb2-ddr4-v10-image-reverse.dts
+rk3562-evb2-ddr4-v10-linux.dts
+rk3562-evb2-ddr4-v10-pdm-mic-array.dts
+rk3562-evb2-ddr4-v10-sii9022-bt1120-to-hdmi.dts
+rk3562-evb2-image-reverse.dtsi
+rk3562-evb2-nvp6324.dtsi
+rk3562-iotest-lp3-v10-dsm.dts
+rk3562-iotest-lp3-v10.dts
+rk3562-iotest-lp3-v10-linux.dts
+rk3562-kickpi-evb.dtsi
+rk3562-kickpi-extend-20pin.dtsi
+rk3562-kickpi-gmac0.dtsi
+rk3562-kickpi-gmac1.dtsi
+rk3562-kickpi-ir-pwm3.dtsi
+rk3562-kickpi-k3-android.dts
+rk3562-kickpi-k3.dtsi
+rk3562-kickpi-k3-linux.dts
+rk3562-kickpi-lcd-duallvds-6-1920-1080.dtsi
+rk3562-kickpi-lcd-lvds-7-1024-600.dtsi
+rk3562-kickpi-lcd-mipi-10.1-800-1280.dtsi
+rk3562-kickpi-lcd-mipi-10.1-800-1280-v2.dtsi
+rk3562-kickpi-lcd-mipi-5-720-1280.dtsi
+rk3562-kickpi-lcd-mipi-8-800-1280.dtsi
+rk3562-kickpi-mipi-camera0.dtsi
+rk3562-kickpi-mipi-camera1.dtsi
+rk3562-kickpi-pcie-m2.dtsi
+rk3562-kickpi-usb.dtsi
+rk3562-kickpi-wifibt.dtsi
+rk3562-pinctrl.dtsi
+rk3562-rk809.dtsi
+rk3562-rk817.dtsi
+rk3562-rk817-tablet-camera.dtsi
+rk3562-rk817-tablet-v10.dts
+rk3562_robot.config
+rockchip-rk3562.h
+rk3562-power.h
+rk3562-cru.h
+
+
+===============================================================================
+
+RK809-5A
+LPDDR4/LPDDR4X 1x32bit 200P
+DDR4 2x16bit 96P (Option)
+DDR3 2x16bit 96P (Option)
+LPDDR3 1x32bit 178P (Option)
+eMMC5.1
+SPI Flash (Option)
+Micro SD Card3.0
+1 x USB3.0 OTG + 1 x USB2.0 HOST
+1 x PCIe x1 slot
+1 x Mini PCIe x1 slot with 4G Function
+2 x 4Lanes MIPI CSI Camera(Max 13M)
+or up to max 4 x 2Lanes MIPI CSI Camera
+1 x HDMI1.4 RX(RK628D, HDMI to MIPI CSI, Option)
+1 x MIPI DSI Panel
+1 x LVDS Panel(Option)
+1 x RGB Panel(Option)
+Touch Panel
+a/b/g/n/ac 1x1 SDIO WIFI + UART BT
+a/b/g/n/ac 2x2 SDIO WIFI + UART BT(Option)
+a/b/g/n/ac/ax 2x2 PCIe WIFI + UART BT(Option)
+1 x 10/100/1000M Ethernet(RGMII+RK631)
+1 x 10/100 Ethernet(RMII+FEPHY, Option)
+1 x 10/100/1000M Ethernet(PCIe GEPHY, Option)
+Headphone output and Speaker out(1.3W@8ohm)
+Stereo External Power Amplifier
+Microphone Array & Loopback
+Optical or Coaxial S/PDIF TX
+Sensor: Gyroscope + Accelerometer + Hall + Ambient & Proximity + M sensor
+IR Receiver
+Array Key(MENU,VOL+,VOL-,ESC) + RESET KEY + PWRON KEY
+SARADC
+Debug UART
+
+00.Cover Page
+01.Index and Notes
+02.Revision History
+03.Block Diagram
+04.Power Diagram
+05.Power Sequence and Map
+06.Reset/Clock Map
+07.I2C/UART/I2S Map
+08.USB/PCIe/HSIO Map
+10.RK3562_Power/GND
+11.RK3562_DDR PHY
+13.RK3562_VCCIO1/Audio
+12.RK3562_PMUIO/OSC/PLL
+15.RK3562_VCCIO4/SARADC
+14.RK3562_VCCIO2/VCCIO3/Flash
+16.RK3562_VCCIO5/VI Interface
+17.RK3562_VCCIO6/VO Interface
+18.RK3562_USB/PCIe PHY
+20.Power_DC IN
+21.Power(RK809-5A)_1_PMIC
+25.USB-Port_OTG0
+22.Power(RK809-5A)_2_Extension
+26.USB-Port_HOST1
+30.DRAM-DDR3_96P_2x16bit
+30.DRAM-DDR4_96P_2x16bit
+30.DRAM-LPDDR3_178P_1x32bit
+30.DRAM-LPDDR4X_200P_1X32bit
+40.Flash-eMMC
+42.Flash-MicroSD_Card
+43.Flash-SPI_Flash(option)
+45.VI-Camera_MIPI-CSI0(Single)
+46.VI-Camera_MIPI-CSI1(Single)
+47.VI-Camera_MIPI-CSI0(Dual.op)
+48.VI-Camera_MIPI-CSI1(Dual.op)
+49.VI-HDMI1.4_RX(toMIPICSI.op)
+50.VO-LCM_MIPI
+51.VO-LCM_LVDS(option)
+52.VO-LCM_RGB(option)
+63.WIFI/BT-PCIe_2T2R+UART(option)
+61.WIFI/BT-SDIO_1T1R+UART
+62.WIFI/BT-SDIO_2T2R+UART(option)
+59.TP_Connector-COF(I2C)
+67.Ethernet-FEPHY_RMII(option)
+68.Ethernet-GEPHY_RK631
+69.Ethernet-PCIe_PHY(option)
+70.Audio-HP/1MIC/1SPK
+72.Audio-MicArray(option)
+71.Audio-HP/1MIC/1SPK/1LOOP
+73.Audio-2SPK/2LOOP(option)
+75.Audio-S/PDIF_TX_Port(option)
+85.PCIe-Mini Card(option)
+86.PCIe-PCIe2.0_RC_1x1Lane
+90.Sensors/IR
