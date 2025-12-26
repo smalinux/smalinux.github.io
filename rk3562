@@ -1,4 +1,5 @@
 > Kickpi
+	rk3562-kickpi-k3.dtsi                        | CPY
 	rk3562-kickpi-evb.dtsi                       | CPY
 	rk3562-kickpi-extend-20pin.dtsi              | CPY
 	rk3562-kickpi-gmac0.dtsi                     | CPY
@@ -7,8 +8,6 @@
 	rk3562-kickpi-pcie-m2.dtsi                   | CPY
 	rk3562-kickpi-usb.dtsi                       | CPY
 	rk3562-kickpi-wifibt.dtsi                    | CPY
-	rk3562-kickpi-k3.dtsi                        | NO <<<< Important
-	rk3562-linux.dtsi                            | NO <<< Important (I will use upstream but I will look here see what they change)
 	rk3562.dtsi                                  | NO <<< Important (I will use upstream but I will look here see what they change)
 	rk3562-kickpi-k3-linux.dts                   | NO <<<< Important
 	rk3562-kickpi-lcd-duallvds-6-1920-1080.dtsi  | NO LCD
@@ -28,6 +27,7 @@
 	rk3562j.dtsi                                 | NO
 	rk3562j-electric.dtsi                        | NO
 	rk3562-amp.dtsi                              | NO  <<< This compatible not exist in linux at all
+	rk3562-linux.dtsi                            | NO
 
 
 
