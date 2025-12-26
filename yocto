@@ -64,7 +64,7 @@ Linux kernel dev cycle in yocto:
 SRCREV = "${AUTOREV}"
 bitbake -c fetch -f virtual/kernel
 bitbake -c clean virtual/kernel
-bitbake virtual/kernel
+bitbake virtual/kernel -v
 
 
 devtool modify virtual/kernel     => workspace/sources/linux/
