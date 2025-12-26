@@ -73,3 +73,30 @@ devtool deploy-target virtual/kernel <ip-of-target>
 devtool finish virtual/kernel <layer-name>
 
 
+
+make: Leaving directory '/home/smalinux/Volume/build/tmp/work/kickpi_k3-poky-linux/barebox/git/sources/barebox-git'
+
++ [ -f /home/smalinux/Volume/build/tmp/work/kickpi_k3-poky-linux/barebox/git/defconfig ]
+
+WARNING: barebox-git-r0 do_configure: Custom defconfig missing at /home/smalinux/Volume/build/tmp/work/kickpi_k3-poky-linux/barebox/git/defconfig
++ bbwarn Custom defconfig missing at /home/smalinux/Volume/build/tmp/work/kickpi_k3-poky-linux/barebox/git/defconfig
++ [ -p /home/smalinux/Volume/build/tmp/work/kickpi_k3-poky-linux/barebox/git/temp/fifo.18799 ]
++ printf %b\0 bbwarn Custom defconfig missing at /home/smalinux/Volume/build/tmp/work/kickpi_k3-poky-linux/barebox/git/defconfig
++ ls -la /home/smalinux/Volume/build/tmp/work/kickpi_k3-poky-linux/barebox/git/
+
+total 56
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
