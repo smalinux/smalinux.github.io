@@ -100,7 +100,7 @@ Ubuntu@scripts $ ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- ./decode_stacktrace
 (memcpy+0x25/0x38) from net_receive (/src/barebox/net/net.c:129 /src/barebox/net/net.c:619 /src/barebox/net/net.c:820)
 
 
-4. Fatoum mentioned: 
+4. Fatoum mentioned:
   smoltcp -> written by Rust
   -> study Rust in future
 
@@ -119,3 +119,13 @@ $ cat allow_color
 
 You can put here all your amazing vars, at compile time. you don't need them at runtime like U-boot, this is not safe.
 You should not give end users a tool to change env vars at runtime...
+
+
+
+
+
+===============================================================================
+How to debug as a professional
+ls /dev ; dmesg
+devinfo mmc1
+devinfo device tree device for mmc1
