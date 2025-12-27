@@ -9,7 +9,7 @@
 	rk3562-kickpi-usb.dtsi                       | CPY
 	rk3562-kickpi-wifibt.dtsi                    | CPY
 	rk3562.dtsi                                  | NO <<< Important (I will use upstream but I will look here see what they change)
-	rk3562-kickpi-k3-linux.dts                   | NO <<<< Important
+	rk3562-kickpi-k3-linux.dts                   | DONE
 	rk3562-kickpi-lcd-duallvds-6-1920-1080.dtsi  | NO LCD
 	rk3562-kickpi-lcd-lvds-7-1024-600.dtsi       | NO LCD
 	rk3562-kickpi-lcd-mipi-10.1-800-1280.dtsi    | NO LCD
