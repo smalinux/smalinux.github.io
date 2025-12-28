@@ -396,3 +396,37 @@ eth0: 1000Mbps full d
 Disk analysis
 $ sudo apt install baobab
 $ baobab
+
+
+
+
+
+> keyboard layout - Dvorak
+	https://github.com/benvallack/34-QMK-Ferris-Sweep
+	https://configure.zsa.io/moonlander/layouts/VYNpM/QpOoV/2
+	https://www.youtube.com/watch?v=DKQ4pOoFh5I
+	https://www.youtube.com/results?search_query=programming+type+speed
+	https://www.jwon.me/programmers-dvorak/
+	https://stackoverflow.com/questions/4264853/thinking-of-switching-to-programmer-dvorak-layout
+
+	https://firefly.3ric.ca/Chrishuntr/vial-qmk/-/blob/bd702ab6422eaf290b11cfa27337f73c9bdfb232/keyboards/kinesis/keymaps/jwon/readme.md
+	https://gitlab.computer.surgery/charles/qmk_firmware/-/tree/master/keyboards/kinesis/keymaps/jwon
+	https://github.com/renerocksai/real-prog-qwerty?tab=readme-ov-file
+	https://keymapdb.com/keymaps/jwon/
+
+
+
+> MIPI DSI - (some sort of touch screen)
+	> https://www.raypcb.com/mipi-dsi/
+	>
+
+> Backporting linux
+	> https://blogs.oracle.com/linux/backporting-patches-using-git
+	> https://www.crowdstrike.com/en-us/cybersecurity-101/exposure-management/backporting/
+	> https://docs.kernel.org/process/backporting.html
+	> https://www.youtube.com/watch?v=sBR7R1V2FeA
+	> https://github.com/microchip-ais/mld-backports
+	>
+
+
+> writing ai agent
