@@ -69,3 +69,43 @@ The S905D3 is an SM1 SoC (part of G12 family), so you need to use the boot-g12.p
 USB Boot
 $ lsusb | grep 1d6b:0104
 
+
+
+
+===============================================================================
+default env (MAC address)
+=> printenv
+arch=arm
+baudrate=115200
+board=aml-s905d3-cc
+board_name=aml-s905d3-cc
+boot_source=spi
+boot_targets=mmc0 mmc1 usb spi
+bootcmd=bootflow scan -lb
+bootdelay=1
+bootdevice=0
+cpu=armv8
+ethaddr=e2:ef:4b:d6:21:e5
+fdt_addr_r=0x08008000
+fdtcontroladdr=eae98c00
+fdtfile=amlogic/meson-sm1-s905d3-libretech-cc.dtb
+fdtoverlay_addr_r=0x01000000
+kernel_addr_r=0x08080000
+kernel_comp_addr_r=0x0d080000
+kernel_comp_size=0x2000000
+loadaddr=0x1000000
+preboot=usb start
+pxefile_addr_r=0x01080000
+ramdisk_addr_r=0x13000000
+scriptaddr=0x08000000
+soc=meson
+splashdevpart=0
+splashfile=boot.bmp
+splashimage=0x1000000
+splashpos=m,m
+splashsource=mmc_fs
+stderr=vidconsole,serial
+stdin=usbkbd,serial
+stdout=vidconsole,serial
+vendor=libre-computer
+ver=U-Boot 2023.07+ (Sep 20 2023 - 03:58:15 -0400) Libre Computer AML-S905D3-CC
