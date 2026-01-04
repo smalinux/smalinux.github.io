@@ -109,3 +109,28 @@ stdin=usbkbd,serial
 stdout=vidconsole,serial
 vendor=libre-computer
 ver=U-Boot 2023.07+ (Sep 20 2023 - 03:58:15 -0400) Libre Computer AML-S905D3-CC
+
+
+Boot sequance
+
+$ vendor/amlogic/blx/aml_encrypt_g12a --bootmk --output u-boot/u-boot-amlogic.bin
+	--bl2 vendor/amlogic/blx/aml-s905d3-cc/bl2.n.bin.sig
+	--bl30 vendor/amlogic/blx/aml-s905d3-cc/bl30_new.bin.enc
+	--bl31 vendor/amlogic/blx/aml-s905d3-cc/bl31.img.enc
+	--bl33 u-boot/u-boot.bin.enc
+	--ddrfw1 vendor/amlogic/blx/init/g12a/piei.fw
+	--ddrfw2 vendor/amlogic/blx/init/g12a/lpddr4_1d.fw
+	--ddrfw3 vendor/amlogic/blx/init/g12a/lpddr4_2d.fw
+	--ddrfw4 vendor/amlogic/blx/init/g12a/aml_ddr.fw
+	--level v3
+
+$ dd if=u-boot/u-boot-amlogic.bin of=out/aml-s905d3-cc.usb.bl2 bs=49152 count=1
+$ dd if=u-boot/u-boot-amlogic.bin of=out/aml-s905d3-cc.usb.tpl bs=1
+$ cp u-boot/u-boot-amlogic.bin out/aml-s905d3-cc
+
+$ cp u-boot/.config out/aml-s905d3-cc.config
+$ cp u-boot/u-boot.dtb out/aml-s905d3-cc.dtb
+$ dtc -I dtb -O dts u-boot/u-boot.dtb -o out/aml-s905d3-cc.dts
+
+# Deploy via usb
+$ sudo /home/smalinux/.local/bin/boot-g12.py ./external/libretech-builder-simple/out/aml-s905d3-cc.usb.tpl
