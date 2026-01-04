@@ -241,8 +241,8 @@ rockchip
 	compatible = "snps,dw-apb-uart",
 bbb
 	compatible = "ti,am3352-uart";
-
-
+stm32
+	compatible = "st,stm32h7-uart";
 
 ===============================================================================
 ((( dts )))
