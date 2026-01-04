@@ -134,3 +134,73 @@ $ dtc -I dtb -O dts u-boot/u-boot.dtb -o out/aml-s905d3-cc.dts
 
 # Deploy via usb
 $ sudo /home/smalinux/.local/bin/boot-g12.py ./external/libretech-builder-simple/out/aml-s905d3-cc.usb.tpl
+
+
+
+
+>>>
+>>> Amlogic Boot Chain Architecture <<<
+>>>
+
+┌─────────────────────────────────────────────────────────────────────┐
+│                    BOOT ROM (SoC Internal)                          │
+│                     First Stage (BL1)                               │
+└──────────────────────────┬──────────────────────────────────────────┘
+                           │
+                           ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│  BL2 (Boot Loader 2) - Second Stage                                 │
+│  ┌───────────────────────────────────────────────────────────┐      │
+│  │  bl2_new.bin  ────► bl2.n.bin.sig (signed)                │      │
+│  │  • DRAM initialization setup                              │      │
+│  │  • Loads DDR firmware                                     │      │
+│  └───────────────────────────────────────────────────────────┘      │
+│                                                                     │
+│  DDR Firmware (loaded by BL2):                                      │
+│  ├─ piei.fw         (DDR training - PIE)                            │
+│  ├─ lpddr4_1d.fw    (1D training for LPDDR4)                        │
+│  ├─ lpddr4_2d.fw    (2D training for LPDDR4)                        │
+│  └─ aml_ddr.fw      (Amlogic DDR controller config)                 │
+└──────────────────────────┬──────────────────────────────────────────┘
+                           │
+                           ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│  BL30 (Power Management - SCP Firmware)                             │
+│  ┌───────────────────────────────────────────────────────────┐      │
+│  │  bl30_new.bin  ────► bl30_new.bin.g12.enc (1st encrypt)   │      │
+│  │                 ────► bl30_new.bin.enc (2nd sign)         │      │
+│  │  • Runs on ARM Cortex-M3/M4 (SCP)                         │      │
+│  │  • Power domain management                                │      │
+│  │  • Clock management                                       │      │
+│  │  • Thermal management                                     │      │
+│  └───────────────────────────────────────────────────────────┘      │
+└──────────────────────────┬──────────────────────────────────────────┘
+                           │
+                           ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│  BL31 (ARM Trusted Firmware - EL3 Runtime)                          │
+│  ┌───────────────────────────────────────────────────────────┐      │
+│  │  bl31.img  ────► bl31.img.enc (signed)                    │      │
+│  │  • Runs in EL3 (highest ARM privilege level)              │      │
+│  │  • Secure Monitor Call (SMC) handler                      │      │
+│  │  • PSCI (Power State Coordination Interface)              │      │
+│  │  • Secure world services                                  │      │
+│  └───────────────────────────────────────────────────────────┘      │
+└──────────────────────────┬──────────────────────────────────────────┘
+                           │
+                           ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│  BL33 (U-Boot - Non-Secure Bootloader)                              │
+│  ┌───────────────────────────────────────────────────────────┐      │
+│  │  u-boot.bin  ────► u-boot.bin.enc (signed + LZ4 compress) │      │
+│  │  • Runs in EL2/EL1 (non-secure world)                     │      │
+│  │  • Hardware initialization                                │      │
+│  │  • Loads Linux kernel                                     │      │
+│  │  • Boot menu / environment                                │      │
+│  └───────────────────────────────────────────────────────────┘      │
+└──────────────────────────┬──────────────────────────────────────────┘
+                           │
+                           ▼
+                    ┌────────────────┐
+                    │  Linux Kernel  │
+                    └────────────────┘
