@@ -237,6 +237,12 @@ cp /src/amlogic/external/uboot/out/aml-s905d3-cc.dtb /tftpboot/
 serial@3000 {
 	compatible = "amlogic,meson-g12a-uart\0amlogic,meson-gx-uart\0amlogic,meson-ao-uart";
 
+rockchip
+	compatible = "snps,dw-apb-uart",
+bbb
+	compatible = "ti,am3352-uart";
+
+
 
 ===============================================================================
 ((( dts )))
@@ -244,3 +250,7 @@ Ubuntu@linux-amlogic $ pwd
 /src/linux-amlogic
 Ubuntu@linux-amlogic $ rg --files .  | rg dts | rg aml
 
+
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+draft
