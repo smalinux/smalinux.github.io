@@ -233,6 +233,9 @@ cp /src/amlogic/external/uboot/out/aml-s905d3-cc.dtb /tftpboot/
 ((( dts full )))
 
 /src/amlogic/external/uboot/out/aml-s905d3-cc.dts
+# aml-s905d3-cc_defconfig
+Uboot
+/src/amlogic/external/uboot/u-boot/board/libre-computer/aml-s905d3-cc/*
 
 
 
