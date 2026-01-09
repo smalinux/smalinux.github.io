@@ -1,4 +1,16 @@
-Where is the reference manual?!
+=> Where is the reference manual?!
+=> Uboot
+=> default env (MAC address)
+=> tfpt load barebox fit image
+=> dts full
+=> Amlogic Boot Chain Architecture <<<
+=> first log of barebox-dt-2nd.img boot without any modifications in: arch/arm/cpu/board-dt-2nd.c
+=> Assembly debugging
+=> Step 2: porting UART serial driver
+
+
+
+=> Where is the reference manual?!
 =======================
 http://www.jerstvbox.com/amlogic-s905x3-specifications-block-diagram/
 https://discourse.coreelec.org/t/amlogic-s905x3-s905y3-s905d3-thread/4655
@@ -59,7 +71,7 @@ https://hub.libre.computer/t/libre-computer-board-performance-test-data-and-powe
 
 
 ===============================================================================
-Uboot
+=> Uboot
 
 https://docs.u-boot.org/en/latest/board/amlogic/boot-flow.html
 
@@ -73,7 +85,8 @@ $ lsusb | grep 1d6b:0104
 
 
 ===============================================================================
-default env (MAC address)
+=> default env (MAC address)
+
 => printenv
 arch=arm
 baudrate=115200
@@ -139,9 +152,7 @@ $ sudo /home/smalinux/.local/bin/boot-g12.py ./external/libretech-builder-simple
 
 
 ===============================================================================
->>>
->>> Amlogic Boot Chain Architecture <<<
->>>
+=> Amlogic Boot Chain Architecture <<<
 
 ┌─────────────────────────────────────────────────────────────────────┐
 │                    BOOT ROM (SoC Internal)                          │
@@ -208,7 +219,7 @@ $ sudo /home/smalinux/.local/bin/boot-g12.py ./external/libretech-builder-simple
 
 
 ===============================================================================
-((( tfpt load barebox fit image )))
+=> tfpt load barebox fit image
 
 setenv fdt_addr_r    0x01000000; setenv kernel_addr_r 0x01080000;
 setenv bootargs "console=ttyAML0,115200 earlycon debug loglevel=8 earlyprintk"
@@ -236,7 +247,7 @@ cp /src/amlogic/external/uboot/out/aml-s905d3-cc.dtb /tftpboot/
 
 
 ===============================================================================
-((( dts full )))
+=> dts full
 
 /src/amlogic/external/uboot/out/aml-s905d3-cc.dts
 # aml-s905d3-cc_defconfig
@@ -246,21 +257,6 @@ Uboot
 
 
 
-===============================================================================
-((( UART serial driver )))
-
-serial@3000 {
-	compatible = "amlogic,meson-g12a-uart\0amlogic,meson-gx-uart\0amlogic,meson-ao-uart";
-
-rockchip
-	compatible = "snps,dw-apb-uart",
-bbb
-	compatible = "ti,am3352-uart";
-stm32
-	compatible = "st,stm32h7-uart";
-
-===============================================================================
-((( dts )))
 Ubuntu@linux-amlogic $ pwd
 /src/linux-amlogic
 Ubuntu@linux-amlogic $ rg --files .  | rg dts | rg aml
@@ -268,8 +264,7 @@ Ubuntu@linux-amlogic $ rg --files .  | rg dts | rg aml
 
 
 ===============================================================================
-START_LOG: this log for first try to boot barebox-dt-2nd.img without any
-modifications in: arch/arm/cpu/board-dt-2nd.c
+=> first log of barebox-dt-2nd.img boot without any modifications in: arch/arm/cpu/board-dt-2nd.c
 
 => tftp $kernel_addr_r barebox-dt-2nd.img; tftp $fdt_addr_r aml-s905d3-cc.dtb; booti $kernel_addr_r - $fdt_addr_r
 Speed: 1000, full duplex
@@ -325,21 +320,39 @@ Resetting CPU ...
 resetting ...
 SM1:BL:511f6b:81ca2f;FEAT:A0F83180:20282000;POC:9;RCY:0;USB:0;
 
-END_LOG
 ===============================================================================
+
+=> Assembly debugging
 
 This is how I know step by step how barebox executes ^_^
 
 aarch64-linux-gnu-objdump -dS start_dt_2nd.pbl > /src/smalinux.github.io/start_dt_2nd.pbl
 
 
+
+
+
+
+
+
 ===============================================================================
+=> Step 2: porting UART serial driver
 
 
+references:
+	dts/Bindings/serial/amlogic,meson-uart.yaml
+	https://github.com/u-boot/u-boot/blob/master/drivers/serial/serial_meson.c
 
 
+serial@3000 {
+	compatible = "amlogic,meson-g12a-uart\0amlogic,meson-gx-uart\0amlogic,meson-ao-uart";
 
-
+rockchip
+	compatible = "snps,dw-apb-uart",
+bbb
+	compatible = "ti,am3352-uart";
+stm32
+	compatible = "st,stm32h7-uart";
 
 
 
