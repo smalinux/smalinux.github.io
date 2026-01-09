@@ -342,6 +342,9 @@ aarch64-linux-gnu-objdump -dS start_dt_2nd.pbl > /src/smalinux.github.io/start_d
 references:
 	dts/Bindings/serial/amlogic,meson-uart.yaml
 	https://github.com/u-boot/u-boot/blob/master/drivers/serial/serial_meson.c
+	https://github.com/u-boot/u-boot/blob/master/drivers/serial/serial_stm32.c
+
+	https://github.com/torvalds/linux/blob/master/drivers/tty/serial/meson_uart.c
 
 
 serial@3000 {
@@ -355,6 +358,8 @@ stm32
 	compatible = "st,stm32h7-uart";
 
 
+
+dhcp; ping 8.8.8.8; setenv serverip 192.168.0.134;tftp $kernel_addr_r barebox-dt-2nd.img;tftp $fdt_addr_r aml-s905d3-cc.dtb;booti $kernel_addr_r - $fdt_addr_r
 
 
 
