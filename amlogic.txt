@@ -359,7 +359,12 @@ stm32
 
 
 
+setenv bootargs "console=ttyAML0,115200 earlycon debug loglevel=8 earlyprintk"
 dhcp; ping 8.8.8.8; setenv serverip 192.168.0.134;tftp $kernel_addr_r barebox-dt-2nd.img;tftp $fdt_addr_r aml-s905d3-cc.dtb;booti $kernel_addr_r - $fdt_addr_r
+
+closed from menuconfig:
+	DRIVER_SERIAL_CADENCE
+	and all other serial drivers...
 
 
 
