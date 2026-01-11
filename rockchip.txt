@@ -2703,4 +2703,5 @@ Linux rk3562-buildroot 5.10.160 #6 SMP Sat Dec 13 22:07:38 CET 2025 aarch64 GNU/
 ===========================================================================
 
 
+=> code review: https://github.com/a3f/barebox/pull/2
 
