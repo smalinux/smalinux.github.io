@@ -2705,3 +2705,15 @@ Linux rk3562-buildroot 5.10.160 #6 SMP Sat Dec 13 22:07:38 CET 2025 aarch64 GNU/
 
 => code review: https://github.com/a3f/barebox/pull/2
 
+
+
+
+fastboot
+===========================================================================
+
+on target:
+usbgadget -A '/tmp/img(img)c'
+
+Host:
+sudo fastboot flash img build/images/barebox-rk3562-kickpi-k3.img
+
