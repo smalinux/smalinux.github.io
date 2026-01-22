@@ -346,6 +346,14 @@ references:
 
 	https://github.com/torvalds/linux/blob/master/drivers/tty/serial/meson_uart.c
 
+	https://www.barebox.org/doc/latest/devel/porting.html
+	https://www.barebox.org/doc/latest/devel/troubleshooting.html
+	https://lore.barebox.org/barebox/20230803105003.4088205-8-s.hauer@pengutronix.de/
+	https://lore.barebox.org/barebox/20250113-k3-r5-v3-0-065fcdcc28d3@pengutronix.de/
+	https://lore.barebox.org/barebox/20181128112053.6027-1-m.tretter@pengutronix.de/
+	https://github.com/u-boot/u-boot/blob/master/drivers/serial/serial_stm32.c
+	https://github.com/torvalds/linux/blob/master/drivers/tty/serial/meson_uart.c
+
 
 serial@3000 {
 	compatible = "amlogic,meson-g12a-uart\0amlogic,meson-gx-uart\0amlogic,meson-ao-uart";
