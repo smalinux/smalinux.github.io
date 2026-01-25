@@ -1,0 +1,10 @@
+
+
+brave://version/
+chrome://version/
+	   Profile Path	/home/smalinux/.config/BraveSoftware/Brave-Browser/Default
+
+Get Extensions source code:
+$ cd
+/home/smalinux/.config/BraveSoftware/Brave-Browser/Default/Extensions/<ID>
+
