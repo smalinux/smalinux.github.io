@@ -1,0 +1,4 @@
+
+
+search about "keyword" inside a file and delete not matches
+:v/keyword/d
