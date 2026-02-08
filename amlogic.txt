@@ -1,12 +1,13 @@
 => Where is the reference manual?!
 => Uboot
-=> default env (MAC address)
-=> tfpt load barebox fit image
-=> dts full
-=> Amlogic Boot Chain Architecture <<<
-=> first log of barebox-dt-2nd.img boot without any modifications in: arch/arm/cpu/board-dt-2nd.c
-=> Assembly debugging
-=> Step 2: porting UART serial driver
+SMA: default env (MAC address)
+SMA: tfpt load barebox fit image
+SMA: dts full
+SMA: Amlogic Boot Chain Architecture <<<
+SMA: first log of barebox-dt-2nd.img boot without any modifications in: arch/arm/cpu/board-dt-2nd.c
+SMA: Assembly debugging
+SMA: Step 2: porting UART serial driver
+SMA: Porting Clock driver - 8 Feb 2026
 
 
 
@@ -85,7 +86,7 @@ $ lsusb | grep 1d6b:0104
 
 
 ===============================================================================
-=> default env (MAC address)
+SMA: default env (MAC address)
 
 => printenv
 arch=arm
@@ -152,7 +153,7 @@ $ sudo /home/smalinux/.local/bin/boot-g12.py ./external/libretech-builder-simple
 
 
 ===============================================================================
-=> Amlogic Boot Chain Architecture <<<
+SMA: Amlogic Boot Chain Architecture <<<
 
 ┌─────────────────────────────────────────────────────────────────────┐
 │                    BOOT ROM (SoC Internal)                          │
@@ -219,7 +220,7 @@ $ sudo /home/smalinux/.local/bin/boot-g12.py ./external/libretech-builder-simple
 
 
 ===============================================================================
-=> tfpt load barebox fit image
+SMA: tfpt load barebox fit image
 
 setenv fdt_addr_r    0x01000000; setenv kernel_addr_r 0x01080000;
 setenv bootargs "console=ttyAML0,115200 earlycon debug loglevel=8 earlyprintk"
@@ -254,7 +255,7 @@ cp /src/amlogic/external/uboot/out/aml-s905d3-cc.dtb /tftpboot/
 
 
 ===============================================================================
-=> dts full
+SMA: dts full
 
 /src/amlogic/external/uboot/out/aml-s905d3-cc.dts
 # aml-s905d3-cc_defconfig
@@ -271,7 +272,7 @@ Ubuntu@linux-amlogic $ rg --files .  | rg dts | rg aml
 
 
 ===============================================================================
-=> first log of barebox-dt-2nd.img boot without any modifications in: arch/arm/cpu/board-dt-2nd.c
+SMA: first log of barebox-dt-2nd.img boot without any modifications in: arch/arm/cpu/board-dt-2nd.c
 
 => tftp $kernel_addr_r barebox-dt-2nd.img; tftp $fdt_addr_r aml-s905d3-cc.dtb; booti $kernel_addr_r - $fdt_addr_r
 Speed: 1000, full duplex
@@ -329,7 +330,7 @@ SM1:BL:511f6b:81ca2f;FEAT:A0F83180:20282000;POC:9;RCY:0;USB:0;
 
 ===============================================================================
 
-=> Assembly debugging
+SMA: Assembly debugging
 
 This is how I know step by step how barebox executes ^_^
 
@@ -343,7 +344,7 @@ aarch64-linux-gnu-objdump -dS start_dt_2nd.pbl > /src/smalinux.github.io/start_d
 
 
 ===============================================================================
-=> Step 2: porting UART serial driver
+SMA: Step 2: porting UART serial driver
 
 
 references:
@@ -387,3 +388,5 @@ closed from menuconfig:
 
 
 
+===============================================================================
+SMA: Porting Clock driver - 8 Feb 2026
