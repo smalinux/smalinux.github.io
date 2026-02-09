@@ -1,5 +1,5 @@
-=> Where is the reference manual?!
-=> Uboot
+SMA: Where is the reference manual?!
+SMA: Uboot
 SMA: default env (MAC address)
 SMA: tfpt load barebox fit image
 SMA: dts full
@@ -11,7 +11,7 @@ SMA: Porting Clock driver - 8 Feb 2026
 
 
 
-=> Where is the reference manual?!
+SMA: Where is the reference manual?!
 =======================
 http://www.jerstvbox.com/amlogic-s905x3-specifications-block-diagram/
 https://discourse.coreelec.org/t/amlogic-s905x3-s905y3-s905d3-thread/4655
@@ -72,7 +72,7 @@ https://hub.libre.computer/t/libre-computer-board-performance-test-data-and-powe
 
 
 ===============================================================================
-=> Uboot
+SMA: Uboot
 
 https://docs.u-boot.org/en/latest/board/amlogic/boot-flow.html
 
@@ -388,5 +388,41 @@ closed from menuconfig:
 
 
 
-===============================================================================
 SMA: Porting Clock driver - 8 Feb 2026
+===============================================================================
+
+> my device trees:
+	dts/src/arm/amlogic/meson.dtsi
+	dts/src/arm64/amlogic/meson-sm1-s905d3-libretech-cc.dts
+
+> uboot def configs:
+	configs/aml-s905d3-cc_defconfig
+	configs/aml-s905d3-cc_spi_defconfig
+
+
+> Barebox commands:
+	clear              clk_disable        clk_dump           clk_enable
+	clk_get_rate       clk_round_rate     clk_set_parent     clk_set_rate
+
+> Linux upstream: clk file:
+	Ubuntu@linux $ f clk | rg meson
+	Ubuntu@linux $ f pinctrl | rg meson
+	Ubuntu@linux $ rg s905d3
+	drivers/pinctrl/meson/pinctrl-meson-g12a.c
+	drivers/soc/amlogic/meson-clk-measure.c
+	drivers/clk/meson/g12a.c
+
+>>> Moment of truth <<<
+
+	#include <dt-bindings/clock/g12a-clkc.h>
+	Ubuntu@linux $ rg g12a-clkc.h <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+	drivers/clk/meson/g12a.c
+
+
+
+dump:
+
+#include <dt-bindings/clock/g12a-clkc.h>
+#include "meson-sm1.dtsi"
+#include "meson-libretech-cottonwood.dtsi"
+
