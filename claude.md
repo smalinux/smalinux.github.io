@@ -66,3 +66,12 @@ Tips & Tricks
 /resume		to continue from one of saved conversation
 
 
+
+
+
+
+===============================================================================
+search about skills
+	$ npx skills find
+
+
