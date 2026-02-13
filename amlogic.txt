@@ -434,6 +434,15 @@ Interfaces
 devm_reset_controller_register -> reset_controller_register
 devm_platform_get_and_ioremap_resource -> dev_platform_get_and_ioremap_resource
 devm_regmap_init_mmio -> regmap_init_mmio
+clk_hw_get_dev ->
+
+
+
+
+
+
+clk has providers & consumers - these - for consumers (called by normal drivers) -example clk_get();
+	drivers/clk/lookup_clkdev.c
 
 
 
