@@ -426,3 +426,14 @@ dump:
 #include "meson-sm1.dtsi"
 #include "meson-libretech-cottonwood.dtsi"
 
+
+
+Interfaces
+---------------------
+
+devm_reset_controller_register -> reset_controller_register
+
+
+
+
+
