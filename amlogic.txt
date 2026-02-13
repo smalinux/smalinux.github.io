@@ -447,3 +447,13 @@ clk has providers & consumers - these - for consumers (called by normal drivers)
 
 
 
+struct clk_hw
+              -> struct clk_core
+                                 -> struct dev
+
+
+
+clk_hw_create_clk -> clk.c : consumers
+
+
+
