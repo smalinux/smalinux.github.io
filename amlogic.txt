@@ -25,6 +25,8 @@ chrome-extension://oemmndcbldboiebfnladdacbdfmadadm/https://dn.odroid.com/S905/D
 
 
 
+https://github.com/libre-computer-project/libretech-u-boot/blob/v2025.07/lc-master/doc/board/amlogic/aml-s905d3-cc.rst
+https://github.com/smalinux/libretech-builder-simple
 
 
 https://libre.computer/products/aml-s905x-cc/
