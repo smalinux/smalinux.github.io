@@ -482,6 +482,8 @@ devm_platform_get_and_ioremap_resource -> dev_platform_get_and_ioremap_resource
 divider_round_rate();		->
 devm_regmap_init_mmio		-> regmap_init_mmio
 
+clk_hw_get_dev				-> impl by me
+
 
 
 look into barebox: clk_stm32_divider_round_rate
