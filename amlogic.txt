@@ -477,9 +477,15 @@ include/linux/mfd/syscon.h  -> include/mfd/syscon.h
 #include <linux/init.h>		-> #include <init.h>
 EXPORT_SYMBOL_NS_GPL		-> EXPORT_SYMBOL_GPL
 .determine_rate				-> .round_rate
-
-
+devm_clk_hw_get_clk			-> clk_hw_to_clk
+devm_platform_get_and_ioremap_resource -> dev_platform_get_and_ioremap_resource
 divider_round_rate();		->
+devm_regmap_init_mmio		-> regmap_init_mmio
+
+
+
+look into barebox: clk_stm32_divider_round_rate
+for fixing: meson_clk_cpu_dyndiv_determine_rate
 
 
 
