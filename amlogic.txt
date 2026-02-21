@@ -483,6 +483,7 @@ divider_round_rate();		->
 devm_regmap_init_mmio		-> regmap_init_mmio
 
 clk_hw_get_dev				-> impl by me
+clk_hw_get_of_node			-> impl by yourself
 
 
 
@@ -490,4 +491,5 @@ look into barebox: clk_stm32_divider_round_rate
 for fixing: meson_clk_cpu_dyndiv_determine_rate
 
 
-
+NOTES:
+	clk_hw_get_of_node			-> impl by yourself
