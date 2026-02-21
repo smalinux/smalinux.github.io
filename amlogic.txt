@@ -474,3 +474,12 @@ normalize all:
 
 include/linux/mfd/syscon.h  -> include/mfd/syscon.h
 #include <linux/delay.h>    -> removed
+#include <linux/init.h>		-> #include <init.h>
+EXPORT_SYMBOL_NS_GPL		-> EXPORT_SYMBOL_GPL
+.determine_rate				-> .round_rate
+
+
+divider_round_rate();		->
+
+
+
