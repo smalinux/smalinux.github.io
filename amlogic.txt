@@ -498,3 +498,5 @@ NOTES:
 fix round_rate:
 	clk-cpu-dyndiv.c
 
+> check with claude if your converted round rate correctly or not
+divider_round_rate -_-
