@@ -2717,3 +2717,12 @@ usbgadget -A '/tmp/img(img)c'
 Host:
 sudo fastboot flash img build/images/barebox-rk3562-kickpi-k3.img
 
+
+
+
+
+I added this to .bash_aliases for quick flashing to SD card
+rkdd () {
+	sudo flock /dev/$1 dd if=build/images/barebox-rk3562-kickpi-k3.img of=/dev/$1 bs=512 seek=64 conv=fsync
+	#sudo flock /dev/$1 dd if=build/images/barebox-rk3562-kickpi-k3.img of=/dev/$1 bs=512 seek=16384 conv=fsync
+}
