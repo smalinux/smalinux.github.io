@@ -500,3 +500,18 @@ fix round_rate:
 
 > check with claude if your converted round rate correctly or not
 divider_round_rate -_-
+
+
+### This one line script I used to run git-origin-url.sh on complete dir:
+
+$ for f in drivers/clk/meson/*; do c=$(scripts/git-origin-url.sh /src/linux/drivers/clk/meson/$(basename "$f") 2>/dev/null) && { printf '%s\n' "$c"; cat "$f"; } > /tmp/_t && mv /tmp/_t "$f"; done
+
+How it works:
+- Iterates over all files in drivers/clk/meson/
+- Runs git-origin-url.sh on the corresponding linux file; if it fails (no match, file missing), && skips that file
+- Prepends the comment via printf ... ; cat file piped to a temp file, then renames it back
+
+
+
+
+clk_stm32_divider_round_rate
