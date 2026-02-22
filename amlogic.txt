@@ -493,3 +493,8 @@ for fixing: meson_clk_cpu_dyndiv_determine_rate
 
 NOTES:
 	clk_hw_get_of_node			-> impl by yourself
+
+
+fix round_rate:
+	clk-cpu-dyndiv.c
+
