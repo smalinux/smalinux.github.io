@@ -537,4 +537,74 @@ clk_stm32_divider_round_rate
 
 
 
+SMA: Porting auxiliary bus
+===============================================================================
+● Good. Now I have the full picture. Here's what needs to change:
+
+  Header (auxiliary_bus.h):
+  1. Remove sysfs struct (no xarray, no sysfs irqs in barebox)
+  2. Remove suspend/resume from auxiliary_driver (no PM)
+  3. Remove sysfs irq functions
+  4. Simplify auxiliary_device_uninit (no mutex_destroy)
+  5. Add auxiliary_device_id to mod_devicetable.h
+  6. Remove device_del → use unregister_device
+  7. Remove struct module *owner from driver register
+
+  Source (auxiliary.c):
+  1. Remove uevent, PM ops, shutdown
+  2. Simplify bus_type struct
+  3. Replace device_initialize/device_add/device_del with barebox equivalents
+  4. Fix PM domain attach
+  5. Remove device_set_of_node_from_dev
+  6. Handle missing devm_add_action_or_reset
+
+
+  Changes Summary
+
+  include/linux/mod_devicetable.h
+
+  - Added AUXILIARY_NAME_SIZE and struct auxiliary_device_id (needed by the auxiliary bus for
+  driver-device matching)
+
+  include/linux/auxiliary_bus.h — Complete rewrite for barebox
+
+  - Removed sysfs struct from auxiliary_device (no xarray/sysfs irq support in barebox)
+  - Removed suspend/resume/shutdown from auxiliary_driver (no PM in barebox)
+  - Changed struct device_driver → struct driver (barebox native type)
+  - Changed to_auxiliary_drv() signature: const struct device_driver * → const struct driver *
+  - Removed auxiliary_device_sysfs_irq_add/remove (no sysfs)
+  - Simplified auxiliary_device_uninit() — removed mutex_destroy (no-op in barebox anyway)
+  - Changed auxiliary_device_delete() — uses unregister_device() instead of device_del()
+  - Removed struct module *owner from __auxiliary_driver_register and THIS_MODULE from the
+  macro
+  - Removed __devm_auxiliary_device_create / devm_auxiliary_device_create (barebox lacks
+  devm_add_action_or_reset)
+  - Removed all kernel doc comments (kept minimal header)
+
+  drivers/base/auxiliary.c — Complete rewrite for barebox
+
+  - Removed uevent handler (auxiliary_uevent, kobj_uevent_env, AUXILIARY_MODULE_PREFIX)
+  - Removed PM ops (auxiliary_dev_pm_ops, SET_RUNTIME_PM_OPS, SET_SYSTEM_SLEEP_PM_OPS)
+  - Removed auxiliary_bus_shutdown (barebox bus_type has no shutdown)
+  - Simplified auxiliary_bus_type to only name, probe, remove, match
+  - Changed probe: uses genpd_dev_pm_attach() (like platform bus) instead of
+  dev_pm_domain_attach() with Linux-specific flags
+  - Removed device_initialize() from auxiliary_device_init() (barebox has no separate init
+  step)
+  - Changed __auxiliary_device_add(): uses register_device() + DEVICE_ID_SINGLE instead of
+  device_add()
+  - Changed __auxiliary_driver_register(): removed owner/mod_name, uses basprintf() instead of
+  kasprintf(), uses register_driver()
+  - Removed __devm_auxiliary_device_create (no devm_add_action_or_reset)
+  - Changed auxiliary_device_create(): copies of_node directly instead of
+  device_set_of_node_from_dev()
+  - Changed bus init: uses pure_initcall() (like platform bus) instead of __init function
+
+  drivers/base/Makefile
+
+  - Changed obj-y → obj-$(CONFIG_AUXILIARY_BUS) so it builds conditionally
+
+  drivers/base/Kconfig
+
+  - Already had config AUXILIARY_BUS / bool — no changes needed
 
