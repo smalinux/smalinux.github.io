@@ -9,6 +9,7 @@ SMA: Assembly debugging
 SMA: Step 2: porting UART serial driver
 SMA: Porting Clock driver - 8 Feb 2026
 SMA: Porting reset driver - 20 Feb 2026
+SMA: porting pinctrl & GPIO
 
 
 
@@ -607,4 +608,33 @@ SMA: Porting auxiliary bus
   drivers/base/Kconfig
 
   - Already had config AUXILIARY_BUS / bool — no changes needed
+
+
+
+
+SMA: porting pinctrl & GPIO
+===============================================================================
+❯ where is gpio drivers for meson/amlogic?
+
+The GPIO for Meson/Amlogic is handled through the pinctrl subsystem (not a standalone GPIO driver):
+
+  drivers/pinctrl/meson/
+
+  Key files:
+  - pinctrl-meson.c / pinctrl-meson.h — core driver
+  - SoC-specific files:
+    - pinctrl-meson8.c, pinctrl-meson8b.c — Meson8/8b
+    - pinctrl-meson-gxbb.c, pinctrl-meson-gxl.c — GX series
+    - pinctrl-meson-axg.c — AXG
+    - pinctrl-meson-g12a.c — G12A
+    - pinctrl-meson-a1.c, pinctrl-meson-s4.c — newer SoCs
+    - pinctrl-amlogic-c3.c, pinctrl-amlogic-t7.c, pinctrl-amlogic-a4.c — Amlogic-branded SoCs
+
+  The GPIO functionality is integrated into the pinctrl driver (pinctrl-meson.c) via gpiochip_add_data(), which is typical for SoCs where GPIO and pin muxing share the same hardware block.
+
+
+
+
+
+
 
