@@ -517,3 +517,24 @@ How it works:
 
 
 clk_stm32_divider_round_rate
+
+
+
+
+
+~~~~~~~~~~~~~~~~~~~~~~~
+/src/barebox-amlogic/drivers/clk/meson/meson-clkc-utils.c:59:39: warning: passing argument 1 of ‘of_clk_add_hw_provider’ from incompatible pointer type [-Wincompatible-pointer-types]
+   59 |         return of_clk_add_hw_provider(dev, meson_clk_hw_get, (void *)&data->hw_clks);
+      |                                       ^~~
+      |                                       |
+      |                                       struct device *
+/src/barebox-amlogic/include/linux/clk.h:883:48: note: expected ‘struct device_node *’ but argument is of type ‘struct device *’
+  883 | int of_clk_add_hw_provider(struct device_node *np,
+      |                            ~~~~~~~~~~~~~~~~~~~~^~
+~~~~~~~~~~~~~~~~~~~~~~~
+
+
+
+
+
+
