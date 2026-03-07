@@ -3,6 +3,7 @@
 
 SMA: Debugging session - Where story started from? panic dump stack
 SMA: nv vars at compile time
+SMA: PANIC: unable to handle paging request at address 0xffffffffffffffe0
 
 
 
@@ -129,3 +130,105 @@ How to debug as a professional
 ls /dev ; dmesg
 devinfo mmc1
 devinfo device tree device for mmc1
+
+
+
+
+
+
+SMA: PANIC: unable to handle paging request at address 0xffffffffffffffe0
+===============================================================================
+psci psci.of: detected version 1.0
+    probe-> ff63c000.system-controller@0:clock-controller.of
+PANIC: unable to handle paging request at address 0xffffffffffffffe0
+DABT (current EL) (ESR 0x96000004)
+elr: 00000000f49b5c34 lr : 00000000f49b6634
+x0 : 0000000000000000 x1 : 00000000f4a2abcb
+x2 : 0000000000000000 x3 : 0000000000000001
+x4 : 00000000b4931b68 x5 : 0000000000000068
+x6 : 626f727020202020 x7 : 0000000000000000
+x8 : 00000000f4e52be0 x9 : 746e6f632d6d6574
+x10: 72656c6c6f72746e x11: 6b636f6c633a3040
+x12: 6c6f72746e6f632d x13: 000a666f2e72656c
+x14: 0000000000000000 x15: 0000000000000000
+x16: 0000000000000000 x17: 0000000000000000
+x18: 00000000eaf14e00 x19: ffffffffffffffe0
+x20: 0000000000165f3f x21: 0000000000000000
+x22: 00000000f4a2abcb x23: 000000003fffffff
+x24: 00000000f4d91f00 x25: 00000000f4e5b000
+x26: 0000000000165f2f x27: 0000000000391f00
+x28: 00000000f2fe5458 x29: 00000000f4e52b10
+
+Call trace:
+[<f49b5c34>] (of_find_property+0x4c/0x74) from [<f49b6634>] (of_device_is_compatible+0x28/0x84)
+[<f49b6634>] (of_device_is_compatible+0x28/0x84) from [<f49b6748>] (of_match_node+0x5c/0x8c)
+[<f49b6748>] (of_match_node+0x5c/0x8c) from [<f49ba888>] (of_match_device+0x18/0x2c)
+[<f49ba888>] (of_match_device+0x18/0x2c) from [<f49ba8b4>] (of_device_get_match_data+0x18/0x28)
+[<f49ba8b4>] (of_device_get_match_data+0x18/0x28) from [<f49a3608>] (g12a_clkc_probe+0x18/0x50)
+[<f49a3608>] (g12a_clkc_probe+0x18/0x50) from [<f4933bf0>] (platform_probe+0x48/0x4c)
+[<f4933bf0>] (platform_probe+0x48/0x4c) from [<f4932d58>] (device_probe+0xbc/0x1a8)
+[<f4932d58>] (device_probe+0xbc/0x1a8) from [<f4932e74>] (match+0x30/0x5c)
+[<f4932e74>] (match+0x30/0x5c) from [<f49331f4>] (register_device+0x170/0x198)
+[<f49331f4>] (register_device+0x170/0x198) from [<f4933c48>] (platform_device_register+0x18/0x20)
+[<f4933c48>] (platform_device_register+0x18/0x20) from [<f49b9fe0>] (of_platform_device_create+0x228/0x240)
+[<f49b9fe0>] (of_platform_device_create+0x228/0x240) from [<f49ba05c>] (of_platform_bus_create+0x64/0xbc)
+[<f49ba05c>] (of_platform_bus_create+0x64/0xbc) from [<f49ba098>] (of_platform_bus_create+0xa0/0xbc)
+[<f49ba098>] (of_platform_bus_create+0xa0/0xbc) from [<f49ba098>] (of_platform_bus_create+0xa0/0xbc)
+[<f49ba098>] (of_platform_bus_create+0xa0/0xbc) from [<f49ba098>] (of_platform_bus_create+0xa0/0xbc)
+[<f49ba098>] (of_platform_bus_create+0xa0/0xbc) from [<f49ba098>] (of_platform_bus_create+0xa0/0xbc)
+[<f49ba098>] (of_platform_bus_create+0xa0/0xbc) from [<f49ba2ec>] (of_platform_populate+0x68/0x7c)
+[<f49ba2ec>] (of_platform_populate+0x68/0x7c) from [<f49b8254>] (of_probe+0xac/0x110)
+[<f49b8254>] (of_probe+0xac/0x110) from [<f49b82cc>] (barebox_of_populate+0x14/0x24)
+[<f49b82cc>] (barebox_of_populate+0x14/0x24) from [<f4912880>] (start_barebox+0x84/0xa4)
+[<f4912880>] (start_barebox+0x84/0xa4) from [<f4a25dc4>] (rt_psci_poweroff+0x0/0x2c)
+[<f4a25dc4>] (rt_psci_poweroff+0x0/0x2c) from [<08083158>] (0x8083158)
+[<08083158>] (0x8083158) from [<08082554>] (0x8082554)
+
+```
+	$ ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- /src/linux/scripts/decode_stacktrace.sh /src/build/barebox/amlogic < panic.txt
+```
+
+
+# decode_stacktrace.sh Cheatsheet (barebox / Amlogic)
+
+  ## Basic Usage
+
+      ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- /src/linux/scripts/decode_stacktrace.sh /src/build/barebox/amlogic/barebox  < panic.txt
+
+  ## Key Points
+
+  - The third argument must be the ELF file, NOT the build directory.
+    WRONG: /src/build/barebox/amlogic
+    RIGHT: /src/build/barebox/amlogic/barebox
+
+  - The ELF must have debug symbols (not stripped).
+    Check with: $ file /src/build/barebox/amlogic/barebox
+    Look for: "with debug_info, not stripped"
+
+  - CROSS_COMPILE must match the target arch (arm64 + aarch64-linux-gnu-)
+
+  ## Expected Output
+
+	(of_find_property+0x4c/0x74) from of_device_is_compatible (/src/barebox-amlogic/drivers/of/base.c:645)
+	(of_device_is_compatible+0x28/0x84) from of_match_node (/src/barebox-amlogic/drivers/of/base.c:803 /src/barebox-amlogic/drivers/of/base.c:791)
+	(of_match_node+0x5c/0x8c) from of_match_device (/src/barebox-amlogic/drivers/of/device.c:22)
+	(of_match_device+0x18/0x2c) from of_device_get_match_data (/src/barebox-amlogic/drivers/of/device.c:30)
+	(of_device_get_match_data+0x18/0x28) from g12a_clkc_probe (/src/barebox-amlogic/drivers/clk/meson/g12a.c:5404)
+	(g12a_clkc_probe+0x18/0x50) from platform_probe (/src/barebox-amlogic/drivers/base/platform.c:22)
+	(platform_probe+0x48/0x4c) from device_probe (/src/barebox-amlogic/drivers/base/driver.c:146)
+	(device_probe+0xbc/0x1a8) from match (/src/barebox-amlogic/drivers/base/driver.c:235)
+	(match+0x30/0x5c) from register_device (/src/barebox-amlogic/drivers/base/driver.c:283 (discriminator 1))
+	(register_device+0x170/0x198) from platform_device_register (/src/barebox-amlogic/drivers/base/platform.c:38)
+	(platform_device_register+0x18/0x20) from of_platform_device_create (/src/barebox-amlogic/drivers/of/platform.c:201)
+	(of_platform_device_create+0x228/0x240) from of_platform_bus_create (/src/barebox-amlogic/drivers/of/platform.c:395)
+	(of_platform_bus_create+0x64/0xbc) from of_platform_bus_create (/src/barebox-amlogic/drivers/of/platform.c:402)
+	(of_platform_bus_create+0xa0/0xbc) from of_platform_bus_create (/src/barebox-amlogic/drivers/of/platform.c:402)
+	(of_platform_bus_create+0xa0/0xbc) from of_platform_bus_create (/src/barebox-amlogic/drivers/of/platform.c:402)
+	(of_platform_bus_create+0xa0/0xbc) from of_platform_bus_create (/src/barebox-amlogic/drivers/of/platform.c:402)
+	(of_platform_bus_create+0xa0/0xbc) from of_platform_populate (/src/barebox-amlogic/drivers/of/platform.c:435)
+	(of_platform_populate+0x68/0x7c) from of_probe (/src/barebox-amlogic/drivers/of/base.c:2992)
+	(of_probe+0xac/0x110) from barebox_of_populate (/src/barebox-amlogic/drivers/of/base.c:2102)
+	(barebox_of_populate+0x14/0x24) from start_barebox (/src/barebox-amlogic/common/startup.c:410)
+	(start_barebox+0x84/0xa4) from rt_psci_poweroff (/src/barebox-amlogic/arch/arm/cpu/psci-client.c:45)
+	(rt_psci_poweroff+0x0/0x2c) from 0x8083158
+	(0x8083158) from 0x8082554
