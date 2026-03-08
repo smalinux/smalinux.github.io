@@ -646,6 +646,9 @@ Add maybe_unused
 
 #include "../core.h"
 
+pinctrl_pin_desc ---> LATER
+	see "sunxi_pinctrl_desc"
+
 
 /src/barebox-amlogic/drivers/pinctrl/meson/pinctrl-meson8-pmx.c:60:36: error: initialization of ‘struct meson_pinctrl *’ from ‘int’ makes pointer from integer without a cast [-Werror=int-conversion]
    60 |         struct meson_pinctrl *pc = pinctrl_dev_get_drvdata(pcdev);
