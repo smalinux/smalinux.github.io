@@ -637,7 +637,9 @@ The GPIO for Meson/Amlogic is handled through the pinctrl subsystem (not a stand
 
 struct pinctrl_desc
 struct gpio_chip
-pinctrl_dev_get_drvdata -> dev_get_drvdata ?
+pinctrl_dev_get_drvdata -> dev_get_drvdata ? no
+	see -> "to_sunxi_pinctrl"
+	and impl "pinctrl_dev_get_drvdata" by yourself
 pinmux_ops meson8_pmx_ops
 	.set_mux = meson8_pmx_set_mux,
 Add maybe_unused
@@ -650,6 +652,9 @@ pinctrl_pin_desc ---> LATER
 	see "sunxi_pinctrl_desc"
 
 pinmux_ops --> commented out just for now
+pmx_ops ---> commented out just for now
+
+pinctrl_gpio_range ---> probably I will not need this in the bootloader
 
 
 /src/barebox-amlogic/drivers/pinctrl/meson/pinctrl-meson8-pmx.c:60:36: error: initialization of ‘struct meson_pinctrl *’ from ‘int’ makes pointer from integer without a cast [-Werror=int-conversion]
