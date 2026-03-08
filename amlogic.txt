@@ -638,12 +638,32 @@ The GPIO for Meson/Amlogic is handled through the pinctrl subsystem (not a stand
 struct pinctrl_desc
 struct gpio_chip
 pinctrl_dev_get_drvdata -> dev_get_drvdata ?
+pinmux_ops meson8_pmx_ops
+	.set_mux = meson8_pmx_set_mux,
+
+#define MESON_PIN(x) PINCTRL_PIN(x, #x)
+
+#include "../core.h"
 
 
 /src/barebox-amlogic/drivers/pinctrl/meson/pinctrl-meson8-pmx.c:60:36: error: initialization of ‘struct meson_pinctrl *’ from ‘int’ makes pointer from integer without a cast [-Werror=int-conversion]
    60 |         struct meson_pinctrl *pc = pinctrl_dev_get_drvdata(pcdev);
       |                                    ^~~~~~~~~~~~~~~~~~~~~~~
       |                                    dev_get_drvdata
+
+
+struct pinctrl_gpio_range
+
+
+/src/barebox-amlogic/drivers/pinctrl/meson/pinctrl-meson8-pmx.c:97:14: error: variable ‘meson8_pmx_ops’ has initializer but incomplete type
+   97 | const struct pinmux_ops meson8_pmx_ops = {
+      |              ^~~~~~~~~~
+
+
+/src/barebox-amlogic/drivers/pinctrl/meson/pinctrl-meson.h:167:22: error: implicit declaration of function ‘PINCTRL_PIN’; did you mean ‘PINCTRL_H’? [-Werror=implicit-function-declaration]
+  167 | #define MESON_PIN(x) PINCTRL_PIN(x, #x)
+      |                      ^~~~~~~~~~~
+
 
 
 
