@@ -640,6 +640,7 @@ struct gpio_chip
 pinctrl_dev_get_drvdata -> dev_get_drvdata ?
 pinmux_ops meson8_pmx_ops
 	.set_mux = meson8_pmx_set_mux,
+Add maybe_unused
 
 #define MESON_PIN(x) PINCTRL_PIN(x, #x)
 
@@ -666,4 +667,4 @@ struct pinctrl_gpio_range
 
 
 
-
+pinctrl_dev (linux name) ->
