@@ -678,3 +678,8 @@ struct pinctrl_gpio_range
 
 
 pinctrl_dev (linux name) ->
+
+
+
+-----------------------------------------------------------------------------
+pinctrl_pin_desc ---> sunxi_desc_pin
