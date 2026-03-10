@@ -683,3 +683,30 @@ pinctrl_dev (linux name) ->
 
 -----------------------------------------------------------------------------
 pinctrl_pin_desc ---> sunxi_desc_pin
+
+● /src/barebox-amlogic/tmp.c written. Here's a summary of the 6 main changes:
+
+  ---
+  1. meson_map_resource — Two bugs:
+  - Used hardcoded index 0 instead of the i from of_property_match_string → wrong register range for pull, pull-enable, ds
+  - meson_regmap_config.name was commented out but the if (!name) check remained → always returned -ENOMEM
+  - Fix: local regmap_config per call, proper devm_ioremap() with res.start
+
+  2. meson_pinctrl_parse_dt — gpiochip_node_count() / gpiochip_node_get_first() don't exist in barebox. Replace with for_each_child_of_node checking gpio-controller property.
+
+  3. GPIO ops — All commented out. Adapt for barebox:
+  - gpiochip_get_data() → container_of(chip, struct meson_pinctrl, chip)
+  - meson_gpio_set() must return void (barebox gpio_ops.set signature)
+  - get_direction returns GPIOF_DIR_OUT (0) / GPIOF_DIR_IN (1)
+  - Register via struct gpio_ops meson_gpio_ops + gpiochip_add()
+
+  4. meson_gpiolib_register — Create a child platform device for the gpio-controller DT node (so chip->dev->of_node resolves GPIO specifiers correctly), then call gpiochip_add().
+
+  5. set_state (new) — barebox pinctrl requires it. Parses groups/function from child DT nodes, looks up func/group indices, calls pmx_ops->set_mux(), applies bias config.
+
+  6. meson_pinctrl_probe — Set pcdev.ops = &meson_pinctrl_ops and call pinctrl_register() (both were missing).
+
+  Header change: Replace commented pmx_ops with struct meson_pmx_ops { set_mux, request_gpio } and update meson8-pmx.c / axg-pmx.c to export concrete instances. Each SoC data file needs
+  .pmx_ops = &meson8_pmx_ops (or axg variant).
+
+✻ Cogitated for 6m 36s
