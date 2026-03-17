@@ -732,7 +732,130 @@ pinctrl-meson-axg-pmx.c
 
 
 
+~~~~~~~~~~~~~~~~~~~~~~~~~~ START .set_state port ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+/* .set_state */
+
+/* Apply mux + config for one DT node that carries "groups" + "function" */
+// SMA: related to: pinctrl_ops + set_state
+// SMA: read this new impl carefully
+static int meson_pinctrl_apply_group(struct meson_pinctrl *pc,
+				     struct pinctrl_device *pdev,
+				     struct device_node *np)
+{
+	const char *func_name, *group_name;
+	int func_idx, group_idx, n, i, ret;
+	const struct meson_pmx_group *grp;
+
+	if (of_property_read_string(np, "function", &func_name))
+		return 0; /* nothing to mux in this node */
+
+	/* Resolve function index */
+	func_idx = -1;
+	for (i = 0; i < pc->data->num_funcs; i++) {
+		if (!strcmp(pc->data->funcs[i].name, func_name)) {
+			func_idx = i;
+			break;
+		}
+	}
+	if (func_idx < 0) {
+		dev_err(pc->dev, "unknown function '%s'\n", func_name);
+		return -EINVAL;
+	}
+
+	/* Apply mux for each group listed in the "groups" property */
+	n = of_property_count_strings(np, "groups");
+	if (n <= 0) {
+		dev_err(pc->dev, "%pOF: empty 'groups'\n", np);
+		return -EINVAL;
+	}
+
+	for (i = 0; i < n; i++) {
+		ret = of_property_read_string_index(np, "groups", i,
+						    &group_name);
+		if (ret)
+			return ret;
+
+		group_idx = -1;
+		for (int j = 0; j < pc->data->num_groups; j++) {
+			if (!strcmp(pc->data->groups[j].name, group_name)) {
+				group_idx = j;
+				break;
+			}
+		}
+		if (group_idx < 0) {
+			dev_err(pc->dev, "unknown group '%s'\n", group_name);
+			return -EINVAL;
+		}
+
+		// SMA: FIXME
+		//if (!pc->data->set_mux) {
+		//	dev_err(pc->dev, "no set_mux in driver data\n");
+		//	return -ENOSYS;
+		//}
+
+		//ret = pc->data->set_mux(pdev, func_idx, group_idx);
+		//if (ret)
+		//	return ret;
+
+		/* Apply pin config to every pin in this group */
+		grp = &pc->data->groups[group_idx];
+		for (int p = 0; p < grp->num_pins; p++) {
+			unsigned int pin = grp->pins[p];
+
+			if (of_find_property(np, "bias-disable", NULL))
+				meson_pinconf_disable_bias(pc, pin);
+			else if (of_find_property(np, "bias-pull-up", NULL))
+				meson_pinconf_enable_bias(pc, pin, true);
+			else if (of_find_property(np, "bias-pull-down", NULL))
+				meson_pinconf_enable_bias(pc, pin, false);
+
+			{
+				u32 ua;
+
+				if (!of_property_read_u32(np,
+						"drive-strength-microamp", &ua))
+					meson_pinconf_set_drive_strength(pc, pin, ua);
+			}
+		}
+	}
+
+	return 0;
+}
+
+// SMA: related to: pinctrl_ops + set_state
+// SMA: read this new impl carefully, should be EQUAL to set_mux
+// SMA: move this to -pmx files
+static int meson_pinctrl_set_state(struct pinctrl_device *pdev,
+				   struct device_node *np)
+{
+	struct meson_pinctrl *pc = pinctrl_dev_get_drvdata(pdev);
+	struct device_node *child;
+	int ret;
+
+	dev_dbg(pc->dev, ".set_state %pOF\n", np);
+
+	/*
+	 * Flat format: the pin-state node itself carries "groups"/"function".
+	 * Nested format: child nodes carry them (typical meson binding).
+	 */
+	if (of_find_property(np, "groups", NULL))
+		return meson_pinctrl_apply_group(pc, pdev, np);
+
+	for_each_child_of_node(np, child) {
+		ret = meson_pinctrl_apply_group(pc, pdev, child);
+		if (ret)
+			return ret;
+	}
+
+	return 0;
+}
+
+static struct pinctrl_ops meson_pinctrl_ops = {
+	.set_state = meson_pinctrl_set_state,
+};
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~ END .set_state port ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
 
