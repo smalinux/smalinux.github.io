@@ -1,0 +1,16 @@
+
+Google image: BP-CC33XXMOD
+
+https://software-dl.ti.com/simplelink/esd/simplelink_wifi_sdk/9.21.00.15/exports/docs/WiFi-toolbox/html/WiFi-toolbox/ini_composer_user_guide.html
+
+Linux support: There is a vendor repo with the driver here:
+https://github.com/TexasInstruments-Sandbox/cc33xx-linux-mpu-ports
+
+There are efforts by the manufacturer to upstream the driver code, but nothing has happened for a long time:
+https://lore.kernel.org/all/20241107125209.1736277-1-michael.nemanov@ti.com/
+
+Official tool to convert ini to bin form TI:
+https://dev.ti.com/tirex/explore/node?node=A__AExxTkN-q9xzP5JVW6273w__CC33XX-LINUX-MPU__lBDUdCJ__LATEST
+
+With BBB:
+https://dev.ti.com/tirex/explore/node?isTheia=false&node=A__ADiOsCyKvo.cYWFRidOdvg__CC33XX-LINUX-MPU__lBDUdCJ__LATEST

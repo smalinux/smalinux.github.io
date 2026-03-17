@@ -724,8 +724,9 @@ pinctrl-meson8-pmx.c
 	const struct pinmux_ops meson8_pmx_ops = {
 		.set_mux = meson8_pmx_set_mux,
 
-
-
+pinctrl-meson-axg-pmx.c
+	const struct pinmux_ops meson_axg_pmx_ops = {
+		.set_mux = meson_axg_pmx_set_mux,
 
 
 
