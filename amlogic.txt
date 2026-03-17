@@ -710,3 +710,30 @@ pinctrl_pin_desc ---> sunxi_desc_pin
   .pmx_ops = &meson8_pmx_ops (or axg variant).
 
 ✻ Cogitated for 6m 36s
+
+
+
+
+
+
+
+-----------------------------------------------------------------------------
+# porting pinctrl & set_mux
+-----------------------------------------------------------------------------
+pinctrl-meson8-pmx.c
+	const struct pinmux_ops meson8_pmx_ops = {
+		.set_mux = meson8_pmx_set_mux,
+
+
+
+
+
+
+
+
+
+
+
+
+
+
