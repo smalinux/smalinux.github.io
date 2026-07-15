@@ -1,0 +1,344 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Architecture review — hn-enrich, after the six PRs</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script type="module">
+      import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+      mermaid.initialize({ startOnLoad: true, theme: "neutral", securityLevel: "loose" });
+    </script>
+    <style>
+      .deep { background: linear-gradient(135deg, #0f172a, #1e293b); }
+      pre.code { font-size: .78rem; line-height: 1.5; overflow-x: auto; }
+      .band { display:flex; align-items:center; padding:0 .6rem; font-size:.68rem; letter-spacing:.05em; text-transform:uppercase; }
+    </style>
+  </head>
+  <body class="bg-stone-50 text-slate-900 font-sans">
+    <main class="max-w-5xl mx-auto px-6 py-12 space-y-14">
+
+      <header class="space-y-3">
+        <h1 class="font-serif text-3xl">Architecture review — <span class="text-indigo-700">hn-enrich</span>, after the six PRs</h1>
+        <p class="text-sm text-slate-500">2026-07-15 · the tree as it stands with PRs
+          <a class="underline" href="https://github.com/smalinux/hn-enrich/pull/56">#56</a>–<a class="underline" href="https://github.com/smalinux/hn-enrich/pull/61">#61</a> applied (unmerged stack tip) ·
+          compare: <a class="underline text-indigo-700" href="https://smalinux.github.io/architecture-review-20260715-055809.html">the first review</a> ·
+          plan: <a class="underline text-indigo-700" href="https://github.com/smalinux/hn-enrich/issues/55">PRD #55</a></p>
+        <div class="flex flex-wrap gap-4 text-xs text-slate-600 pt-1">
+          <span class="inline-flex items-center gap-1.5"><span class="inline-block w-4 h-3 border border-slate-500 bg-white"></span> module</span>
+          <span class="inline-flex items-center gap-1.5"><span class="inline-block w-4 h-0 border-t-2 border-dashed border-slate-500"></span> seam</span>
+          <span class="inline-flex items-center gap-1.5"><span class="inline-block w-4 h-0 border-t-2 border-red-600"></span> duplication / leakage</span>
+          <span class="inline-flex items-center gap-1.5"><span class="inline-block w-4 h-3 deep rounded-sm"></span> deep module</span>
+        </div>
+      </header>
+
+      <!-- ============ SCORECARD ============ -->
+      <section class="rounded-xl border border-emerald-200 bg-emerald-50 p-6 space-y-4">
+        <h2 class="font-serif text-xl text-emerald-900">The six findings from the first review — all resolved</h2>
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-3 text-sm">
+          <div class="rounded-lg bg-white border border-emerald-200 p-3"><p class="font-semibold text-slate-800">Worker envelope ×6 → one <span class="font-mono text-xs">worker_run</span></p><p class="text-xs text-slate-500 mt-1">PR #56 · 13 hermetic tests pin the loop</p></div>
+          <div class="rounded-lg bg-white border border-emerald-200 p-3"><p class="font-semibold text-slate-800"><span class="font-mono text-xs">post_metadata</span> is a real worker</p><p class="text-xs text-slate-500 mt-1">PR #57 · <span class="font-mono text-xs">tasks/</span> deleted whole</p></div>
+          <div class="rounded-lg bg-white border border-emerald-200 p-3"><p class="font-semibold text-slate-800">Status words guard their overlap</p><p class="text-xs text-slate-500 mt-1">PR #58 · refuses to import on violation</p></div>
+          <div class="rounded-lg bg-white border border-emerald-200 p-3"><p class="font-semibold text-slate-800">Redirect walk has one home</p><p class="text-xs text-slate-500 mt-1">PR #59 · <span class="font-mono text-xs">politeness.walk_redirects</span></p></div>
+          <div class="rounded-lg bg-white border border-emerald-200 p-3"><p class="font-semibold text-slate-800"><span class="font-mono text-xs">inspect.main</span> is tested</p><p class="text-xs text-slate-500 mt-1">PR #60 · injectable readers, 8 dispatch tests</p></div>
+          <div class="rounded-lg bg-white border border-emerald-200 p-3"><p class="font-semibold text-slate-800">Test wiring ×9 → one rig</p><p class="text-xs text-slate-500 mt-1">PR #61 · <span class="font-mono text-xs">installed()</span> in conftest</p></div>
+        </div>
+        <p class="text-sm text-emerald-900">The re-walk checked each PR for residue and half-migrations: <b>all landed clean</b>. What remains is a handful of stale docstrings (candidate 6) and a new, smaller family of duplications the refactors made visible.</p>
+      </section>
+
+      <!-- ============ HONEST METRIC ============ -->
+      <section class="rounded-xl border border-slate-200 bg-white p-6 space-y-4">
+        <h2 class="font-serif text-xl">One honest number before the candidates</h2>
+        <p class="text-sm text-slate-600 max-w-3xl">Tracing "a claimed post becomes an enriched row" touches <b>more files</b> now than before the PRs — the envelope became its own module, and there are seven worker files. But the number that matters for trusting the path went the other way: the copies of the risk-bearing protocol you must read.</p>
+        <div class="grid md:grid-cols-2 gap-6">
+          <div>
+            <p class="text-xs uppercase tracking-wider text-slate-400 mb-2">Files touched on the trace</p>
+            <div class="space-y-2">
+              <div class="flex items-center gap-2"><span class="text-xs w-14 text-slate-500">before</span><div class="h-6 bg-slate-300 rounded" style="width:64%"></div><span class="text-xs font-mono">~16</span></div>
+              <div class="flex items-center gap-2"><span class="text-xs w-14 text-slate-500">after</span><div class="h-6 bg-slate-400 rounded" style="width:88%"></div><span class="text-xs font-mono">~22</span></div>
+            </div>
+            <p class="text-xs text-slate-500 mt-2">Up — the expected cost of extracting a shared module.</p>
+          </div>
+          <div>
+            <p class="text-xs uppercase tracking-wider text-slate-400 mb-2">Copies of the gate → retry → ledger → commit protocol</p>
+            <div class="space-y-2">
+              <div class="flex items-center gap-2"><span class="text-xs w-14 text-slate-500">before</span><div class="h-6 bg-red-400 rounded" style="width:72%"></div><span class="text-xs font-mono">6</span></div>
+              <div class="flex items-center gap-2"><span class="text-xs w-14 text-slate-500">after</span><div class="h-6 bg-emerald-500 rounded" style="width:12%"></div><span class="text-xs font-mono">1</span></div>
+            </div>
+            <p class="text-xs text-slate-500 mt-2">Down — one envelope read once; each worker skims in ~15 lines.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="candidates" class="space-y-12">
+
+        <!-- ============ CANDIDATE 1 ============ -->
+        <article id="c1" class="rounded-xl border border-slate-200 bg-white p-6 space-y-5 shadow-sm">
+          <div class="flex items-start justify-between gap-4 flex-wrap">
+            <h2 class="font-serif text-xl">1 · The stored-page read-back belongs to the table's owner</h2>
+            <span class="rounded-full bg-emerald-100 text-emerald-800 text-xs font-semibold px-3 py-1">Strong</span>
+          </div>
+          <p class="font-mono text-sm text-slate-600">word_count.py:67 · ai_class.py:72 (byte-identical) · has_source_code.py:89 (the html+text sibling) · scrape_url.py (owns EnrScrape)</p>
+
+          <p class="text-sm text-slate-700"><b>The problem, in plain words.</b> Three shared-fetch workers read back the page that <span class="font-mono text-xs">scrape_url</span> stored. Each keeps its own private copy of that read. Two of the copies are <b>byte-identical</b>:</p>
+
+          <pre class="code rounded-lg bg-slate-900 text-slate-100 p-4"><code># word_count.py:67 AND ai_class.py:72 — the same function, twice
+def _stored_texts(session: Session, ids: list[int]) -> dict[int, str]:
+    rows = session.execute(select(EnrScrape.id, EnrScrape.text).where(EnrScrape.id.in_(ids))).all()
+    return {row.id: row.text for row in rows if row.text is not None}</code></pre>
+
+          <div class="grid md:grid-cols-2 gap-4">
+            <div class="rounded-lg border border-slate-200 bg-white p-4">
+              <p class="text-xs uppercase tracking-wider text-slate-400 mb-2">Before — three private reads of another module's table</p>
+              <pre class="mermaid">
+flowchart TB
+  WC["word_count<br/>_stored_texts (copy 1)"] -.-> T[("enr_scrape<br/>owned by scrape_url")]
+  AI["ai_class<br/>_stored_texts (copy 2)"] -.-> T
+  HSC["has_source_code<br/>_stored_pages (sibling)"] -.-> T
+  classDef leak stroke:#dc2626,stroke-width:2px;
+  class WC,AI,HSC leak
+              </pre>
+            </div>
+            <div class="rounded-lg border border-slate-200 bg-white p-4">
+              <p class="text-xs uppercase tracking-wider text-slate-400 mb-2">After — one read surface beside the schema it reads</p>
+              <pre class="mermaid">
+flowchart TB
+  WC2["word_count"] --> S["scrape_url.stored_texts()<br/>scrape_url.stored_pages()"]
+  AI2["ai_class"] --> S
+  HSC2["has_source_code"] --> S
+  S --> T2[("enr_scrape")]
+  classDef deep fill:#0f172a,color:#f1f5f9,stroke:#0f172a;
+  class S deep
+              </pre>
+            </div>
+          </div>
+
+          <div class="grid md:grid-cols-3 gap-4 text-sm">
+            <div><p class="font-semibold text-slate-700">Solution</p><p class="text-slate-600">Move the two read-backs into <span class="font-mono text-xs">scrape_url.py</span> as <span class="font-mono text-xs">stored_texts</span>/<span class="font-mono text-xs">stored_pages</span> — the three consumers already import <span class="font-mono text-xs">EnrScrape</span> from there, so no new dependency edge appears.</p></div>
+            <div><p class="font-semibold text-slate-700">Wins</p>
+              <ul class="text-slate-600 list-disc list-inside space-y-0.5">
+                <li>locality: the read lives next to the schema</li>
+                <li>leverage: one implementation, three callers</li>
+                <li>a column change touches one file, not three</li>
+              </ul></div>
+            <div><p class="font-semibold text-slate-700">Cost</p><p class="text-slate-600">Near zero — the seam already exists (the <span class="font-mono text-xs">EnrScrape</span> import); only the functions move across it.</p></div>
+          </div>
+        </article>
+
+        <!-- ============ CANDIDATE 2 ============ -->
+        <article id="c2" class="rounded-xl border border-slate-200 bg-white p-6 space-y-5 shadow-sm">
+          <div class="flex items-start justify-between gap-4 flex-wrap">
+            <h2 class="font-serif text-xl">2 · Give <span class="font-mono text-lg">SourceRepo</span> the by-id read four workers hand-roll</h2>
+            <span class="rounded-full bg-emerald-100 text-emerald-800 text-xs font-semibold px-3 py-1">Strong</span>
+          </div>
+          <p class="font-mono text-sm text-slate-600">scrape_url.py:131 · user_history.py:100 · ads_count.py:113 · post_metadata.py:83</p>
+
+          <p class="text-sm text-slate-700"><b>The problem, in plain words.</b> Every source-read worker's <span class="font-mono text-xs">prepare</span> starts by turning the source items into a dict. The same line, four times:</p>
+
+          <pre class="code rounded-lg bg-slate-900 text-slate-100 p-4"><code># the same prepare, in four worker files
+def prepare(session: Session, todo: list[int]) -> dict[int, SourceItem]:
+    return {item.id: item for item in source.get_items(todo)}</code></pre>
+
+          <div class="grid md:grid-cols-2 gap-4">
+            <div class="rounded-lg border border-slate-200 bg-white p-4">
+              <p class="text-xs uppercase tracking-wider text-slate-400 mb-2">Before</p>
+              <pre class="mermaid">
+flowchart TB
+  A["scrape_url<br/>dict-build (copy 1)"] -.-> R["SourceRepo.get_items()<br/>returns a list"]
+  B["user_history<br/>dict-build (copy 2)"] -.-> R
+  C["ads_count<br/>dict-build (copy 3)"] -.-> R
+  D["post_metadata<br/>dict-build (copy 4)"] -.-> R
+  classDef leak stroke:#dc2626,stroke-width:2px;
+  class A,B,C,D leak
+              </pre>
+            </div>
+            <div class="rounded-lg border border-slate-200 bg-white p-4">
+              <p class="text-xs uppercase tracking-wider text-slate-400 mb-2">After</p>
+              <pre class="mermaid">
+flowchart TB
+  A2["scrape_url"] --> R2["SourceRepo.get_items_by_id()<br/>returns the dict"]
+  B2["user_history"] --> R2
+  C2["ads_count"] --> R2
+  D2["post_metadata"] --> R2
+  classDef deep fill:#0f172a,color:#f1f5f9,stroke:#0f172a;
+  class R2 deep
+              </pre>
+            </div>
+          </div>
+
+          <div class="grid md:grid-cols-3 gap-4 text-sm">
+            <div><p class="font-semibold text-slate-700">Solution</p><p class="text-slate-600"><span class="font-mono text-xs">SourceRepo.get_items_by_id(ids) → dict[int, SourceItem]</span>. Each worker's prepare becomes one call. The repository's whole job is "hand me source items in a useful shape" — this is that shape.</p></div>
+            <div><p class="font-semibold text-slate-700">Wins</p>
+              <ul class="text-slate-600 list-disc list-inside space-y-0.5">
+                <li>four copies deleted</li>
+                <li>the interface says what callers actually need</li>
+              </ul></div>
+            <div><p class="font-semibold text-slate-700">Cost</p><p class="text-slate-600">One new method on an existing module. If the family of source-read workers keeps growing, candidate 4 is the fuller version of this move.</p></div>
+          </div>
+        </article>
+
+        <!-- ============ CANDIDATE 3 ============ -->
+        <article id="c3" class="rounded-xl border border-slate-200 bg-white p-6 space-y-5 shadow-sm">
+          <div class="flex items-start justify-between gap-4 flex-wrap">
+            <h2 class="font-serif text-xl">3 · Answer your own comment in <span class="font-mono text-lg">source.py</span></h2>
+            <span class="rounded-full bg-amber-100 text-amber-800 text-xs font-semibold px-3 py-1">Worth exploring</span>
+          </div>
+          <p class="font-mono text-sm text-slate-600">source.py — the 8-column projection appears 4× (:62, :76, :90, :104); your "I don't like pure sql here" note appears 7×</p>
+
+          <p class="text-sm text-slate-700"><b>The problem, in plain words.</b> Your own inline note says the raw SQL is "not clean, nor maintainable". The re-walk's honest finding: the SQL itself is fine — it is a read-only view of a foreign table, kept behind the <span class="font-mono text-xs">SourceItem</span> boundary. What is genuinely unmaintainable is that the <b>same 8-column projection is pasted four times</b>, differing only in the <span class="font-mono text-xs">WHERE</span> clause. Change one column, edit four strings.</p>
+
+          <div class="grid md:grid-cols-2 gap-4">
+            <div class="rounded-lg border border-slate-200 p-4">
+              <p class="text-xs uppercase tracking-wider text-slate-400 mb-3">Before — the projection pasted into every query</p>
+              <div class="space-y-1.5">
+                <div class="border border-slate-400 rounded overflow-hidden"><div class="band bg-red-100 text-red-800 h-6">SELECT id, type, url, "by", "time", fetched_at, title, text</div><div class="band bg-stone-100 text-slate-600 h-5">WHERE id &gt; :after … (_FETCH_AFTER)</div></div>
+                <div class="border border-slate-400 rounded overflow-hidden"><div class="band bg-red-100 text-red-800 h-6">SELECT id, type, url, "by", "time", fetched_at, title, text</div><div class="band bg-stone-100 text-slate-600 h-5">WHERE id &lt; :before … (_FETCH_BEFORE)</div></div>
+                <div class="border border-slate-400 rounded overflow-hidden"><div class="band bg-red-100 text-red-800 h-6">SELECT id, type, url, "by", "time", fetched_at, title, text</div><div class="band bg-stone-100 text-slate-600 h-5">WHERE … floored (_FETCH_BEFORE_FLOORED)</div></div>
+                <div class="border border-slate-400 rounded overflow-hidden"><div class="band bg-red-100 text-red-800 h-6">SELECT id, type, url, "by", "time", fetched_at, title, text</div><div class="band bg-stone-100 text-slate-600 h-5">WHERE id = ANY(:ids) (_GET_ITEMS)</div></div>
+              </div>
+            </div>
+            <div class="rounded-lg border border-slate-200 p-4">
+              <p class="text-xs uppercase tracking-wider text-slate-400 mb-3">After — one projection, four thin predicates</p>
+              <div class="deep rounded-lg text-slate-100 p-3 mb-2">
+                <p class="text-[.68rem] uppercase tracking-wider text-slate-300">_COLUMNS — the projection, once</p>
+                <p class="font-mono text-xs text-slate-300">id, type, url, "by", "time", fetched_at, raw-&gt;&gt;'title', raw-&gt;&gt;'text'</p>
+              </div>
+              <div class="grid grid-cols-2 gap-1.5">
+                <span class="text-[.65rem] font-mono border border-emerald-400 bg-emerald-50 rounded px-1.5 py-1">WHERE id &gt; :after</span>
+                <span class="text-[.65rem] font-mono border border-emerald-400 bg-emerald-50 rounded px-1.5 py-1">WHERE id &lt; :before</span>
+                <span class="text-[.65rem] font-mono border border-emerald-400 bg-emerald-50 rounded px-1.5 py-1">WHERE … floored</span>
+                <span class="text-[.65rem] font-mono border border-emerald-400 bg-emerald-50 rounded px-1.5 py-1">WHERE id = ANY(:ids)</span>
+              </div>
+              <p class="text-xs text-slate-500 mt-2">Plus: the 7 copies of the complaint comment collapse into one honest sentence.</p>
+            </div>
+          </div>
+
+          <div class="rounded-md bg-amber-50 border border-amber-200 text-amber-900 text-xs px-3 py-2">
+            The bigger option — a typed SQLAlchemy <span class="font-mono">Table</span> for <span class="font-mono">items</span> — is possible but <b>speculative</b>: it would declare the scraper's schema inside enrich, the exact coupling <span class="font-mono">SourceItem</span> exists to prevent. The docs call this module deep for that reason. The fragment answers the maintainability complaint with zero new coupling.
+          </div>
+        </article>
+
+        <!-- ============ CANDIDATE 4 ============ -->
+        <article id="c4" class="rounded-xl border border-slate-200 bg-white p-6 space-y-5 shadow-sm">
+          <div class="flex items-start justify-between gap-4 flex-wrap">
+            <h2 class="font-serif text-xl">4 · A source-worker sub-template (only if the family grows)</h2>
+            <span class="rounded-full bg-amber-100 text-amber-800 text-xs font-semibold px-3 py-1">Worth exploring</span>
+          </div>
+          <p class="font-mono text-sm text-slate-600">scrape_url.py:135 · ads_count.py:117 · user_history.py:103 · post_metadata.py:89 — the same None-guard, four times</p>
+
+          <p class="text-sm text-slate-700"><b>The problem, in plain words.</b> Beyond the dict-build (candidate 2), the four source-read workers also repeat the vanished-row contract — "an id whose source row disappeared records <i>nothing</i>, so its empty ledger settles the item failed for the heal":</p>
+
+          <pre class="code rounded-lg bg-slate-900 text-slate-100 p-4"><code># the same opening of process, in four worker files
+def process(session: Session, item_id: int, items: dict[int, SourceItem]) -> str | None:
+    item = items.get(item_id)
+    if item is None:
+        return None          # source row vanished: no ledger row
+    ...the worker's real work...</code></pre>
+
+          <div class="grid md:grid-cols-2 gap-4">
+            <div class="rounded-lg border border-slate-200 p-4">
+              <p class="text-xs uppercase tracking-wider text-slate-400 mb-3">Before — the contract re-implemented per worker</p>
+              <div class="space-y-1.5">
+                <div class="border border-slate-400 rounded overflow-hidden"><div class="band bg-stone-200 text-slate-700 h-5">run_batch: gate · retry · ledger · commit</div></div>
+                <div class="grid grid-cols-4 gap-1.5">
+                  <div class="border border-slate-400 rounded"><div class="band bg-red-50 text-red-800 h-9 leading-tight">dict + None-guard</div><div class="band bg-emerald-50 text-emerald-900 h-6">fetch</div></div>
+                  <div class="border border-slate-400 rounded"><div class="band bg-red-50 text-red-800 h-9 leading-tight">dict + None-guard</div><div class="band bg-emerald-50 text-emerald-900 h-6">scan</div></div>
+                  <div class="border border-slate-400 rounded"><div class="band bg-red-50 text-red-800 h-9 leading-tight">dict + None-guard</div><div class="band bg-emerald-50 text-emerald-900 h-6">count</div></div>
+                  <div class="border border-slate-400 rounded"><div class="band bg-red-50 text-red-800 h-9 leading-tight">dict + None-guard</div><div class="band bg-emerald-50 text-emerald-900 h-6">stamp</div></div>
+                </div>
+              </div>
+            </div>
+            <div class="rounded-lg border border-slate-200 p-4">
+              <p class="text-xs uppercase tracking-wider text-slate-400 mb-3">After — the contract owned once</p>
+              <div class="space-y-1.5">
+                <div class="border border-slate-400 rounded overflow-hidden"><div class="band bg-stone-200 text-slate-700 h-5">run_batch: gate · retry · ledger · commit</div></div>
+                <div class="deep rounded overflow-hidden"><div class="band text-slate-200 h-6">run_source_worker: items dict + vanished-row contract</div></div>
+                <div class="grid grid-cols-4 gap-1.5">
+                  <span class="text-[.65rem] font-mono border border-emerald-400 bg-emerald-50 rounded px-1.5 py-1 text-center">fetch</span>
+                  <span class="text-[.65rem] font-mono border border-emerald-400 bg-emerald-50 rounded px-1.5 py-1 text-center">scan</span>
+                  <span class="text-[.65rem] font-mono border border-emerald-400 bg-emerald-50 rounded px-1.5 py-1 text-center">count</span>
+                  <span class="text-[.65rem] font-mono border border-emerald-400 bg-emerald-50 rounded px-1.5 py-1 text-center">stamp</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="rounded-md bg-amber-50 border border-amber-200 text-amber-900 text-xs px-3 py-2">
+            Honest caveat: this adds a <b>second template layer</b> over <span class="font-mono">run_batch</span>, and #49 just paid for the first. Candidate 2 alone removes the noisier half of the repetition. Take this one only when a new source-read worker makes the four-way copy a five-way copy.
+          </div>
+        </article>
+
+        <!-- ============ CANDIDATE 5 ============ -->
+        <article id="c5" class="rounded-xl border border-slate-200 bg-white p-6 space-y-5 shadow-sm">
+          <div class="flex items-start justify-between gap-4 flex-wrap">
+            <h2 class="font-serif text-xl">5 · A generic worker upsert</h2>
+            <span class="rounded-full bg-slate-200 text-slate-700 text-xs font-semibold px-3 py-1">Speculative</span>
+          </div>
+          <p class="font-mono text-sm text-slate-600">_upsert_page · _upsert_activity · _upsert_scan · _upsert_count · _upsert_verdict · _upsert_detection — six copies of one ceremony</p>
+
+          <p class="text-sm text-slate-700"><b>The problem, in plain words.</b> Every worker's private upsert is the same conflict-resolution ceremony over a different table:</p>
+
+          <pre class="code rounded-lg bg-slate-900 text-slate-100 p-4"><code># the skeleton, six times with different columns
+stmt = pg_insert(Model).values(id=item_id, version=VERSION, ...columns...)
+stmt = stmt.on_conflict_do_update(
+    index_elements=[Model.id],
+    set_={"version": stmt.excluded.version, ...same columns again...},
+)
+session.execute(stmt)</code></pre>
+
+          <div class="grid md:grid-cols-2 gap-4 text-sm">
+            <div><p class="font-semibold text-slate-700">The possible move</p><p class="text-slate-600">One <span class="font-mono text-xs">upsert_signal(session, model, item_id, version, **columns)</span> that derives the <span class="font-mono text-xs">set_</span> dict from the payload keys — six ceremonies become six one-liners.</p></div>
+            <div><p class="font-semibold text-slate-700">Why it stays speculative</p><p class="text-slate-600">It pushes against a documented decision: <i>one file per worker owns everything, including its upsert</i>. The ceremony is also what a new contributor copies when adding a worker — it is boring on purpose. Land this only if a seventh worker makes the skeleton itself the thing being copy-pasted wrongly.</p></div>
+          </div>
+        </article>
+
+        <!-- ============ CANDIDATE 6 ============ -->
+        <article id="c6" class="rounded-xl border border-slate-200 bg-white p-6 space-y-5 shadow-sm">
+          <div class="flex items-start justify-between gap-4 flex-wrap">
+            <h2 class="font-serif text-xl">6 · Residue sweep — the stale words the stack left behind</h2>
+            <span class="rounded-full bg-emerald-100 text-emerald-800 text-xs font-semibold px-3 py-1">Strong — trivial</span>
+          </div>
+          <p class="text-sm text-slate-700"><b>Not a refactor — a truth pass.</b> Five places where the comments describe a pipeline that no longer exists, plus one small asymmetry:</p>
+          <div class="overflow-x-auto">
+            <table class="text-sm w-full">
+              <thead><tr class="text-left text-xs uppercase tracking-wider text-slate-400"><th class="py-1 pr-4">Where</th><th class="py-1">What it still says vs what is true</th></tr></thead>
+              <tbody class="divide-y divide-slate-100 text-slate-700">
+                <tr><td class="py-2 pr-4 font-mono text-xs">flows/enrich.py:20</td><td class="py-2">"This slice carries only <span class="font-mono text-xs">post_metadata</span> and <span class="font-mono text-xs">finalize</span>… remaining workers re-added one per slice" — <b>all seven workers are wired</b>. The most misleading line in the tree.</td></tr>
+                <tr><td class="py-2 pr-4 font-mono text-xs">flows/enrich.py:104</td><td class="py-2">"joins with <span class="font-mono text-xs">wait_for=[scrape]</span> <i>when it lands</i>" — it landed.</td></tr>
+                <tr><td class="py-2 pr-4 font-mono text-xs">deps.py:28</td><td class="py-2">"the Prefect tasks will, once they land" — they resolve through deps today; "the scheduler" it mentions was deleted.</td></tr>
+                <tr><td class="py-2 pr-4 font-mono text-xs">worker_run.py:7</td><td class="py-2">"Six copies of that protocol" — the loop now carries <b>seven</b> workers (post_metadata joined).</td></tr>
+                <tr><td class="py-2 pr-4 font-mono text-xs">test_ai_class.py:1</td><td class="py-2">docstring names the deleted <span class="font-mono text-xs">tasks.ai_class</span>; the module is <span class="font-mono text-xs">workers.ai_class</span>.</td></tr>
+                <tr><td class="py-2 pr-4 font-mono text-xs">post_metadata.py:80</td><td class="py-2"><span class="font-mono text-xs">_Prepared</span> smuggles a live <span class="font-mono text-xs">EnrichRepo</span> through the prepare→process context — the one worker whose context carries a collaborator instead of plain data. A module-level <span class="font-mono text-xs">_upsert_provenance(session, …)</span> restores the symmetry.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+
+      </section>
+
+      <!-- ============ LEFT ALONE ============ -->
+      <section class="rounded-xl border border-slate-200 bg-stone-100 p-6 space-y-2">
+        <h2 class="font-serif text-lg text-slate-700">Deletion-tested and deliberately left alone</h2>
+        <ul class="text-sm text-slate-600 space-y-1.5 list-disc list-inside">
+          <li><b><span class="font-mono text-xs">repo.py</span> is deep and fine.</b> ~20 methods, each one named SQL intent hiding a real statement; the shared-transaction contract is a module-wide invariant a split would fracture. The loop's slice is already extracted the right way — the <span class="font-mono text-xs">RunRepo</span> Protocol names exactly the three methods the envelope needs. No class split.</li>
+          <li><b><span class="font-mono text-xs">run_worker</span> is thin but earns its keep</b> — deleting it pushes five lines of deps/session/generation plumbing into seven task bodies. Complexity reappears at 7 callers: keep.</li>
+          <li><b><span class="font-mono text-xs">ai_class.classify</span> technically fails the deletion test</b> (it is <span class="font-mono text-xs">return classifier.classify(text)</span>) — but every worker file names its pure logic, and that anatomy symmetry is what the docs teach. Kept for the shape, with eyes open.</li>
+          <li><b><span class="font-mono text-xs">posts_last_week</span></b> adds only <span class="font-mono text-xs">now - _WINDOW</span> — marginal, but it names the trailing-week window as a testable fact. Keep.</li>
+          <li>Everything in <span class="font-mono text-xs">trade-offs.md</span> stands unchallenged, as before.</li>
+        </ul>
+      </section>
+
+      <!-- ============ TOP RECOMMENDATION ============ -->
+      <section id="top-recommendation" class="deep rounded-xl p-8 text-slate-100 space-y-3">
+        <p class="text-xs uppercase tracking-wider text-emerald-300">Top recommendation</p>
+        <h2 class="font-serif text-2xl">Candidates <a href="#c1" class="underline decoration-emerald-400 underline-offset-4">1</a> + <a href="#c2" class="underline decoration-emerald-400 underline-offset-4">2</a>, as one small PR — with the <a href="#c6" class="underline decoration-emerald-400 underline-offset-4">residue sweep (6)</a> riding along</h2>
+        <p class="text-slate-300 max-w-3xl text-sm">They are the same idea applied twice: <b>a read belongs to the module that owns the data</b> — the stored-page read-back moves beside <span class="font-mono text-xs">EnrScrape</span>, the by-id dict becomes a <span class="font-mono text-xs">SourceRepo</span> method. Together they delete the last worker-to-worker copy-paste and finish what PR #56 started: each worker file becomes almost nothing but its pure logic and its table. Candidates 4 and 5 wait until the worker family grows enough to justify a second layer.</p>
+      </section>
+
+      <footer class="text-xs text-slate-400 pb-8">
+        Generated 2026-07-15, over the unmerged stack tip (PRs #56–#61 applied) · previous review: <a class="underline" href="https://smalinux.github.io/architecture-review-20260715-055809.html">architecture-review-20260715-055809</a> · nothing in this report has been implemented
+      </footer>
+
+    </main>
+  </body>
+</html>
