@@ -2,417 +2,428 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>Architecture review — hn-enrich</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Architecture review — hn-enrich (plain English)</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script type="module">
-      import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
-      mermaid.initialize({ startOnLoad: true, theme: "neutral", securityLevel: "loose" });
-    </script>
     <style>
-      .seam { border-style: dashed; }
-      .deep { background: linear-gradient(135deg, #0f172a, #1e293b); }
-      .band { display:flex; align-items:center; padding:0 .6rem; font-size:.68rem; letter-spacing:.05em; text-transform:uppercase; }
+      pre.ascii { font-size: .72rem; line-height: 1.25; overflow-x: auto; }
+      pre.code  { font-size: .78rem; line-height: 1.45; overflow-x: auto; }
     </style>
   </head>
   <body class="bg-stone-50 text-slate-900 font-sans">
-    <main class="max-w-5xl mx-auto px-6 py-12 space-y-14">
+    <main class="max-w-4xl mx-auto px-6 py-12 space-y-14">
 
-      <header class="space-y-3">
+      <header class="space-y-4">
         <h1 class="font-serif text-3xl">Architecture review — <span class="text-indigo-700">hn-enrich</span></h1>
-        <p class="text-sm text-slate-500">src/hn_enrich/ · 2026-07-15 · six candidates, one top pick</p>
-        <div class="flex flex-wrap gap-4 text-xs text-slate-600 pt-1">
-          <span class="inline-flex items-center gap-1.5"><span class="inline-block w-4 h-3 border border-slate-500 bg-white"></span> module</span>
-          <span class="inline-flex items-center gap-1.5"><span class="inline-block w-4 h-0 border-t-2 border-dashed border-slate-500"></span> seam</span>
-          <span class="inline-flex items-center gap-1.5"><span class="inline-block w-4 h-0 border-t-2 border-red-600"></span> leakage</span>
-          <span class="inline-flex items-center gap-1.5"><span class="inline-block w-4 h-3 deep rounded-sm"></span> deep module</span>
+        <p class="text-sm text-slate-500">src/hn_enrich/ · 2026-07-15 · plain-English edition · tracked in
+          <a class="underline text-indigo-700" href="https://github.com/smalinux/hn-enrich/issues/55">PRD issue #55</a></p>
+
+        <div class="rounded-lg border border-indigo-200 bg-indigo-50 p-4 text-sm space-y-2">
+          <p class="font-semibold text-indigo-900">Five words this report uses, in plain English:</p>
+          <ul class="space-y-1 text-indigo-950">
+            <li><b>Module</b> — any piece of code with an outside (what callers see) and an inside (how it works). A function, a class, a file.</li>
+            <li><b>Interface</b> — everything you must <em>learn</em> to use a module correctly. Small interface = easy to use.</li>
+            <li><b>Deep module</b> — you learn a little, you get a lot. Lots of work hidden behind a small interface. The opposite (<b>shallow</b>) means you learn almost as much as the module actually does for you.</li>
+            <li><b>Seam</b> — the line where a module meets its callers. Tests and real callers should cross the <em>same</em> line.</li>
+            <li><b>Leverage / locality</b> — the two prizes. Leverage: one implementation serves many callers. Locality: when something breaks, the fix lives in one place.</li>
+          </ul>
         </div>
-        <p class="text-sm text-slate-600 max-w-3xl">Respected as settled (the trade-offs ledger in <span class="font-mono text-xs">docs/concepts/trade-offs.md</span>): deps as Service Locator · hand-written DAG · Postgres-as-queue · fake-by-default adapters. No candidate below re-litigates them; two touch documented design notes and say so.</p>
+
+        <p class="text-sm text-slate-600">Six findings. Each one shows the <b>real code today</b>, a <b>prototype of the change</b> (nothing is implemented yet), and an <b>ASCII picture</b>. Each is filed as a GitHub issue. Decisions already documented in <span class="font-mono text-xs">docs/concepts/trade-offs.md</span> (Service-Locator deps, hand-written DAG, Postgres-as-queue, fake-by-default) are respected — none is reopened here.</p>
       </header>
 
-      <section id="candidates" class="space-y-12">
-
-        <!-- ============ CANDIDATE 1 ============ -->
-        <article id="c1" class="rounded-xl border border-slate-200 bg-white p-6 space-y-5 shadow-sm">
-          <div class="flex items-start justify-between gap-4">
-            <h2 class="font-serif text-xl">1 · Deepen the worker envelope into one <em>worker run</em> module</h2>
-            <div class="flex gap-2 shrink-0">
-              <span class="rounded-full bg-emerald-100 text-emerald-800 text-xs font-semibold px-3 py-1">Strong</span>
-              <span class="rounded-full bg-slate-100 text-slate-600 text-xs px-3 py-1">in-process</span>
-            </div>
+      <!-- ================= 1 ================= -->
+      <article id="c1" class="rounded-xl border border-slate-200 bg-white p-6 space-y-4 shadow-sm">
+        <div class="flex items-start justify-between gap-3 flex-wrap">
+          <h2 class="font-serif text-xl">1 · Six workers copy the same loop</h2>
+          <div class="flex gap-2">
+            <a href="https://github.com/smalinux/hn-enrich/issues/49" class="rounded-full bg-indigo-100 text-indigo-800 text-xs font-semibold px-3 py-1 underline">issue #49</a>
+            <span class="rounded-full bg-emerald-100 text-emerald-800 text-xs font-semibold px-3 py-1">Strong — do this first</span>
           </div>
-          <p class="font-mono text-sm text-slate-600">workers/scrape_url.py:125 · word_count.py:86 · has_source_code.py · user_history.py · ads_count.py · ai_class.py:102 · repo.py:416 (runs_to_do)</p>
+        </div>
 
-          <div class="grid md:grid-cols-2 gap-4">
-            <div class="rounded-lg border border-slate-200 p-4">
-              <p class="text-xs uppercase tracking-wider text-slate-400 mb-3">Before — six copies of the risk</p>
-              <div class="grid grid-cols-3 gap-2">
-                <!-- six worker cards -->
-                <div class="border border-slate-400 rounded">
-                  <div class="band bg-emerald-100 text-emerald-900 h-5">pure fn ✓ tested</div>
-                  <div class="band bg-red-50 text-red-800 h-16 leading-tight">gate · retry · ledger · commit — docker-gated</div>
-                  <div class="text-[.6rem] text-center py-0.5 text-slate-500 font-mono">scrape_url</div>
-                </div>
-                <div class="border border-slate-400 rounded">
-                  <div class="band bg-emerald-100 text-emerald-900 h-5">pure fn ✓ tested</div>
-                  <div class="band bg-red-50 text-red-800 h-16 leading-tight">gate · retry · ledger · commit — docker-gated</div>
-                  <div class="text-[.6rem] text-center py-0.5 text-slate-500 font-mono">word_count</div>
-                </div>
-                <div class="border border-slate-400 rounded">
-                  <div class="band bg-emerald-100 text-emerald-900 h-5">pure fn ✓ tested</div>
-                  <div class="band bg-red-50 text-red-800 h-16 leading-tight">gate · retry · ledger · commit — docker-gated</div>
-                  <div class="text-[.6rem] text-center py-0.5 text-slate-500 font-mono">has_source_code</div>
-                </div>
-                <div class="border border-slate-400 rounded">
-                  <div class="band bg-emerald-100 text-emerald-900 h-5">pure fn ✓ tested</div>
-                  <div class="band bg-red-50 text-red-800 h-16 leading-tight">gate · retry · ledger · commit — docker-gated</div>
-                  <div class="text-[.6rem] text-center py-0.5 text-slate-500 font-mono">user_history</div>
-                </div>
-                <div class="border border-slate-400 rounded">
-                  <div class="band bg-emerald-100 text-emerald-900 h-5">pure fn ✓ tested</div>
-                  <div class="band bg-red-50 text-red-800 h-16 leading-tight">gate · retry · ledger · commit — docker-gated</div>
-                  <div class="text-[.6rem] text-center py-0.5 text-slate-500 font-mono">ads_count</div>
-                </div>
-                <div class="border border-slate-400 rounded">
-                  <div class="band bg-emerald-100 text-emerald-900 h-5">pure fn ✓ tested</div>
-                  <div class="band bg-red-50 text-red-800 h-16 leading-tight">gate · retry · ledger · commit — docker-gated</div>
-                  <div class="text-[.6rem] text-center py-0.5 text-slate-500 font-mono">ai_class</div>
-                </div>
-              </div>
-              <p class="text-xs text-red-700 mt-3">The tested band is <span class="font-mono">len(text.split())</span>. The untested band is the retry budget, skipped-vs-na, staleness gate, and who commits.</p>
-            </div>
-            <div class="rounded-lg border border-slate-200 p-4">
-              <p class="text-xs uppercase tracking-wider text-slate-400 mb-3">After — one deep module, six thin plug-ins</p>
-              <div class="flex flex-wrap gap-1.5 mb-1">
-                <span class="text-[.62rem] font-mono border border-emerald-400 bg-emerald-50 rounded px-1.5 py-0.5">scrape_url</span>
-                <span class="text-[.62rem] font-mono border border-emerald-400 bg-emerald-50 rounded px-1.5 py-0.5">word_count</span>
-                <span class="text-[.62rem] font-mono border border-emerald-400 bg-emerald-50 rounded px-1.5 py-0.5">has_source_code</span>
-                <span class="text-[.62rem] font-mono border border-emerald-400 bg-emerald-50 rounded px-1.5 py-0.5">user_history</span>
-                <span class="text-[.62rem] font-mono border border-emerald-400 bg-emerald-50 rounded px-1.5 py-0.5">ads_count</span>
-                <span class="text-[.62rem] font-mono border border-emerald-400 bg-emerald-50 rounded px-1.5 py-0.5">ai_class</span>
-              </div>
-              <p class="text-[.65rem] text-slate-500 mb-1">each keeps: name · version · model · pure logic · upsert (one file per worker survives)</p>
-              <div class="border-t-2 border-dashed border-slate-500 my-2 relative">
-                <span class="absolute -top-2 right-0 bg-white px-1 text-[.6rem] uppercase tracking-wider text-slate-500">seam · run(ids, worker, version, budget, process_one)</span>
-              </div>
-              <div class="deep rounded-lg text-slate-100 p-4 space-y-1">
-                <p class="text-xs uppercase tracking-wider text-slate-300">worker run — the envelope, once</p>
-                <p class="text-[.7rem] text-slate-400 font-mono">staleness gate → per-item try/except → attempts_for + failure_outcome → record_run → commit</p>
-              </div>
-              <p class="text-xs text-emerald-700 mt-3">Hermetic tests drive skipped / na / failed / dead / commit through this one interface — no Docker.</p>
-            </div>
-          </div>
+        <div class="text-sm text-slate-700 space-y-2">
+          <p><b>The problem, in plain words.</b> Every worker file has two parts. The first part is the <em>real work</em> — for <span class="font-mono text-xs">word_count</span> it is literally one line: <span class="font-mono text-xs">len(text.split())</span>. The second part is <em>the loop around it</em>: figure out which items still need work, catch errors, count retry attempts, write the result to the ledger, commit. That loop is copied, by hand, into <b>all six</b> worker files.</p>
+          <p>And the tests point the wrong way: the one-line functions have many unit tests, while the loop — where real bugs hide — is only tested when Docker is available. Two invisible rules make it worse: every worker must remember to call the staleness gate first, and must remember <span class="font-mono text-xs">session.commit()</span> at the end. Forget either, and things break <em>silently</em>.</p>
+        </div>
 
-          <div class="grid md:grid-cols-3 gap-4 text-sm">
-            <div><p class="font-semibold text-slate-700">Problem</p><p class="text-slate-600">The envelope — the code where the bugs live — is hand-copied into six worker files and tested only behind the Docker gate; the unit layer pins the trivial pure functions instead.</p></div>
-            <div><p class="font-semibold text-slate-700">Solution</p><p class="text-slate-600">One deep module owns the envelope; each worker file keeps its pure logic, model, and upsert, and hands the module a per-item callback. NA-vs-SKIPPED stays with the worker (domain); FAILED-vs-DEAD moves inside (protocol).</p></div>
-            <div>
-              <p class="font-semibold text-slate-700">Wins</p>
-              <ul class="text-slate-600 list-disc list-inside space-y-0.5">
-                <li>locality: retry protocol fixed once</li>
-                <li>leverage: one implementation, six callers</li>
-                <li>test surface lands on the risk</li>
-                <li>forgotten <span class="font-mono text-xs">commit()</span> becomes impossible</li>
-                <li>transaction ownership stops leaking (repo.py:9)</li>
-              </ul>
-            </div>
-          </div>
-        </article>
+        <p class="text-xs uppercase tracking-wider text-slate-400">The code today — the loop in word_count.py:86, and again (with try/except) in ai_class.py:102</p>
+        <pre class="code rounded-lg bg-slate-900 text-slate-100 p-4"><code>@task(name="ai_class")
+def ai_class(ids: list[int]) -> None:
+    settings = deps.settings()
+    classifier = deps.classifier()
+    with deps.enrich_session_factory()() as session:
+        repo = EnrichRepo(session)
+        todo = repo.runs_to_do(ids, WORKER, VERSION, settings.pipeline_generation)  # rule 1: don't forget
+        texts = _stored_texts(session, todo)
+        for item_id in todo:
+            text = texts.get(item_id)
+            error: str | None = None
+            attempts = 1
+            if text is None:
+                outcome = SKIPPED
+            else:
+                try:
+                    _upsert_verdict(session, item_id, classify(text, classifier=classifier))
+                    outcome = OK
+                except Exception as exc:
+                    attempts = repo.attempts_for(item_id, WORKER) + 1
+                    outcome = failure_outcome(attempts, settings.ai_class_retry_budget)
+                    error = str(exc)
+            repo.record_run(item_id, WORKER, outcome=outcome, attempts=attempts,
+                            version=VERSION, last_error=error)
+        session.commit()   # rule 2: don't forget — or the whole batch is silently lost</code></pre>
+        <p class="text-xs text-slate-500">Nearly the same code sits in <span class="font-mono">scrape_url.py:126</span>, <span class="font-mono">word_count.py:86</span>, <span class="font-mono">has_source_code.py</span>, <span class="font-mono">user_history.py</span>, <span class="font-mono">ads_count.py</span>.</p>
 
-        <!-- ============ CANDIDATE 2 ============ -->
-        <article id="c2" class="rounded-xl border border-slate-200 bg-white p-6 space-y-5 shadow-sm">
-          <div class="flex items-start justify-between gap-4">
-            <h2 class="font-serif text-xl">2 · Fold <span class="font-mono text-lg">tasks/post_metadata</span> into its one caller</h2>
-            <div class="flex gap-2 shrink-0">
-              <span class="rounded-full bg-emerald-100 text-emerald-800 text-xs font-semibold px-3 py-1">Strong</span>
-              <span class="rounded-full bg-slate-100 text-slate-600 text-xs px-3 py-1">in-process</span>
-            </div>
-          </div>
-          <p class="font-mono text-sm text-slate-600">tasks/post_metadata.py (50 lines) · flows/enrich.py:93–114</p>
+        <pre class="ascii rounded-lg border border-slate-200 bg-stone-100 p-4"><code>BEFORE: the same loop lives in 6 files
 
-          <div class="grid md:grid-cols-2 gap-4">
-            <div class="rounded-lg border border-slate-200 bg-white p-4">
-              <p class="text-xs uppercase tracking-wider text-slate-400 mb-2">Before — a dataclass shuttle</p>
-              <pre class="mermaid">
-flowchart LR
-  T["enrich flow task"] --> F["post_metadata(item)"]
-  F --> P["CoreProvenance<br/>5 fields"]
-  P --> D["destructured<br/>field-by-field"]
-  D --> U["repo.upsert_core"]
-  classDef leak stroke:#dc2626,stroke-width:2px;
-  class F,P,D leak
-              </pre>
-              <p class="text-xs text-red-700 mt-2">Only computation in the module: <span class="font-mono">has_url = item.url is not None</span>. The interface is as wide as the implementation — shallow.</p>
-            </div>
-            <div class="rounded-lg border border-slate-200 bg-white p-4">
-              <p class="text-xs uppercase tracking-wider text-slate-400 mb-2">After — inline</p>
-              <pre class="mermaid">
-flowchart LR
-  T["enrich flow task<br/>has_url inline"] --> U["repo.upsert_core"]
-  classDef deep fill:#0f172a,color:#f1f5f9,stroke:#0f172a;
-  class T deep
-              </pre>
-              <p class="text-xs text-slate-500 mt-2">The ledger row and DAG node survive — the task stays; only the shuttle module goes. WORKER/VERSION move to the task.</p>
-            </div>
-          </div>
+ scrape_url    word_count    has_source_code   user_history   ads_count    ai_class
+ ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐
+ │ pure fn ✓│  │ pure fn ✓│  │ pure fn ✓│  │ pure fn ✓│  │ pure fn ✓│  │ pure fn ✓│
+ ├──────────┤  ├──────────┤  ├──────────┤  ├──────────┤  ├──────────┤  ├──────────┤
+ │ THE LOOP │  │ THE LOOP │  │ THE LOOP │  │ THE LOOP │  │ THE LOOP │  │ THE LOOP │
+ │ (copy 1) │  │ (copy 2) │  │ (copy 3) │  │ (copy 4) │  │ (copy 5) │  │ (copy 6) │
+ └──────────┘  └──────────┘  └──────────┘  └──────────┘  └──────────┘  └──────────┘
+     ✗ the loop is only tested when Docker is available
 
-          <div class="grid md:grid-cols-3 gap-4 text-sm">
-            <div><p class="font-semibold text-slate-700">Problem</p><p class="text-slate-600">Deletion test passes: remove the module and complexity vanishes — nothing reappears, there is exactly one caller.</p></div>
-            <div><p class="font-semibold text-slate-700">Solution</p><p class="text-slate-600">Inline the derivation into the flow's task (or, if candidate 1 lands, make it a plain worker under the envelope). It earned its keep as the tracer bullet; that debt is paid.</p></div>
-            <div>
-              <p class="font-semibold text-slate-700">Wins</p>
-              <ul class="text-slate-600 list-disc list-inside space-y-0.5">
-                <li>delete one shallow module</li>
-                <li>one fewer bounce on the spine path</li>
-                <li>interface shrinks to nothing</li>
-              </ul>
-            </div>
-          </div>
-        </article>
+AFTER: one loop, six small plug-ins
 
-        <!-- ============ CANDIDATE 3 ============ -->
-        <article id="c3" class="rounded-xl border border-slate-200 bg-white p-6 space-y-5 shadow-sm">
-          <div class="flex items-start justify-between gap-4">
-            <h2 class="font-serif text-xl">3 · Give the status vocabulary — and its disjointness — one home</h2>
-            <div class="flex gap-2 shrink-0">
-              <span class="rounded-full bg-amber-100 text-amber-800 text-xs font-semibold px-3 py-1">Worth exploring</span>
-              <span class="rounded-full bg-slate-100 text-slate-600 text-xs px-3 py-1">in-process</span>
-            </div>
-          </div>
-          <p class="font-mono text-sm text-slate-600">workqueue.py:49–51 · finalize.py:38–41 · tests/unit/test_workqueue.py:16 · repo.py (claim :149 / heal :384)</p>
+ scrape_url  word_count  has_source_code  user_history  ads_count  ai_class
+     │           │              │              │             │          │
+     └─────┬─────┴──────┬───────┴───────┬──────┴──────┬──────┴────┬────┘
+           ▼            ▼               ▼             ▼           ▼
+ ═══ seam: run_worker(ids, worker=..., version=..., budget=..., process=...) ═══
+ ┌───────────────────────────────────────────────────────────────────┐
+ │  worker_run  —  the loop, written ONCE                            │
+ │  runs_to_do gate → try/except → attempt counting → ledger → commit│
+ └───────────────────────────────────────────────────────────────────┘
+     ✓ fast unit tests, no Docker: skipped / na / failed / dead / commit</code></pre>
 
-          <div class="grid md:grid-cols-2 gap-4">
-            <div class="rounded-lg border border-slate-200 p-4">
-              <p class="text-xs uppercase tracking-wider text-slate-400 mb-3">Before — one column, two owners, no union</p>
-              <div class="flex gap-3">
-                <div class="flex-1 border border-slate-400 rounded p-2">
-                  <p class="text-[.65rem] uppercase tracking-wider text-slate-500">workqueue</p>
-                  <p class="font-mono text-xs">PENDING · RUNNING<br/><span class="text-slate-400">UNSETTLED = (…)</span></p>
-                </div>
-                <div class="flex-1 border border-slate-400 rounded p-2">
-                  <p class="text-[.65rem] uppercase tracking-wider text-slate-500">finalize</p>
-                  <p class="font-mono text-xs">SUCCESS · PARTIAL · DEGRADED · FAILED_STATUS<br/><span class="text-red-600">no SETTLED tuple exported</span></p>
-                </div>
-              </div>
-              <div class="mt-3 border-2 border-dashed border-red-400 rounded p-2 text-xs text-red-700">
-                the invariant lives in a test that rebuilds the settled set by hand — a new settled status added to <span class="font-mono">finalize</span> silently misses it
-              </div>
-            </div>
-            <div class="rounded-lg border border-slate-200 p-4">
-              <p class="text-xs uppercase tracking-wider text-slate-400 mb-3">After — disjoint by construction</p>
-              <div class="deep rounded-lg text-slate-100 p-3">
-                <p class="text-[.65rem] uppercase tracking-wider text-slate-300">the status column's value-set, one module</p>
-                <p class="font-mono text-xs text-slate-300 mt-1">UNSETTLED = (pending, running)<br/>SETTLED = (success, partial, degraded, failed)<br/><span class="text-emerald-300">assert disjoint at import — or one enum</span></p>
-              </div>
-              <p class="text-xs text-slate-500 mt-3">Claim (repo.py:149) and heal (repo.py:384) both select from tuples the same module exports. The test stops re-deriving the set.</p>
-            </div>
-          </div>
+        <p class="text-xs uppercase tracking-wider text-slate-400">Prototype — worker_run.py (new module) and word_count after the change</p>
+        <pre class="code rounded-lg bg-slate-900 text-slate-100 p-4"><code># worker_run.py (PROTOTYPE — the Template Method pattern: shared skeleton, one step per worker)
+def run_worker(ids, *, worker, version, retry_budget, process):
+    settings = deps.settings()
+    with deps.enrich_session_factory()() as session:
+        repo = EnrichRepo(session)
+        todo = repo.runs_to_do(ids, worker, version, settings.pipeline_generation)
+        for item_id in todo:
+            error, attempts = None, 1
+            try:
+                outcome = process(session, item_id)      # the worker's ONE step
+            except Exception as exc:
+                attempts = repo.attempts_for(item_id, worker) + 1
+                outcome = failure_outcome(attempts, retry_budget)
+                error = str(exc)
+            repo.record_run(item_id, worker, outcome=outcome,
+                            attempts=attempts, version=version, last_error=error)
+        session.commit()          # written once; no worker can forget it
 
-          <div class="grid md:grid-cols-3 gap-4 text-sm">
-            <div><p class="font-semibold text-slate-700">Problem</p><p class="text-slate-600">Two modules jointly own one column's value-set; the load-bearing disjointness invariant has no owner in production code.</p></div>
-            <div><p class="font-semibold text-slate-700">Solution</p><p class="text-slate-600">Smallest move: <span class="font-mono text-xs">finalize</span> exports <span class="font-mono text-xs">SETTLED</span>, and one module asserts disjointness at import. Larger move: one vocabulary module for the whole lifecycle.</p></div>
-            <div>
-              <p class="font-semibold text-slate-700">Wins</p>
-              <ul class="text-slate-600 list-disc list-inside space-y-0.5">
-                <li>locality: the invariant gets an owner</li>
-                <li>new statuses can't dodge the check</li>
-                <li>test asserts, no longer re-derives</li>
-              </ul>
-            </div>
-          </div>
-          <div class="rounded-md bg-amber-50 border border-amber-200 text-amber-900 text-xs px-3 py-2">
-            Touches a documented decision — <span class="font-mono">work-queue.md</span> assigns each half an owner deliberately. The split can stand; it's the <em>union</em> that needs a home.
-          </div>
-        </article>
 
-        <!-- ============ CANDIDATE 4 ============ -->
-        <article id="c4" class="rounded-xl border border-slate-200 bg-white p-6 space-y-5 shadow-sm">
-          <div class="flex items-start justify-between gap-4">
-            <h2 class="font-serif text-xl">4 · One home for the redirect walk</h2>
-            <div class="flex gap-2 shrink-0">
-              <span class="rounded-full bg-amber-100 text-amber-800 text-xs font-semibold px-3 py-1">Worth exploring</span>
-              <span class="rounded-full bg-slate-100 text-slate-600 text-xs px-3 py-1">ports &amp; adapters</span>
-            </div>
-          </div>
-          <p class="font-mono text-sm text-slate-600">politeness.py:134 (assert_public_url) · adapters.py:95–115 (HttpxFetcher.fetch)</p>
+# word_count.py after — keeps its model, upsert, and pure logic; only the loop leaves
+@task(name="word_count")
+def word_count(ids: list[int]) -> None:
+    def process(session, item_id):
+        text = _stored_text(session, item_id)
+        if text is None:
+            return SKIPPED        # the worker still owns the na/skipped decision
+        _upsert_count(session, item_id, count_words(text))
+        return OK
+    run_worker(ids, worker=WORKER, version=VERSION, retry_budget=1, process=process)</code></pre>
 
-          <div class="grid md:grid-cols-2 gap-4">
-            <div class="rounded-lg border border-slate-200 bg-white p-4">
-              <p class="text-xs uppercase tracking-wider text-slate-400 mb-2">Before — the invariant is a prose contract</p>
-              <pre class="mermaid">
-flowchart TB
-  G["politeness.assert_public_url<br/>judges ONE hop"]
-  H["HttpxFetcher.fetch<br/>owns the LOOP: follow_redirects=False,<br/>guard every hop, bounded"]
-  S["future fetching adapter<br/>(real TrackerRadarScanner …)"]
-  H -->|calls per hop| G
-  S -.must re-remember the whole rule.-> G
-  classDef leak stroke:#dc2626,stroke-width:2px;
-  class S leak
-              </pre>
-              <p class="text-xs text-red-700 mt-2">"Guard the whole chain" is split across two modules and enforced by docstring. The bug shape it prevents leaves no witness in any log.</p>
-            </div>
-            <div class="rounded-lg border border-slate-200 bg-white p-4">
-              <p class="text-xs uppercase tracking-wider text-slate-400 mb-2">After — the loop is a reusable piece of politeness</p>
-              <pre class="mermaid">
-flowchart TB
-  W["politeness.walk_redirects(fetch_once, url)<br/>guard every hop · bounded · refusal names the hop"]
-  H2["HttpxFetcher<br/>supplies fetch_once"]
-  S2["future adapter<br/>supplies fetch_once"]
-  H2 --> W
-  S2 --> W
-  classDef deep fill:#0f172a,color:#f1f5f9,stroke:#0f172a;
-  class W deep
-              </pre>
-              <p class="text-xs text-slate-500 mt-2">The guard still runs inside the adapter's fetch path — the documented rule holds; the loop just stops being copy-me knowledge.</p>
-            </div>
-          </div>
+        <ul class="text-sm text-slate-700 list-disc list-inside space-y-1">
+          <li><b>Locality:</b> the retry/ledger/commit protocol is fixed once, fixed everywhere.</li>
+          <li><b>Leverage:</b> one implementation, six callers.</li>
+          <li>The tests finally land on the risky code — and run fast, without Docker.</li>
+          <li>"One file per worker" survives: each file keeps its name, version, table, upsert, pure logic.</li>
+        </ul>
+      </article>
 
-          <div class="grid md:grid-cols-3 gap-4 text-sm">
-            <div><p class="font-semibold text-slate-700">Problem</p><p class="text-slate-600">The SSRF module's core invariant — re-guard every hop, never let the client follow — is implemented in the adapter, so every future fetching adapter must re-remember it.</p></div>
-            <div><p class="font-semibold text-slate-700">Solution</p><p class="text-slate-600">Extract the hop-loop into politeness as a driver the adapter hands its single-hop fetch to. The invariant gets one implementation and one test surface.</p></div>
-            <div>
-              <p class="font-semibold text-slate-700">Wins</p>
-              <ul class="text-slate-600 list-disc list-inside space-y-0.5">
-                <li>locality: safety rule, one module</li>
-                <li>next adapter can't forget it</li>
-                <li>chain tests move beside the guard</li>
-              </ul>
-            </div>
+      <!-- ================= 2 ================= -->
+      <article id="c2" class="rounded-xl border border-slate-200 bg-white p-6 space-y-4 shadow-sm">
+        <div class="flex items-start justify-between gap-3 flex-wrap">
+          <h2 class="font-serif text-xl">2 · <span class="font-mono text-lg">tasks/post_metadata.py</span> does almost nothing</h2>
+          <div class="flex gap-2">
+            <a href="https://github.com/smalinux/hn-enrich/issues/50" class="rounded-full bg-indigo-100 text-indigo-800 text-xs font-semibold px-3 py-1 underline">issue #50</a>
+            <span class="rounded-full bg-emerald-100 text-emerald-800 text-xs font-semibold px-3 py-1">Strong — small &amp; safe</span>
           </div>
-          <div class="rounded-md bg-amber-50 border border-amber-200 text-amber-900 text-xs px-3 py-2">
-            Honest caveat: today exactly one adapter fetches — one consumer makes this seam hypothetical. It turns real the day the tracker scanner's real adapter lands. Safety-invariant homing is the argument for doing it early anyway.
+        </div>
+
+        <p class="text-sm text-slate-700"><b>The problem, in plain words.</b> This 50-line file has exactly one line of real work: <span class="font-mono text-xs">has_url = item.url is not None</span>. The rest packs five values into a box (<span class="font-mono text-xs">CoreProvenance</span>) — and the only caller immediately unpacks the box again, field by field. Learning this module costs as much as it does for you. Delete it and nothing gets worse: that is the test for a pass-through.</p>
+
+        <p class="text-xs uppercase tracking-wider text-slate-400">The code today — pack (post_metadata.py:43) then immediately unpack (flows/enrich.py:103)</p>
+        <pre class="code rounded-lg bg-slate-900 text-slate-100 p-4"><code>def post_metadata(item, *, mode, generation) -> CoreProvenance:
+    return CoreProvenance(
+        mode=mode,                          # passed in, passed out
+        source_fetched_at=item.fetched_at,  # copied from item
+        item_type=item.type,                # copied from item
+        has_url=item.url is not None,       # &lt;- the only real work
+        generation=generation,              # passed in, passed out
+    )
+
+# ...and the ONLY caller unpacks it right back:
+prov = pm.post_metadata(item, mode=modes.get(item.id, RECENT), generation=...)
+repo.upsert_core(
+    item.id,
+    mode=prov.mode, source_fetched_at=prov.source_fetched_at,
+    item_type=prov.item_type, has_url=prov.has_url, generation=prov.generation,
+)</code></pre>
+
+        <pre class="ascii rounded-lg border border-slate-200 bg-stone-100 p-4"><code>BEFORE:  item ──► post_metadata() ──► CoreProvenance ──► unpack 5 fields ──► upsert_core
+                  (copies fields)      (a box)           (unpacks the box)
+
+AFTER:   item ─────────────────────────────────────────────────────────────► upsert_core
+                              (has_url computed inline)</code></pre>
+
+        <p class="text-xs uppercase tracking-wider text-slate-400">Prototype — the flow task after the fold</p>
+        <pre class="code rounded-lg bg-slate-900 text-slate-100 p-4"><code>for item in source.get_items(ids):
+    if item.id not in todo:
+        continue
+    repo.upsert_core(
+        item.id,
+        mode=modes.get(item.id, RECENT),
+        source_fetched_at=item.fetched_at,
+        item_type=item.type,
+        has_url=item.url is not None,      # the one real line, now inline
+        generation=settings.pipeline_generation,
+    )
+    repo.record_run(item.id, PM_WORKER, outcome=OK, attempts=1, version=PM_VERSION)</code></pre>
+
+        <ul class="text-sm text-slate-700 list-disc list-inside space-y-1">
+          <li>One shallow module deleted; one less file to read on the main path.</li>
+          <li>The <b>task</b>, its ledger rows, and the DAG node all stay — only the box goes.</li>
+          <li>The file's docstring calls it "the first tracer bullet". True — but that job is finished.</li>
+        </ul>
+      </article>
+
+      <!-- ================= 3 ================= -->
+      <article id="c3" class="rounded-xl border border-slate-200 bg-white p-6 space-y-4 shadow-sm">
+        <div class="flex items-start justify-between gap-3 flex-wrap">
+          <h2 class="font-serif text-xl">3 · The status words have no single owner</h2>
+          <div class="flex gap-2">
+            <a href="https://github.com/smalinux/hn-enrich/issues/51" class="rounded-full bg-indigo-100 text-indigo-800 text-xs font-semibold px-3 py-1 underline">issue #51</a>
+            <span class="rounded-full bg-amber-100 text-amber-800 text-xs font-semibold px-3 py-1">Worth exploring</span>
           </div>
-        </article>
+        </div>
 
-        <!-- ============ CANDIDATE 5 ============ -->
-        <article id="c5" class="rounded-xl border border-slate-200 bg-white p-6 space-y-5 shadow-sm">
-          <div class="flex items-start justify-between gap-4">
-            <h2 class="font-serif text-xl">5 · Give <span class="font-mono text-lg">inspect.main</span> the teardown shape</h2>
-            <div class="flex gap-2 shrink-0">
-              <span class="rounded-full bg-amber-100 text-amber-800 text-xs font-semibold px-3 py-1">Worth exploring</span>
-              <span class="rounded-full bg-slate-100 text-slate-600 text-xs px-3 py-1">local-substitutable</span>
-            </div>
+        <p class="text-sm text-slate-700"><b>The problem, in plain words.</b> The <span class="font-mono text-xs">status</span> column can hold six words, defined in two files: <span class="font-mono text-xs">workqueue.py</span> owns "not finished" (<span class="font-mono text-xs">pending, running</span>), <span class="font-mono text-xs">finalize.py</span> owns "finished" (<span class="font-mono text-xs">success, partial, degraded, failed</span>). The system is only safe if the two sets never overlap — the claim query picks by one set, the nightly heal by the other. But no production code checks this. Only a unit test does, and the test has to <em>rebuild the finished set by hand</em>, because finalize never exports it. Add a new finished status tomorrow and forget the test — the safety check quietly stops covering it.</p>
+
+        <pre class="ascii rounded-lg border border-slate-200 bg-stone-100 p-4"><code>BEFORE: one column, two owners, and the rule floats in a test
+
+   workqueue.py                 finalize.py
+  ┌───────────────┐           ┌────────────────────────┐
+  │ pending       │           │ success   partial      │
+  │ running       │           │ degraded  failed       │
+  │ UNSETTLED=(..)│           │ (no SETTLED tuple!)    │
+  └───────┬───────┘           └───────────┬────────────┘
+          └───────── who checks ──────────┘
+                 they never overlap?
+          ┌──────────────────────────────┐
+          │ one unit test, rebuilding    │  ← easy to forget to update
+          │ the settled set by hand      │
+          └──────────────────────────────┘
+
+AFTER: the rule owns itself
+
+   finalize.py:  SETTLED = (SUCCESS, PARTIAL, DEGRADED, FAILED_STATUS)
+                     │
+                     ▼
+   assert set(UNSETTLED).isdisjoint(set(SETTLED))   ← runs at import, every time</code></pre>
+
+        <p class="text-xs uppercase tracking-wider text-slate-400">Prototype — two tiny edits</p>
+        <pre class="code rounded-lg bg-slate-900 text-slate-100 p-4"><code># finalize.py — export the tuple (today the four constants have no tuple):
+SETTLED = (SUCCESS, PARTIAL, DEGRADED, FAILED_STATUS)
+
+# one import-time check (cycle-free in either direction):
+assert set(UNSETTLED).isdisjoint(set(SETTLED)), (
+    "status vocabulary overlap: " f"{set(UNSETTLED) &amp; set(SETTLED)}"
+)</code></pre>
+
+        <ul class="text-sm text-slate-700 list-disc list-inside space-y-1">
+          <li>The overlap rule gets an owner in production code, not just in a test.</li>
+          <li>A new settled status <b>cannot</b> dodge the check.</li>
+          <li>The heal query can use <span class="font-mono text-xs">SETTLED</span> instead of listing statuses inline (repo.py:384).</li>
+        </ul>
+        <div class="rounded-md bg-amber-50 border border-amber-200 text-amber-900 text-xs px-3 py-2">
+          The docs deliberately give each half an owner (<span class="font-mono">work-queue.md</span>). That split stays — only the <em>union</em> gains a guard.
+        </div>
+      </article>
+
+      <!-- ================= 4 ================= -->
+      <article id="c4" class="rounded-xl border border-slate-200 bg-white p-6 space-y-4 shadow-sm">
+        <div class="flex items-start justify-between gap-3 flex-wrap">
+          <h2 class="font-serif text-xl">4 · The SSRF redirect rule is split across two files</h2>
+          <div class="flex gap-2">
+            <a href="https://github.com/smalinux/hn-enrich/issues/52" class="rounded-full bg-indigo-100 text-indigo-800 text-xs font-semibold px-3 py-1 underline">issue #52</a>
+            <span class="rounded-full bg-amber-100 text-amber-800 text-xs font-semibold px-3 py-1">Worth exploring</span>
           </div>
-          <p class="font-mono text-sm text-slate-600">inspect.py:109–138 (untested) · teardown.py (the in-repo model: pure guard + injected effect + tested main)</p>
+        </div>
 
-          <div class="grid md:grid-cols-2 gap-4">
-            <div class="rounded-lg border border-slate-200 p-4">
-              <p class="text-xs uppercase tracking-wider text-slate-400 mb-3">Before — interface vs tested surface</p>
-              <div class="flex gap-6 items-end">
-                <div class="text-center">
-                  <div class="w-28">
-                    <div class="h-10 bg-emerald-200 border border-emerald-500 band justify-center text-emerald-900">formatters ✓</div>
-                    <div class="h-24 bg-red-100 border border-red-400 band justify-center text-red-800">main: argparse + wiring — untested</div>
-                  </div>
-                  <p class="text-[.65rem] font-mono mt-1 text-slate-500">inspect</p>
-                </div>
-                <div class="text-center">
-                  <div class="w-28">
-                    <div class="h-10 bg-emerald-200 border border-emerald-500 band justify-center text-emerald-900">pure guard ✓</div>
-                    <div class="h-10 bg-emerald-200 border border-emerald-500 band justify-center text-emerald-900">effect ✓ (injected)</div>
-                    <div class="h-10 bg-emerald-200 border border-emerald-500 band justify-center text-emerald-900">main ✓</div>
-                  </div>
-                  <p class="text-[.65rem] font-mono mt-1 text-slate-500">teardown (the model)</p>
-                </div>
-              </div>
-            </div>
-            <div class="rounded-lg border border-slate-200 p-4">
-              <p class="text-xs uppercase tracking-wider text-slate-400 mb-3">After — same split, applied</p>
-              <div class="w-40">
-                <div class="h-10 bg-emerald-200 border border-emerald-500 band justify-center text-emerald-900">formatters ✓</div>
-                <div class="h-10 bg-emerald-200 border border-emerald-500 band justify-center text-emerald-900">dispatch ✓ (flags→reports)</div>
-                <div class="h-10 border-2 border-dashed border-slate-500 band justify-center text-slate-600">session/repo injected at the seam</div>
-              </div>
-              <p class="text-[.65rem] font-mono mt-1 text-slate-500">inspect, deepened</p>
-              <p class="text-xs text-slate-500 mt-2">The dispatch — which flags run which reports against which reader — becomes testable without a database.</p>
-            </div>
+        <p class="text-sm text-slate-700"><b>The problem, in plain words.</b> The pipeline fetches URLs from the public internet — attacker-influenced input. The guard refuses URLs pointing at private/internal addresses. The <em>most important</em> part of the rule: check <b>every redirect hop</b>, because a harmless-looking public URL can redirect to <span class="font-mono text-xs">http://169.254.169.254/…</span>. Today the guard function (one URL at a time) lives in <span class="font-mono text-xs">politeness.py</span>, but the loop that applies it to every hop lives inside the HTTP adapter in <span class="font-mono text-xs">adapters.py</span>. The two halves are held together by a docstring. The next fetching adapter (the future browser-based tracker scanner) must re-remember all of it from prose — and getting it wrong leaves no trace in any log.</p>
+
+        <p class="text-xs uppercase tracking-wider text-slate-400">The code today — the loop inside HttpxFetcher (adapters.py:95)</p>
+        <pre class="code rounded-lg bg-slate-900 text-slate-100 p-4"><code>with httpx.Client(..., follow_redirects=False, ...) as client:   # part 1 of the rule
+    hop = url
+    for _ in range(self._max_redirects + 1):                      # part 3: bounded
+        assert_public_url(hop, resolve=self._resolve)             # part 2: EVERY hop
+        response = client.get(hop)
+        if response.next_request is None:
+            return FetchResult(...)
+        hop = str(response.next_request.url)
+raise httpx.TooManyRedirects(...)</code></pre>
+
+        <pre class="ascii rounded-lg border border-slate-200 bg-stone-100 p-4"><code>BEFORE: a prose contract between two files          AFTER: the loop moves home
+
+ politeness.py          adapters.py                  politeness.py
+┌──────────────────┐   ┌────────────────────┐      ┌─────────────────────────────┐
+│assert_public_url │◄──│ HttpxFetcher       │      │ walk_redirects(fetch_once,  │
+│judges ONE url    │   │ owns THE LOOP      │      │   url, max_redirects)       │
+│                  │   │                    │      │  guards every hop, bounded  │
+│docstring: "the   │   └────────────────────┘      └──────┬───────────┬──────────┘
+│adapter must      │        ▲                             │           │
+│loop!"            │        │ future scanner adapter      │           │
+└──────────────────┘        │ re-implements from prose ✗  HttpxFetcher future adapter
+                                                          gives 1-hop  gives 1-hop
+                                                          GET  ✓ can't forget the rule</code></pre>
+
+        <p class="text-xs uppercase tracking-wider text-slate-400">Prototype — politeness owns the walk; the adapter supplies one hop</p>
+        <pre class="code rounded-lg bg-slate-900 text-slate-100 p-4"><code># politeness.py (PROTOTYPE)
+def walk_redirects(fetch_once, url, *, max_redirects, resolve=default_resolve):
+    """The whole SSRF redirect rule in one place: never let the client follow
+    redirects itself; judge each hop before touching it; give up loudly."""
+    hop = url
+    for _ in range(max_redirects + 1):
+        assert_public_url(hop, resolve=resolve)
+        result = fetch_once(hop)             # transport-specific, injected
+        if result.next_url is None:
+            return result.response
+        hop = result.next_url
+    raise TooManyRedirects(f"gave up after {max_redirects} redirect(s) at {hop!r}")</code></pre>
+
+        <ul class="text-sm text-slate-700 list-disc list-inside space-y-1">
+          <li><b>Locality:</b> a security rule gets one home and one test surface.</li>
+          <li>The next fetching adapter cannot forget the rule — it never sees it.</li>
+        </ul>
+        <div class="rounded-md bg-amber-50 border border-amber-200 text-amber-900 text-xs px-3 py-2">
+          Honest caveat: only one adapter fetches today, and normally one user does not justify a seam. The argument for doing it early: this failure mode is <em>silent</em> — no log, no failing test, just an open hole. Safety rules earn a home before the second user arrives.
+        </div>
+      </article>
+
+      <!-- ================= 5 ================= -->
+      <article id="c5" class="rounded-xl border border-slate-200 bg-white p-6 space-y-4 shadow-sm">
+        <div class="flex items-start justify-between gap-3 flex-wrap">
+          <h2 class="font-serif text-xl">5 · <span class="font-mono text-lg">inspect.main()</span> is the only untested CLI</h2>
+          <div class="flex gap-2">
+            <a href="https://github.com/smalinux/hn-enrich/issues/53" class="rounded-full bg-indigo-100 text-indigo-800 text-xs font-semibold px-3 py-1 underline">issue #53</a>
+            <span class="rounded-full bg-amber-100 text-amber-800 text-xs font-semibold px-3 py-1">Worth exploring</span>
           </div>
+        </div>
 
-          <div class="grid md:grid-cols-3 gap-4 text-sm">
-            <div><p class="font-semibold text-slate-700">Problem</p><p class="text-slate-600">The operator CLI's read path is unproven end-to-end: unit tests cover the five pure formatters, nothing covers <span class="font-mono text-xs">main</span> — while its sibling CLIs (limits, teardown) test theirs.</p></div>
-            <div><p class="font-semibold text-slate-700">Solution</p><p class="text-slate-600">Inject the session/repo at <span class="font-mono text-xs">main</span>'s seam, exactly as <span class="font-mono text-xs">teardown.main</span> already does with its drop effect.</p></div>
-            <div>
-              <p class="font-semibold text-slate-700">Wins</p>
-              <ul class="text-slate-600 list-disc list-inside space-y-0.5">
-                <li>dispatch logic gains fast tests</li>
-                <li>consistency: three CLIs, one shape</li>
-                <li>no new pattern — reuse teardown's</li>
-              </ul>
-            </div>
+        <p class="text-sm text-slate-700"><b>The problem, in plain words.</b> Three operator CLIs live in this repo. <span class="font-mono text-xs">limits.main</span> is tested. <span class="font-mono text-xs">teardown.main</span> is tested. <span class="font-mono text-xs">inspect.main</span> — the code that decides which flag prints which report, and wires the database session — has <b>zero</b> tests, unit or integration. The fix is already invented in this very repo: <span class="font-mono text-xs">teardown.main</span> takes its effects as injectable parameters, so tests run it without a database. <span class="font-mono text-xs">inspect.main</span> just never got the same shape.</p>
+
+        <pre class="ascii rounded-lg border border-slate-200 bg-stone-100 p-4"><code>              limits.py        teardown.py            inspect.py
+ pure logic     ✓ tested         ✓ tested          ✓ tested (5 formatters)
+ main()         ✓ tested         ✓ tested          ✗ NOTHING
+
+ teardown.main (the in-repo model):        inspect.main (today):
+ def main(argv=None, *,                    def main(argv=None):
+     drop=downgrade_to_base,  ← seam           ...
+     emit=print):             ← seam           with session_factory(dsn)():  ← hard-wired
+                                                   print(...)                ← bare print</code></pre>
+
+        <p class="text-xs uppercase tracking-wider text-slate-400">Prototype — copy teardown's shape</p>
+        <pre class="code rounded-lg bg-slate-900 text-slate-100 p-4"><code>def main(argv=None, *, open_readers=_production_readers, emit=print) -> int:
+    ...
+    with open_readers() as r:
+        if args.status:
+            emit(format_status_report(r.status_counts()))
+        if args.dead:
+            emit(format_dead_report(r.dead_runs()))
+        ...
+
+# a unit test needs no database at all:
+def test_dead_flag_prints_the_dead_report() -> None:
+    lines = []
+    assert main(["--dead"], open_readers=lambda: nullcontext(fake), emit=lines.append) == 0</code></pre>
+
+        <ul class="text-sm text-slate-700 list-disc list-inside space-y-1">
+          <li>The flag-dispatch logic gains fast tests.</li>
+          <li>Three CLIs, one shape — learn it once.</li>
+          <li>No new pattern; <span class="font-mono text-xs">teardown.py</span> is copied, not improved upon.</li>
+        </ul>
+      </article>
+
+      <!-- ================= 6 ================= -->
+      <article id="c6" class="rounded-xl border border-slate-200 bg-white p-6 space-y-4 shadow-sm">
+        <div class="flex items-start justify-between gap-3 flex-wrap">
+          <h2 class="font-serif text-xl">6 · Five test files copy the same 15-line rig</h2>
+          <div class="flex gap-2">
+            <a href="https://github.com/smalinux/hn-enrich/issues/54" class="rounded-full bg-indigo-100 text-indigo-800 text-xs font-semibold px-3 py-1 underline">issue #54</a>
+            <span class="rounded-full bg-amber-100 text-amber-800 text-xs font-semibold px-3 py-1">Worth exploring</span>
           </div>
-        </article>
+        </div>
 
-        <!-- ============ CANDIDATE 6 ============ -->
-        <article id="c6" class="rounded-xl border border-slate-200 bg-white p-6 space-y-5 shadow-sm">
-          <div class="flex items-start justify-between gap-4">
-            <h2 class="font-serif text-xl">6 · One test rig behind the deps seam</h2>
-            <div class="flex gap-2 shrink-0">
-              <span class="rounded-full bg-amber-100 text-amber-800 text-xs font-semibold px-3 py-1">Worth exploring</span>
-              <span class="rounded-full bg-slate-100 text-slate-600 text-xs px-3 py-1">mock</span>
-            </div>
-          </div>
-          <p class="font-mono text-sm text-slate-600">tests/integration/test_enrich_flow.py:41 · test_word_count_flow.py:53 · test_requeue_flow.py:53 · test_discovery.py:45 · test_scrape_url_flow.py:43</p>
+        <p class="text-sm text-slate-700"><b>The problem, in plain words.</b> Every integration flow test needs the same setup: build a <span class="font-mono text-xs">Settings</span>, a <span class="font-mono text-xs">SourceRepo</span>, a session factory, and a <span class="font-mono text-xs">FakeFetcher</span>, then install all four behind the <span class="font-mono text-xs">deps</span> seam. Five test files each define their own copy of this helper (<span class="font-mono text-xs">test_enrich_flow.py:41</span>, <span class="font-mono text-xs">test_word_count_flow.py:53</span>, <span class="font-mono text-xs">test_requeue_flow.py:53</span>, <span class="font-mono text-xs">test_discovery.py:45</span>, <span class="font-mono text-xs">test_scrape_url_flow.py:43</span>). Every new flow test starts by copying it again.</p>
 
-          <div class="grid md:grid-cols-2 gap-4">
-            <div class="rounded-lg border border-slate-200 p-4">
-              <p class="text-xs uppercase tracking-wider text-slate-400 mb-3">Before — five copies of the wiring</p>
-              <div class="grid grid-cols-5 gap-1.5">
-                <div class="border border-slate-400 rounded p-1"><p class="text-[.55rem] font-mono text-slate-500 truncate">enrich_flow</p><div class="h-14 bg-red-50 border border-red-300 rounded text-[.5rem] p-1 text-red-800">_installed(): Settings + SourceRepo + sessions + FakeFetcher</div></div>
-                <div class="border border-slate-400 rounded p-1"><p class="text-[.55rem] font-mono text-slate-500 truncate">word_count</p><div class="h-14 bg-red-50 border border-red-300 rounded text-[.5rem] p-1 text-red-800">_installed(): the same four</div></div>
-                <div class="border border-slate-400 rounded p-1"><p class="text-[.55rem] font-mono text-slate-500 truncate">requeue</p><div class="h-14 bg-red-50 border border-red-300 rounded text-[.5rem] p-1 text-red-800">_installed(): the same four</div></div>
-                <div class="border border-slate-400 rounded p-1"><p class="text-[.55rem] font-mono text-slate-500 truncate">discovery</p><div class="h-14 bg-red-50 border border-red-300 rounded text-[.5rem] p-1 text-red-800">_installed(): the same four</div></div>
-                <div class="border border-slate-400 rounded p-1"><p class="text-[.55rem] font-mono text-slate-500 truncate">scrape_url</p><div class="h-14 bg-red-50 border border-red-300 rounded text-[.5rem] p-1 text-red-800">_installed(): the same four</div></div>
-              </div>
-              <p class="text-xs text-red-700 mt-2">The visible per-test cost of the Service Locator trade-off, paid five times.</p>
-            </div>
-            <div class="rounded-lg border border-slate-200 p-4">
-              <p class="text-xs uppercase tracking-wider text-slate-400 mb-3">After — one rig, five plugs</p>
-              <div class="deep rounded-lg text-slate-100 p-3">
-                <p class="text-[.65rem] uppercase tracking-wider text-slate-300">conftest rig — "an installed pipeline"</p>
-                <p class="font-mono text-[.7rem] text-slate-300 mt-1">installed(pg_urls, *, batch_size=…, fetcher=…) → deps.override(the four)</p>
-              </div>
-              <div class="flex gap-1.5 mt-2">
-                <span class="text-[.6rem] font-mono border border-emerald-400 bg-emerald-50 rounded px-1.5 py-0.5">enrich_flow</span>
-                <span class="text-[.6rem] font-mono border border-emerald-400 bg-emerald-50 rounded px-1.5 py-0.5">word_count</span>
-                <span class="text-[.6rem] font-mono border border-emerald-400 bg-emerald-50 rounded px-1.5 py-0.5">requeue</span>
-                <span class="text-[.6rem] font-mono border border-emerald-400 bg-emerald-50 rounded px-1.5 py-0.5">discovery</span>
-                <span class="text-[.6rem] font-mono border border-emerald-400 bg-emerald-50 rounded px-1.5 py-0.5">scrape_url</span>
-              </div>
-              <p class="text-xs text-slate-500 mt-2">Per-file variation (batch size, fetcher flavour) becomes keyword arguments — the design question is which knobs the rig's interface exposes.</p>
-            </div>
-          </div>
+        <pre class="ascii rounded-lg border border-slate-200 bg-stone-100 p-4"><code>BEFORE: five copies                       AFTER: one rig in conftest
 
-          <div class="grid md:grid-cols-3 gap-4 text-sm">
-            <div><p class="font-semibold text-slate-700">Problem</p><p class="text-slate-600">Every flow test hand-builds the same four-part wiring behind the deps seam; the duplication is test-setup complexity revealing a missing module.</p></div>
-            <div><p class="font-semibold text-slate-700">Solution</p><p class="text-slate-600">One conftest rig — a deep test-harness module whose interface is "an installed pipeline", with the variations as parameters.</p></div>
-            <div>
-              <p class="font-semibold text-slate-700">Wins</p>
-              <ul class="text-slate-600 list-disc list-inside space-y-0.5">
-                <li>leverage: one rig, every flow test</li>
-                <li>a new flow test costs one line</li>
-                <li>locator's cost paid once, not five times</li>
-              </ul>
-            </div>
-          </div>
-        </article>
+ test_enrich_flow    ┌─ _installed() ─┐    conftest.py
+ test_word_count     ┌─ _installed() ─┐   ┌────────────────────────────────────┐
+ test_requeue        ┌─ _installed() ─┐   │ installed(pg_urls, *, batch_size,  │
+ test_discovery      ┌─ _installed() ─┐   │           fetcher=None, ...)       │
+ test_scrape_url     ┌─ _installed() ─┐   └────────────────────────────────────┘
+  (15 lines × 5)                            with installed(pg_urls): ...  × 5</code></pre>
 
-      </section>
+        <p class="text-xs uppercase tracking-wider text-slate-400">The code today (test_enrich_flow.py:41) — and the prototype</p>
+        <pre class="code rounded-lg bg-slate-900 text-slate-100 p-4"><code># today, in five files:
+def _installed(source_url, enrich_url, *, batch_size=500):
+    settings = Settings(_env_file=None, hn_source_dsn=source_url,
+                        enrich_db_dsn=enrich_url, batch_size=batch_size)
+    return deps.override(
+        settings=settings,
+        source_repo=SourceRepo(session_factory(source_url)),
+        enrich_session_factory=session_factory(enrich_url),
+        fetcher=FakeFetcher(default=FetchResult(text="a page",
+                            html="&lt;p&gt;a page&lt;/p&gt;", http_status=200)),
+    )
 
-      <!-- ============ OBSERVED, NOT CARDED ============ -->
+# prototype, once, in tests/integration/conftest.py:
+def installed(pg_urls, *, batch_size=500, fetcher=None, **settings_overrides):
+    """One installed pipeline behind the deps seam; per-test knobs are kwargs."""
+    ...same four pieces, written once...</code></pre>
+
+        <ul class="text-sm text-slate-700 list-disc list-inside space-y-1">
+          <li><b>Leverage:</b> one rig, every flow test; a new test costs one line.</li>
+          <li>The documented cost of the deps design is paid once, not five times.</li>
+          <li>Test-only — no production code moves.</li>
+        </ul>
+      </article>
+
+      <!-- ============ LEFT ALONE ============ -->
       <section class="rounded-xl border border-slate-200 bg-stone-100 p-6 space-y-2">
-        <h2 class="font-serif text-lg text-slate-700">Observed, not carded</h2>
+        <h2 class="font-serif text-lg text-slate-700">Looked at, deliberately left alone</h2>
         <ul class="text-sm text-slate-600 space-y-1.5 list-disc list-inside">
-          <li><span class="font-semibold">repo/view read split</span> (repo.py owns counts, view.py owns v_enriched reads) — a deliberate cycle-break, and sound; the bounce it costs readers is real but the alternative is worse.</li>
-          <li><span class="font-semibold">Two ports front a <span class="font-mono text-xs">raise</span></span> (scanner, classifier) — fake-by-default is a documented trade-off, and the fakes are genuine adapters exercised at the seam constantly. The seam is earning its keep as a test seam today.</li>
-          <li><span class="font-semibold">repo.py / source.py have zero fast tests</span> — testcontainers is the accepted approach here; candidates 1 and 5 shrink what's hostage to the Docker gate rather than fighting the approach.</li>
+          <li><b>repo.py / view.py read split</b> — it exists to break an import cycle. The small reading cost is worth it.</li>
+          <li><b>Two ports whose "real" adapter just raises</b> (scanner, classifier) — fake-by-default is a documented trade-off, and the fakes are real, heavily-used adapters.</li>
+          <li><b>repo.py / source.py only tested via Docker</b> — testcontainers is the accepted approach here; issues #49 and #53 shrink what depends on it instead of fighting it.</li>
         </ul>
       </section>
 
       <!-- ============ TOP RECOMMENDATION ============ -->
-      <section id="top-recommendation" class="deep rounded-xl p-8 text-slate-100 space-y-3">
-        <p class="text-xs uppercase tracking-wider text-emerald-300">Top recommendation</p>
-        <h2 class="font-serif text-2xl"><a href="#c1" class="underline decoration-emerald-400 underline-offset-4">Candidate 1 — the worker run module</a></h2>
-        <p class="text-slate-300 max-w-3xl text-sm">It is where depth is cheapest and pays most: one implementation replaces six hand-copies of the retry/ledger/commit protocol, the test surface finally lands on the code that carries the risk, and it makes candidates 2 (post_metadata becomes a plain worker) and 6 (simpler rigs) smaller. Nothing in the trade-offs ledger stands in its way — one file per worker survives intact.</p>
+      <section class="rounded-xl p-8 text-slate-100 space-y-3" style="background:linear-gradient(135deg,#0f172a,#1e293b)">
+        <p class="text-xs uppercase tracking-wider text-emerald-300">Start here</p>
+        <h2 class="font-serif text-2xl"><a href="#c1" class="underline decoration-emerald-400 underline-offset-4">#49 — the shared worker-run module</a></h2>
+        <p class="text-slate-300 text-sm max-w-3xl">Biggest win, and it makes two other issues smaller: #50 (post_metadata can become a plain worker under the shared loop) and #54 (simpler rigs). One implementation replaces six hand-copies of the retry/ledger/commit protocol, and the tests finally land on the code that carries the risk. Full plan and sequencing: <a class="underline" href="https://github.com/smalinux/hn-enrich/issues/55">PRD issue #55</a>.</p>
       </section>
+
+      <footer class="text-xs text-slate-400 pb-8">
+        Generated 2026-07-15 · issues: <a class="underline" href="https://github.com/smalinux/hn-enrich/issues/49">#49</a> ·
+        <a class="underline" href="https://github.com/smalinux/hn-enrich/issues/50">#50</a> ·
+        <a class="underline" href="https://github.com/smalinux/hn-enrich/issues/51">#51</a> ·
+        <a class="underline" href="https://github.com/smalinux/hn-enrich/issues/52">#52</a> ·
+        <a class="underline" href="https://github.com/smalinux/hn-enrich/issues/53">#53</a> ·
+        <a class="underline" href="https://github.com/smalinux/hn-enrich/issues/54">#54</a> ·
+        PRD <a class="underline" href="https://github.com/smalinux/hn-enrich/issues/55">#55</a> · no code was changed
+      </footer>
 
     </main>
   </body>
