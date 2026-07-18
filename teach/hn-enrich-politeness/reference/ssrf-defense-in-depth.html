@@ -1,0 +1,106 @@
+<meta charset="utf-8">
+<title>Reference — SSRF defense-in-depth ladder</title>
+<link rel="stylesheet" href="../assets/lesson.css">
+
+<h1>SSRF defense-in-depth ladder</h1>
+<p class="subtitle">Reference &middot; every rung on hn-enrich's live-fetch safety path, what it closes, what it can't &middot; verified 2026-07-17</p>
+
+<h2>The one idea</h2>
+
+<p>
+  SSRF defense is layered because <strong>each control has an edge the next one
+  covers</strong>. An in-process guard cannot close the check-then-use window; a
+  hostname proxy cannot stop a raw-IP or CGNAT bypass; the network layer has no
+  per-request context. No single rung is enough — that is not caution, it is the
+  structure of the problem.
+</p>
+
+<h2>The ladder</h2>
+
+<table>
+  <tr><th>#</th><th>Rung</th><th>Where</th><th>Closes</th><th>Cannot close</th></tr>
+  <tr>
+    <td>1</td>
+    <td><code>follow_redirects=False</code></td>
+    <td><code>adapters.py:100</code></td>
+    <td>Silent hops: forces every redirect back through the guard instead of the client walking the chain unjudged.</td>
+    <td>Anything about addresses — it only controls <em>who</em> follows the chain.</td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td>Guard resolves + judges every address (A + AAAA), fails closed</td>
+    <td><code>politeness.py:100–136</code></td>
+    <td>A public-looking name backed by a private / loopback / link-local IP, at check time.</td>
+    <td>The check-then-use window (rung's own resolution ≠ the transport's).</td>
+  </tr>
+  <tr>
+    <td>3</td>
+    <td><code>walk_redirects</code> guards every hop before fetching it</td>
+    <td><code>politeness.py:168–185</code></td>
+    <td>A public url that redirects to an internal one: the redirect target is judged like any first url.</td>
+    <td>Same window as rung 2 — it guards each hop, but each hop still re-resolves to connect.</td>
+  </tr>
+  <tr>
+    <td>4</td>
+    <td>IP pinning (validated IP handed to the transport)</td>
+    <td><em>not built — would live in the adapter</em></td>
+    <td>The window: the checked address <em>is</em> the connected one.</td>
+    <td>Fragile — reimplements the client's connection layer (TLS SNI, Host). Better centralised as a proxy.</td>
+  </tr>
+  <tr>
+    <td>5</td>
+    <td>Egress proxy — Smokescreen</td>
+    <td><em>infra (decision on record)</em></td>
+    <td>The window, properly: validation and connection share one resolution, in one place every worker uses.</td>
+    <td>A raw-IP request that skips the hostname ACL; CGNAT. ACL acts on "hostnames as they appear in the request."</td>
+  </tr>
+  <tr>
+    <td>6</td>
+    <td>Network egress rules (firewall): drop RFC1918 + CGNAT <code>100.64.0.0/10</code></td>
+    <td><em>infra (decision on record)</em></td>
+    <td>Whatever slips rungs 1–5 — at the packet layer, by IP range. The floor.</td>
+    <td>Nothing below it. But blunt: no per-request or per-hostname context.</td>
+  </tr>
+</table>
+
+<p>
+  Rungs 1–3 are what <span class="pol">politeness.py</span> <em>is</em>, and it
+  does them correctly. Rungs 5–6 are what it structurally <em>cannot</em> be,
+  because it runs inside the process making the request. That boundary is the
+  reason the decision on record is infrastructure, not a cleverer guard.
+</p>
+
+<h2>The check-then-use window, precisely</h2>
+
+<pre class="diagram">  assert_public_url(hop)   →  resolve #1  →  judged public ✓   (politeness.py:177)
+        ── window: the name's DNS answer can change here ──
+  client.get(hop)          →  resolve #2  →  connects & fetches (adapters.py:105)</pre>
+
+<p>
+  Two independent lookups of one hostname, per hop. The guard's resolver
+  (<code>resolve=</code>, injectable) is not the resolver httpx uses to connect,
+  so even the same system resolver can return different answers across the two —
+  by attacker design (rebinding, short TTL) or by accident (round-robin, TTL
+  expiry). Any fix that leaves two lookups only shrinks the window; closing it
+  means one resolution serves both check and connect (rung 4/5) or the network
+  refuses the packet regardless (rung 6).</p>
+
+<h2>Terms</h2>
+
+<table>
+  <tr><th>Term</th><th>Is</th></tr>
+  <tr><td>Check-then-use (TOCTOU)</td><td>Validate a thing, then use it, with a gap between where it can change. Here: resolve-to-judge, then resolve-to-connect.</td></tr>
+  <tr><td>DNS rebinding</td><td>The attack that exploits that gap: attacker-controlled name answers public on the first lookup, internal on the second.</td></tr>
+  <tr><td>IP pinning</td><td>Connect to the exact address you validated, so there is no second lookup to poison.</td></tr>
+  <tr><td>Egress proxy</td><td>A forward proxy all outbound requests go through; validates and connects in one place, so check and use share a resolution.</td></tr>
+  <tr><td>Defense in depth</td><td>Stacked controls where each covers the edge of the one before. Forced here, not optional.</td></tr>
+  <tr><td>CGNAT range</td><td><code>100.64.0.0/10</code> (RFC 6598). Not "private" by the RFC1918 test, so a hostname-level control can miss it; the firewall rung catches it.</td></tr>
+</table>
+
+<div class="footer">
+  Reference &middot;
+  <a href="../lessons/0002-the-edge-of-the-guard.html">Lesson 0002</a> &middot;
+  <a href="module-boundaries.html">Reference: boundary map</a> &middot;
+  <a href="https://cheatsheetseries.owasp.org/cheatsheets/Server_Side_Request_Forgery_Prevention_Cheat_Sheet.html">OWASP SSRF Cheat Sheet</a> &middot;
+  <a href="https://github.com/stripe/smokescreen">Smokescreen</a>
+</div>

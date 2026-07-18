@@ -1,0 +1,296 @@
+<meta charset="utf-8">
+<title>0003 — Why PolitenessFetcher IS an HttpFetcher</title>
+<link rel="stylesheet" href="../assets/lesson.css">
+
+<h1>Why <span class="pol">PolitenessFetcher</span> <em>is</em> an <span class="pol">HttpFetcher</span></h1>
+<p class="subtitle">Lesson 0003 &middot; the Decorator-over-a-Port move, and what it buys you at test time</p>
+
+<div class="win">
+  <span class="label">The win</span>
+  You can look at <code>PolitenessFetcher</code> and name the exact design move —
+  a <strong>Decorator over a Port</strong> — and say what it buys that the
+  obvious alternative (an <code>if</code> inside the real fetcher) throws away.
+  The payoff is the thing your rebuild lives or dies on: what you can test
+  without touching the network.
+</div>
+
+<h2>Two ways to add politeness to a fetch</h2>
+
+<p>
+  The job: before every live fetch, run the SSRF guard, space the domain, hold a
+  gate (lesson 0001). There are two places to put that. Here is the one this
+  codebase <em>did not</em> choose — the policy baked straight into the real
+  transport:
+</p>
+
+<pre><code># BEFORE — the design NOT chosen. Policy tangled into transport.
+class HttpxFetcher:
+    def fetch(self, url):
+        assert_public_url(url)              # guard  ┐
+        self._limiter.acquire(host(url))    # space  │ policy, welded to
+        with self._gate():                  # gate   ┘ the httpx machinery
+            # ... build httpx.Client, walk redirects, parse html ...</code></pre>
+<span class="src">illustration — not in the repo</span>
+
+<p>
+  It works. But now the policy and the transport are one lump. To test that the
+  guard refuses <code>10.0.0.1</code>, you must stand up an <code>httpx</code>
+  client. To reuse the same policy for the tracker <em>scanner</em>, you copy
+  those four lines into a second class — and now they can drift apart. This is a
+  <em>shallow</em>, entangled module, the opposite of what lesson 0001 praised.
+</p>
+
+<p>Here is what the codebase actually does:</p>
+
+<pre><code># AFTER — the design chosen. Policy is its own object, same shape as a fetcher.
+class PolitenessFetcher:
+    """An ``HttpFetcher`` that guards, spaces, and gates before delegating."""
+
+    def __init__(self, inner: HttpFetcher, *, limiter, gate=_open_gate, resolve=default_resolve):
+        self._inner = inner            # ← it HOLDS an HttpFetcher
+        ...
+
+    def fetch(self, url: str) -> FetchResult:
+        with _politeness(url, limiter=self._limiter, gate=self._gate, resolve=self._resolve):
+            return self._inner.fetch(url)   # ← ...and DELEGATES to it</code></pre>
+<span class="src">src/hn_enrich/politeness.py:236–255</span>
+
+<h2>Name the pattern — Decorator over a Port</h2>
+
+<p>
+  Two facts about <code>PolitenessFetcher</code> together are the whole pattern.
+  It <strong>is</strong> an <code>HttpFetcher</code> (it has a
+  <code>fetch(url) -&gt; FetchResult</code> method, so it satisfies the port), and
+  it <strong>has</strong> an <code>HttpFetcher</code> (the <code>inner</code> it
+  wraps). <em>Is-a and has-a, at the same interface</em> — that is the signature
+  of the <strong>Decorator</strong> pattern. The interface it decorates is a
+  <strong>Port</strong> (lesson references: the one-method <code>Protocol</code>
+  in <code>ports.py</code>):
+</p>
+
+<pre><code>class HttpFetcher(Protocol):
+    def fetch(self, url: str) -> FetchResult: ...</code></pre>
+<span class="src">src/hn_enrich/ports.py:58–61</span>
+
+<pre class="diagram">        ┌──────────────── HttpFetcher (the port) ─────────────────┐
+        │                fetch(url) -> FetchResult                 │
+        └──────────────────────────────────────────────────────────┘
+             ▲                    ▲                      ▲
+             │ is-a               │ is-a                 │ is-a
+      ┌────────────┐       ┌────────────┐      ┌──────────────────────┐
+      │HttpxFetcher│       │ FakeFetcher│      │  PolitenessFetcher   │
+      │ real wire  │       │  canned    │      │  guard · space · gate│
+      └────────────┘       └────────────┘      └──────────┬───────────┘
+                                                          │ has-a
+                                                          ▼
+                                                  any HttpFetcher
+                                                 (real OR fake)</pre>
+
+<p>
+  Because all three plug into the same socket, anything that wants "a fetcher"
+  takes the port and never knows which one it got. <code>deps</code> hands the
+  wrapped one to production and returns it <em>as</em> the port:
+</p>
+
+<pre><code>def _build_fetcher() -> HttpFetcher:
+    inner = HttpxFetcher(user_agent=cfg.user_agent, timeout_s=..., max_redirects=...)
+    return PolitenessFetcher(inner, limiter=_rate_limiter(), gate=live_fetch_gate)</code></pre>
+<span class="src">src/hn_enrich/deps.py:108–115</span>
+
+<h2>What the move buys — #1: test each layer alone</h2>
+
+<p>
+  Because the seam is a plain interface, you can put a <em>fake</em> on either
+  side of it and test one layer with the other absent:
+</p>
+
+<ul>
+  <li><strong>Test the policy, no network.</strong> Wrap a <code>FakeFetcher</code>
+  (canned pages) in a <code>PolitenessFetcher</code>, inject a fake
+  <code>resolve=</code> and a fake clock, and you can prove the guard refuses,
+  the limiter spaces, and the gate is held — without <code>httpx</code> ever
+  loading.</li>
+  <li><strong>Test the transport, no policy.</strong> <code>HttpxFetcher</code>
+  takes an injectable <code>transport=</code>, so its wire behaviour is tested
+  against a fake transport, with no politeness in the way.</li>
+  <li><strong>Test a worker, neither.</strong> A worker asks <code>deps</code>
+  for "a fetcher"; a test swaps in a fake at that seam and the worker runs with
+  no network at all:</li>
+</ul>
+
+<pre><code>with deps.override(fetcher=FakeFetcher({url: FetchResult(text="hi", html="&lt;p&gt;hi&lt;/p&gt;", http_status=200)})):
+    ...   # the worker under test never learns the real fetcher exists</code></pre>
+<span class="src">deps.override — src/hn_enrich/deps.py:165–199</span>
+
+<p>
+  The <code>BEFORE</code> design cannot offer any of these cleanly: with policy
+  welded to <code>httpx</code>, every test of the guard drags the transport
+  along, and there is no seam to slip a fake into.
+</p>
+
+<h2>What the move buys — #2: one policy, two ports, no drift</h2>
+
+<p>
+  The tracker scanner does its <em>own</em> live visit, so it needs the exact
+  same politeness. Because politeness is an object, not four lines inside a
+  fetcher, the scanner gets it by the identical move — a Decorator over the
+  <code>TrackerScanner</code> port, running the <em>same</em>
+  <code>_politeness</code> policy:
+</p>
+
+<pre><code>class PolitenessScanner:
+    """A ``TrackerScanner`` that guards, spaces, and gates before delegating."""
+
+    def scan(self, url: str) -> ScanResult:
+        with _politeness(url, limiter=self._limiter, gate=self._gate, resolve=self._resolve):
+            return self._inner.scan(url)</code></pre>
+<span class="src">src/hn_enrich/politeness.py:258–282</span>
+
+<p>
+  One shared <code>_politeness</code>, two decorators, two ports. The guard,
+  spacing, and gate cannot drift between fetch and scan, because there is only
+  one copy of them. In the <code>BEFORE</code> world those rules would exist
+  twice and someone would eventually fix one and forget the other.
+</p>
+
+<h2>What can you actually test with fakes?</h2>
+
+<p>
+  This is the skill, so retrieve it. For each claim: can a unit test check it
+  with fakes — no network, no browser, no Prefect server — or does it need the
+  real world? Decide from <em>where the thing being tested lives</em> relative
+  to the seam.
+</p>
+
+<div class="quiz" data-quiz
+     data-perfect="— you can see which side of the seam a behaviour lives on. That is the test-design instinct the whole rebuild leans on; it earns a glossary entry."
+     data-partial="— re-check each one: if a fake can sit on the seam between you and the real world, it is unit-testable; if the behaviour lives past the seam, it is not.">
+
+  <div class="quiz-q" data-answer="yes">
+    <p class="quiz-prompt">The SSRF guard refuses a hostname that <span class="rule">resolves to a private IP</span>.</p>
+    <div class="quiz-choices">
+      <button data-choice="yes">Yes, fakes isolate it</button>
+      <button data-choice="no">No, needs real world</button>
+    </div>
+    <div class="quiz-fb"><p><strong>Yes.</strong> Inject <code>resolve=</code> with a fake that returns <code>10.0.0.1</code>. No socket opens; the guard's DNS <em>policy</em> is judged without DNS.</p></div>
+  </div>
+
+  <div class="quiz-q" data-answer="yes">
+    <p class="quiz-prompt"><span class="rule">PolitenessFetcher</span> waits between two hits on one domain.</p>
+    <div class="quiz-choices">
+      <button data-choice="yes">Yes, fakes isolate it</button>
+      <button data-choice="no">No, needs real world</button>
+    </div>
+    <div class="quiz-fb"><p><strong>Yes.</strong> <code>RateLimiter</code> takes an injectable <code>monotonic</code> and <code>sleep</code>; wrap a <code>FakeFetcher</code> and assert the fake clock advanced. No wall-clock wait, no network.</p></div>
+  </div>
+
+  <div class="quiz-q" data-answer="yes">
+    <p class="quiz-prompt">A worker counts the words on a <span class="rule">fetched page</span>.</p>
+    <div class="quiz-choices">
+      <button data-choice="yes">Yes, fakes isolate it</button>
+      <button data-choice="no">No, needs real world</button>
+    </div>
+    <div class="quiz-fb"><p><strong>Yes.</strong> <code>deps.override(fetcher=FakeFetcher({url: page}))</code> puts a canned page behind the same seam. The worker never learns the real fetcher exists.</p></div>
+  </div>
+
+  <div class="quiz-q" data-answer="no">
+    <p class="quiz-prompt">The guard stops a <span class="rule">DNS flip</span> between the check and the connect.</p>
+    <div class="quiz-choices">
+      <button data-choice="yes">Yes, fakes isolate it</button>
+      <button data-choice="no">No, needs real world</button>
+    </div>
+    <div class="quiz-fb"><p><strong>No</strong> — and this is lesson 0002 returning. The rebinding window lives <em>below</em> the seam, in httpx's own resolve. No fake reproduces it in-process; that is precisely why it "leaves no witness" and why the fix was a proxy, not a test.</p></div>
+  </div>
+
+  <div class="quiz-q" data-answer="no">
+    <p class="quiz-prompt">A <span class="rule">real tracker scan</span> finds the trackers on a live site.</p>
+    <div class="quiz-choices">
+      <button data-choice="yes">Yes, fakes isolate it</button>
+      <button data-choice="no">No, needs real world</button>
+    </div>
+    <div class="quiz-fb"><p><strong>No.</strong> The real scanner is a deferred stub that raises (<code>adapters.py:155</code>); CI injects <code>FakeScanner</code>, which serves canned counts. A unit test asserts against the fake — never against what nytimes.com actually ships.</p></div>
+  </div>
+
+  <p class="quiz-score" data-quiz-score></p>
+</div>
+
+<h2>The seams on the fetch path, side by side</h2>
+
+<p>Three different seams do three different jobs. Do not confuse them:</p>
+
+<table>
+  <tr><th>Seam</th><th>Pattern</th><th>What it lets you swap</th></tr>
+  <tr>
+    <td><code>HttpFetcher</code> / <code>TrackerScanner</code> (the port)</td>
+    <td><strong>Decorator</strong> over a Port</td>
+    <td>Real ⇄ fake ⇄ politeness-wrapped, all at one interface. This lesson.</td>
+  </tr>
+  <tr>
+    <td><code>GateFactory</code> (the gate)</td>
+    <td><strong>Dependency Inversion</strong></td>
+    <td>Open gate ⇄ Prefect's real cap, without politeness importing Prefect. Lesson 0001.</td>
+  </tr>
+  <tr>
+    <td><code>deps.override(...)</code></td>
+    <td><strong>Service Locator</strong></td>
+    <td>Any dependency, for the length of a <code>with</code>-block. Its own honest trade-off (see the module docstring).</td>
+  </tr>
+</table>
+
+<div class="note">
+  <span class="label">A caution — the pass-through that is not this</span>
+  <p>
+    A decorator is only worth its layer if it <em>adds</em> something.
+    <code>PolitenessFetcher.fetch</code> does real work — guard, space, gate —
+    before it delegates. A wrapper whose method just forwards the call unchanged
+    is a <strong>pass-through</strong>, and Ousterhout counts those as a red flag:
+    a new layer with no new abstraction, pure cost. The test is not "does it
+    wrap?" but "does the wrapper earn its keep?" This one does.
+  </p>
+</div>
+
+<h2>The transferable lesson</h2>
+
+<div class="note">
+  <span class="label">Keep this</span>
+  <p>
+    When a rule must run <em>around</em> an external effect — before it, after
+    it, or instead of it — give the rule the <strong>same interface as the
+    effect</strong> and wrap it, rather than editing the effect. You gain a seam
+    you can put a fake on from either side, and the rule becomes reusable across
+    every effect that shares the interface. "Program to the interface" is the
+    slogan; the Decorator is one of the concrete moves it buys.
+  </p>
+</div>
+
+<h2>Read this next</h2>
+
+<p>
+  <a href="https://web.stanford.edu/~ouster/cgi-bin/book.php">Ousterhout,
+  <em>A Philosophy of Software Design</em></a> — the chapters on <em>different
+  layer, different abstraction</em> and <em>pass-through methods</em>. They are
+  the other half of this lesson: a decorator is a new layer, and Ousterhout is
+  strict about when a new layer is justified. Read them and then re-judge
+  <code>PolitenessFetcher</code> yourself — is it a real abstraction, or a
+  pass-through? (You should be able to defend "real" in one sentence.)
+</p>
+
+<p class="ask">
+  Worth pushing on — one is a genuine open question about this repo, not a
+  quiz: the shared <code>RateLimiter</code> uses an in-process lock and dict, so
+  it spaces every fetcher <em>within one process</em>. If Prefect runs workers as
+  <em>separate processes</em>, do two workers still stay polite to the same
+  domain? I am not certain of the deployment topology — ask me and we can check
+  it together. Also fair game: could IP pinning (lesson 0002) live behind this
+  same <code>HttpFetcher</code> seam without any caller noticing?
+</p>
+
+<div class="footer">
+  Lesson 0003 &middot;
+  <a href="0002-the-edge-of-the-guard.html">← Lesson 0002</a> &middot;
+  <a href="../reference/module-boundaries.html">Reference: the boundary map</a> &middot;
+  <a href="../MISSION.md">Mission</a> &middot;
+  <a href="../RESOURCES.md">Resources</a>
+</div>
+
+<script src="../assets/quiz.js"></script>

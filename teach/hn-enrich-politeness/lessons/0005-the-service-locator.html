@@ -1,0 +1,235 @@
+<meta charset="utf-8">
+<title>0005 — The service locator, and its safe default</title>
+<link rel="stylesheet" href="../assets/lesson.css">
+
+<h1>The service locator, and its safe default</h1>
+<p class="subtitle">Lesson 0005 &middot; <code>deps.py</code> — the one place adapters are chosen, why it is a locator at all, and why the default is the fake</p>
+
+<div class="win">
+  <span class="label">The win</span>
+  You can name the seam every worker reaches through — a <strong>Service
+  Locator</strong> — say honestly why it is here despite being "a step down,"
+  and read the one decision that makes it safe: an unbuilt adapter resolves to
+  its <em>fake</em> unless you ask for the real one by name. That last rule is an
+  audit-shaped call, exactly the kind the v5 rebuild must re-apply.
+</div>
+
+<h2>Why a locator at all</h2>
+
+<p>
+  Every other seam in this course was passed in as an argument (the gate, the
+  resolver, the inner fetcher). <code>deps</code> is different, and it says why in
+  its own docstring:
+</p>
+
+<pre><code>Once the workers are Prefect tasks their parameters are serialized to the
+orchestrator's API, so a task can only take item ids — it cannot be handed a
+fetcher. Everything a task needs beyond its ids is resolved here instead ...
+This is a service locator, and an honest step down from constructor injection.</code></pre>
+<span class="src">src/hn_enrich/deps.py:4–11</span>
+
+<p>
+  That is the whole justification. A Prefect task is called by the orchestrator,
+  which can only serialize plain values across its API — you cannot hand a task a
+  live <code>HttpFetcher</code> object. So the task takes item <em>ids</em>, and
+  reaches for its fetcher through a global lookup. Every accessor goes through one
+  tiny resolver:
+</p>
+
+<pre><code>def _resolve[T](name: str, build: Callable[[], T]) -> T:
+    if name in _overrides:            # a test's fake wins
+        return cast(T, _overrides[name])
+    if name not in _cache:            # else build the real one once
+        _cache[name] = build()
+    return cast(T, _cache[name])</code></pre>
+<span class="src">src/hn_enrich/deps.py:77–82</span>
+
+<h2>Name the pattern — Service Locator (and why "a step down")</h2>
+
+<p>
+  A <strong>Service Locator</strong> is a global registry you ask for a
+  dependency by name, instead of receiving it through your constructor. It is
+  widely called an anti-pattern, and for a real reason: it <em>hides</em> what a
+  piece of code needs. A worker's signature says "give me an id"; nothing in its
+  type tells you it also reaches for a fetcher, a scanner, and a classifier. With
+  constructor injection those needs are visible in the signature; with a locator
+  they are discovered by reading the body.
+</p>
+
+<div class="note">
+  <span class="label">Why this codebase accepts the trade anyway</span>
+  <p>
+    The docstring does not pretend otherwise — it calls the locator "an honest
+    step down." The trade is forced by Prefect (tasks take serializable ids), and
+    it is bounded on purpose: the module is kept small, and — its words —
+    "<em>pure logic never comes through here.</em>" The locator holds only the
+    impure, outside-world adapters. Everything you learned to test with literals
+    (lesson 0004's cores) stays out of it, so the locator's hidden-dependency cost
+    never touches the code where it would hurt most.
+  </p>
+</div>
+
+<h2>The override seam contains the global state</h2>
+
+<p>
+  A global registry is mutable global state — the thing tests fear most. The
+  <code>override</code> context manager is what makes it safe: it snapshots what
+  was there, installs the fakes, and restores on exit, so no test can leak into
+  the next:
+</p>
+
+<pre><code>with deps.override(fetcher=FakeFetcher(...), scanner=FakeScanner(...)):
+    ...        # inside: the fakes win, for this block only
+# outside: whatever was there before is back, cache included</code></pre>
+<span class="src">deps.override — src/hn_enrich/deps.py:165–199</span>
+
+<p>
+  It even snapshots the <em>cache</em>, not just the overrides: a dependency built
+  <em>inside</em> the block (from an overridden setting, say) is dropped on exit,
+  so nothing assembled from a test's replacements outlives the test. This is the
+  "only sanctioned way to put a fake behind the accessors" — the single seam that
+  buys back the testability a locator would otherwise cost you.
+</p>
+
+<h2>The decision worth the lesson — the default is the fake</h2>
+
+<p>
+  Two adapters are not built yet: the tracker scanner and the AI classifier.
+  Their real implementations <em>raise</em>. So the module inverts what you might
+  expect — it selects the real one only on an explicit, by-name opt-in:
+</p>
+
+<pre><code>def _build_scanner() -> TrackerScanner:
+    if not cfg.use_real_tracker_scanner:
+        return FakeScanner(default=ScanResult(n_ads=0, n_trackers=0))   # default
+    inner = TrackerRadarScanner(timeout_s=cfg.fetch_timeout_s)          # opt-in only
+    return PolitenessScanner(inner, limiter=_rate_limiter(), gate=live_fetch_gate)</code></pre>
+<span class="src">src/hn_enrich/deps.py:125–130</span>
+
+<p>Read the reasoning straight from config, because it is the whole point:</p>
+
+<pre><code>The opt-ins for the two adapters that are not built yet. Both real
+implementations raise, so selecting one marks every item it touches failed,
+and then dead, for as long as the run lasts. They are therefore off by
+default ... reaching for an unbuilt adapter has to be something you asked for
+by name, not something a live run discovers on your behalf a few thousand
+dead-letters in.</code></pre>
+<span class="src">src/hn_enrich/config.py:91–96</span>
+
+<p>
+  This is <strong>safe by default</strong> again — the same instinct as the
+  fail-closed SSRF guard (0002) and <code>plan_teardown</code> refusing unless
+  confirmed (0004). The dangerous thing (an adapter that raises) must be
+  <em>requested</em>, never <em>defaulted into</em>. And note the sharp corollary,
+  quoted in the module: "an API key alone selects nothing." A configured
+  <code>anthropic_api_key</code> does not turn the real classifier on — only
+  <code>use_real_ai_classifier</code> does. A credential is not consent.
+</p>
+
+<h2>Real or fake?</h2>
+
+<p>
+  Retrieve the selection rules. For each call, does the accessor hand back the
+  <strong>fake</strong> or the <strong>real</strong> adapter? Decide from the
+  <code>use_real_*</code> flags and the override seam — not from whether a key or
+  a class exists.
+</p>
+
+<div class="quiz" data-quiz
+     data-perfect="— you can predict the locator's selection cold, key-trap and all. That is the judgment that keeps a live run out of the dead-letter pit; it earns a glossary entry."
+     data-partial="— re-read the two build functions: an unbuilt adapter is fake unless its use_real_* flag is set; a key or an override changes nothing about that rule on its own.">
+
+  <div class="quiz-q" data-answer="fake">
+    <p class="quiz-prompt"><span class="rule">deps.scanner()</span> with a default <code>.env</code> (no flags set).</p>
+    <div class="quiz-choices">
+      <button data-choice="fake">Returns the fake</button>
+      <button data-choice="real">Returns the real</button>
+    </div>
+    <div class="quiz-fb"><p><strong>Fake.</strong> <code>use_real_tracker_scanner</code> defaults <code>False</code>, so <code>FakeScanner</code> serves a zero count and touches no browser.</p></div>
+  </div>
+
+  <div class="quiz-q" data-answer="fake">
+    <p class="quiz-prompt"><span class="rule">deps.classifier()</span> with <code>anthropic_api_key</code> set but <code>use_real_ai_classifier</code> unset.</p>
+    <div class="quiz-choices">
+      <button data-choice="fake">Returns the fake</button>
+      <button data-choice="real">Returns the real</button>
+    </div>
+    <div class="quiz-fb"><p><strong>Fake</strong> — the trap. A key alone selects nothing; without the explicit opt-in you still get <code>FakeClassifier</code>. A credential is not consent.</p></div>
+  </div>
+
+  <div class="quiz-q" data-answer="real">
+    <p class="quiz-prompt"><span class="rule">deps.fetcher()</span> in production, no overrides.</p>
+    <div class="quiz-choices">
+      <button data-choice="fake">Returns the fake</button>
+      <button data-choice="real">Returns the real</button>
+    </div>
+    <div class="quiz-fb"><p><strong>Real.</strong> The contrast that proves the rule: the fetcher <em>is</em> built (real <code>HttpxFetcher</code>, politeness-wrapped), so there is no <code>use_real_fetcher</code> flag and no fake default. Only the two unbuilt adapters default to fake.</p></div>
+  </div>
+
+  <div class="quiz-q" data-answer="fake">
+    <p class="quiz-prompt"><span class="rule">deps.scanner()</span> inside <code>with deps.override(scanner=my_fake)</code>.</p>
+    <div class="quiz-choices">
+      <button data-choice="fake">Returns the fake</button>
+      <button data-choice="real">Returns the real</button>
+    </div>
+    <div class="quiz-fb"><p><strong>Fake</strong> — <code>my_fake</code>, specifically. An installed override wins over both cache and build (<code>_resolve</code> checks <code>_overrides</code> first), for the length of the block only.</p></div>
+  </div>
+
+  <div class="quiz-q" data-answer="real">
+    <p class="quiz-prompt"><span class="rule">deps.classifier()</span> with <code>use_real_ai_classifier=yes</code> and a key set.</p>
+    <div class="quiz-choices">
+      <button data-choice="fake">Returns the fake</button>
+      <button data-choice="real">Returns the real</button>
+    </div>
+    <div class="quiz-fb"><p><strong>Real</strong> — <code>ClaudeClassifier</code>. Flag set <em>and</em> key present is the one path to the real one. (Flag set but key missing is refused loudly right here, before any item is touched — not returned.)</p></div>
+  </div>
+
+  <p class="quiz-score" data-quiz-score></p>
+</div>
+
+<h2>The transferable lesson</h2>
+
+<div class="note">
+  <span class="label">Keep this</span>
+  <p>
+    A locator or registry is sometimes forced on you (here, by the orchestrator).
+    When it is, pay the two tolls that keep it honest: give it <em>one</em> seam
+    to install fakes (so tests stay isolated), and make every risky selection
+    <strong>opt-in, not default</strong> (so a live run cannot stumble into the
+    dangerous path). The failure this design refuses is quiet: a raising stub
+    reached by default would bury the corpus in dead-letters at worker speed, and
+    CI would never see it because CI injects the fakes. Safe-by-default is how you
+    make sure the person who pays for a mistake is the one who typed the opt-in.
+  </p>
+</div>
+
+<h2>Read this next</h2>
+
+<p>
+  <a href="https://blog.ploeh.dk/2010/02/03/ServiceLocatorisanAnti-Pattern/">Mark
+  Seemann, "Service Locator is an Anti-Pattern"</a> — the canonical case against
+  the pattern this module uses. Read it as the prosecution: Seemann's core charge
+  is that a locator hides a class's dependencies. Then judge whether
+  <code>deps.py</code> answers the charge — it concedes the point in its own
+  docstring, confines the locator to impure adapters, and keeps pure logic out.
+  Deciding whether that is enough is exactly the design judgment your rebuild
+  needs.
+</p>
+
+<p class="ask">
+  Push on: constructor injection was "a step up" — so what, concretely, would the
+  workers' signatures look like if Prefect <em>could</em> pass objects, and is the
+  locator hiding anything a reader genuinely needs? And a callback: the
+  <code>fetcher</code> is always real — does that make it <em>harder</em> to test a
+  worker than the scanner, or does <code>override</code> flatten the difference?
+</p>
+
+<div class="footer">
+  Lesson 0005 &middot;
+  <a href="0004-pure-plan-thin-effect.html">← Lesson 0004</a> &middot;
+  <a href="../reference/seams-and-patterns.html">Reference: the patterns catalog</a> &middot;
+  <a href="../reference/module-boundaries.html">Reference: the boundary map</a> &middot;
+  <a href="../MISSION.md">Mission</a>
+</div>
+
+<script src="../assets/quiz.js"></script>

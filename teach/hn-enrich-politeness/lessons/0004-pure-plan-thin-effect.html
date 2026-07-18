@@ -1,0 +1,292 @@
+<meta charset="utf-8">
+<title>0004 — Pure plan, thin effect</title>
+<link rel="stylesheet" href="../assets/lesson.css">
+
+<h1>Pure plan, thin effect</h1>
+<p class="subtitle">Lesson 0004 &middot; how <span class="lim">limits.py</span> and <code>teardown.py</code> split the same way — decide in pure code, act in a thin injected shell</p>
+
+<div class="win">
+  <span class="label">The win</span>
+  You can take any operator command — apply a limit, drop a schema, finalize an
+  item — and split it the way this codebase does: a <strong>pure function that
+  decides</strong> and returns a verdict as plain data, wrapped by a
+  <strong>thin shell that acts</strong> through an injected effect. Then you can
+  test the whole decision with zero infrastructure. This is the move behind the
+  two most dangerous commands in the repo.
+</div>
+
+<h2>Two modules, one split</h2>
+
+<p>
+  <span class="lim">limits.py</span> registers global concurrency caps.
+  <code>teardown.py</code> drops the enrich schema. One is routine, one is
+  destructive — but read their docstrings and they describe the <em>same</em>
+  shape. <code>teardown</code> says it "splits the same way <code>limits</code>
+  does." Here is that shape, named:
+</p>
+
+<table>
+  <tr><th></th><th class="lim">limits.py</th><th>teardown.py</th></tr>
+  <tr>
+    <td><strong>Pure part — decides</strong></td>
+    <td><code>plan_limits</code> + <code>reprocess_bounded_below_live</code></td>
+    <td><code>plan_teardown</code> (+ <code>redact_dsn</code>, <code>looks_like_prod</code>)</td>
+  </tr>
+  <tr>
+    <td><strong>Returns a verdict of…</strong></td>
+    <td><code>list[LimitSpec]</code> + a bool</td>
+    <td><code>TeardownPlan(dsn_display, proceed, reason)</code></td>
+  </tr>
+  <tr>
+    <td><strong>Thin part — acts</strong></td>
+    <td><code>apply_limits</code> / <code>deploy_init</code></td>
+    <td><code>destroy_enrich</code> / <code>main</code></td>
+  </tr>
+  <tr>
+    <td><strong>The effect is injected as…</strong></td>
+    <td><code>upsert=</code></td>
+    <td><code>drop=</code>, <code>emit=</code></td>
+  </tr>
+</table>
+
+<h2>Name the pattern — Functional Core, Imperative Shell</h2>
+
+<p>
+  Gary Bernhardt's name for it. The <strong>core</strong> is pure: it takes plain
+  values, returns plain values, touches nothing outside itself — no database, no
+  Prefect, no clock. The <strong>shell</strong> is imperative and kept as thin as
+  it can be: it calls the core to get a decision, then performs the one effect
+  the decision calls for. The rule of thumb: <em>the interesting logic is all in
+  the core; the shell is too boring to have bugs.</em>
+</p>
+
+<h2>See it in the destructive one</h2>
+
+<p>
+  Here is the alternative this codebase <em>rejected</em> — deciding and dropping
+  welded into one function:
+</p>
+
+<pre><code># BEFORE — decision welded to effect. How do you test the prod-guard?
+def destroy_enrich(settings, confirm, allow_prod):
+    dsn = settings.enrich_db_dsn
+    if looks_like_prod(dsn) and allow_prod != "yes":
+        print("refusing: prod"); return 0
+    if confirm != "yes":
+        print("refusing"); return 0
+    downgrade_to_base(dsn)     # ← to check "does it refuse prod?" you must risk THIS
+    print("dropped"); return 0</code></pre>
+<span class="src">illustration — not in the repo</span>
+
+<p>
+  To unit-test "does it refuse a production DSN?" you would have to either mock
+  the drop or actually drop a schema. The decision is invisible except by its
+  effect. Now the real code — the decision lifted out into a pure, total
+  function that <em>returns</em> its verdict:
+</p>
+
+<pre><code>def plan_teardown(dsn: str, *, confirm: str, allow_prod: str) -> TeardownPlan:
+    display = redact_dsn(dsn)
+    if looks_like_prod(dsn) and allow_prod != _YES:
+        return TeardownPlan(display, proceed=False, reason="refusing: DSN looks like production; ...")
+    if confirm != _YES:
+        return TeardownPlan(display, proceed=False, reason="refusing: set CONFIRM=yes ...")
+    return TeardownPlan(display, proceed=True, reason="dropping the enrich schema ...")</code></pre>
+<span class="src">src/hn_enrich/teardown.py:80–98 (reasons abbreviated)</span>
+
+<pre><code>def destroy_enrich(settings, *, confirm, allow_prod, drop=downgrade_to_base, emit=print) -> int:
+    plan = plan_teardown(settings.enrich_db_dsn, confirm=confirm, allow_prod=allow_prod)
+    emit(f"target enrich DB: {plan.dsn_display}")   # echo BEFORE acting
+    emit(plan.reason)
+    if not plan.proceed:
+        return 0                                     # a refusal is exit 0, not an error
+    drop(settings.enrich_db_dsn)                      # the one effect — injected
+    emit("enrich schema dropped")
+    return 0</code></pre>
+<span class="src">src/hn_enrich/teardown.py:105–120</span>
+
+<p>
+  Look at what <code>plan_teardown</code> gives you: a <code>proceed</code> bool
+  and an exact <code>reason</code> string, from plain inputs, with no side
+  effects. A test asserts on the verdict directly — "prod DSN, no override →
+  <code>proceed is False</code>" — and never touches a database. The shell,
+  <code>destroy_enrich</code>, has almost nothing left to get wrong: get the
+  plan, echo it, and if <code>proceed</code>, call the injected <code>drop</code>.
+</p>
+
+<div class="note">
+  <span class="label">Two properties worth their own names</span>
+  <p>
+    <strong>Total.</strong> <code>plan_teardown</code> returns a verdict for
+    <em>every</em> input — there is no path that forgets to answer, and the
+    default answer is refuse. A guard that is total cannot be slipped past by an
+    input its author did not picture.
+  </p>
+  <p>
+    <strong>Safe by default, and ordered.</strong> The production check runs
+    <em>first</em> — a prod-looking DSN is refused even with <code>confirm</code>
+    set. Order is policy, and because the policy is pure data-in/data-out, a test
+    pins the order without any infrastructure. (Same instinct as the fail-closed
+    SSRF guard in lesson 0002.)
+  </p>
+</div>
+
+<h2>The same split, in the routine one</h2>
+
+<p><span class="lim">limits.py</span> does it too. The invariant is pure:</p>
+
+<pre><code>def reprocess_bounded_below_live(specs: list[LimitSpec]) -> bool:
+    by_tag = {spec.tag: spec.limit for spec in specs}
+    return by_tag[REPROCESS] &lt; by_tag[LIVE_FETCH]</code></pre>
+<span class="src">src/hn_enrich/limits.py:112–114</span>
+
+<p>And the shell enforces it before touching Prefect, acting through the injected <code>upsert</code>:</p>
+
+<pre><code>def deploy_init(settings, *, upsert=_prefect_upsert) -> list[LimitSpec]:
+    specs = plan_limits(settings)
+    if not reprocess_bounded_below_live(specs):
+        raise ValueError("reprocess cap must stay below the live-fetch cap ...")
+    apply_limits(specs, upsert=upsert)   # the effect — injected
+    return specs</code></pre>
+<span class="src">src/hn_enrich/limits.py:136–145 (message abbreviated)</span>
+
+<p>
+  A misconfigured <code>.env</code> is caught by the pure invariant, before a
+  single write reaches the server. And because <code>upsert=</code> is injected,
+  the test for "does it refuse a self-starving config?" drives a fake recorder
+  and never opens a Prefect connection.
+</p>
+
+<h2>Which side of the line?</h2>
+
+<p>
+  This is the skill — retrieve it. For each responsibility, does it belong in the
+  <strong>pure core</strong> (it only decides / computes a value) or the
+  <strong>thin shell</strong> (it performs an effect on the outside world)?
+</p>
+
+<div class="quiz" data-quiz
+     data-perfect="— you can split a command into a core that decides and a shell that acts. That is the single most reusable move in this repo; it earns a glossary entry."
+     data-partial="— re-check each one: if it only turns values into a value, it is core; if it changes something outside the program (DB, server, stdout), it is shell.">
+
+  <div class="quiz-q" data-answer="pure">
+    <p class="quiz-prompt">Decide that <span class="rule">reprocess must stay below live-fetch</span>.</p>
+    <div class="quiz-choices">
+      <button data-choice="pure">Pure plan (core)</button>
+      <button data-choice="effect">Thin effect (shell)</button>
+    </div>
+    <div class="quiz-fb"><p><strong>Core.</strong> <code>reprocess_bounded_below_live</code> — specs in, bool out, nothing touched. The whole "re-runs never starve fresh enrichment" invariant lives here, testable with a literal list.</p></div>
+  </div>
+
+  <div class="quiz-q" data-answer="pure">
+    <p class="quiz-prompt">Compute the <span class="rule">refusal message</span> ("set CONFIRM=yes …").</p>
+    <div class="quiz-choices">
+      <button data-choice="pure">Pure plan (core)</button>
+      <button data-choice="effect">Thin effect (shell)</button>
+    </div>
+    <div class="quiz-fb"><p><strong>Core</strong> — the subtle one. Deciding <em>what to say</em> is part of the verdict: <code>reason</code> is a field on <code>TeardownPlan</code>. Note the contrast with printing it, two rows down.</p></div>
+  </div>
+
+  <div class="quiz-q" data-answer="pure">
+    <p class="quiz-prompt"><span class="rule">Mask the password</span> in a DSN string.</p>
+    <div class="quiz-choices">
+      <button data-choice="pure">Pure plan (core)</button>
+      <button data-choice="effect">Thin effect (shell)</button>
+    </div>
+    <div class="quiz-fb"><p><strong>Core.</strong> <code>redact_dsn</code> is a string-to-string transform — deterministic, no I/O. That is why the redacted DSN can be part of the plan and echoed safely.</p></div>
+  </div>
+
+  <div class="quiz-q" data-answer="effect">
+    <p class="quiz-prompt"><span class="rule">Register the limit</span> with Prefect's server.</p>
+    <div class="quiz-choices">
+      <button data-choice="pure">Pure plan (core)</button>
+      <button data-choice="effect">Thin effect (shell)</button>
+    </div>
+    <div class="quiz-fb"><p><strong>Shell.</strong> <code>_prefect_upsert</code> — a network call to an external server. It is injected as <code>upsert=</code> precisely so the core, and the tests, never reach it.</p></div>
+  </div>
+
+  <div class="quiz-q" data-answer="effect">
+    <p class="quiz-prompt"><span class="rule">Drop</span> the enrich schema.</p>
+    <div class="quiz-choices">
+      <button data-choice="pure">Pure plan (core)</button>
+      <button data-choice="effect">Thin effect (shell)</button>
+    </div>
+    <div class="quiz-fb"><p><strong>Shell</strong> — the whole reason for the split. The destructive act is injected as <code>drop=</code>; a test passes a fake recorder and asserts it was (or was not) called.</p></div>
+  </div>
+
+  <div class="quiz-q" data-answer="effect">
+    <p class="quiz-prompt"><span class="rule">Print</span> the target DSN to the operator.</p>
+    <div class="quiz-choices">
+      <button data-choice="pure">Pure plan (core)</button>
+      <button data-choice="effect">Thin effect (shell)</button>
+    </div>
+    <div class="quiz-fb"><p><strong>Shell.</strong> Writing to stdout is an effect, injected as <code>emit=</code>. Deciding the text was core (two rows up); <em>saying</em> it is shell. That seam is the whole lesson in one pair.</p></div>
+  </div>
+
+  <p class="quiz-score" data-quiz-score></p>
+</div>
+
+<h2>Why the seam types keep recurring</h2>
+
+<p>
+  You have now seen the same injected-effect seam four times, each a
+  <code>Callable</code> alias with a real default:
+</p>
+
+<pre class="diagram">  politeness.py   Resolver     = Callable[[str], Sequence[str]]    default_resolve
+  politeness.py   GateFactory  = Callable[[], ConcurrencyGate]     _open_gate
+  limits.py       UpsertLimit  = Callable[[str, int], None]        _prefect_upsert
+  teardown.py     DropSchema   = Callable[[str], None]             downgrade_to_base
+  teardown.py     Emit         = Callable[[str], None]             print</pre>
+
+<p>
+  Every one is <strong>dependency injection</strong> (lesson 0001's gate, lesson
+  0003's fake fetcher — same move). The pattern of this lesson tells you
+  <em>where</em> to put those seams: at the boundary between the core that
+  decided and the shell that acts. The verdict crosses that boundary as plain
+  data; the effect crosses it as an injected function.
+</p>
+
+<h2>The transferable lesson</h2>
+
+<div class="note">
+  <span class="label">Keep this</span>
+  <p>
+    When you write a command that <em>does</em> something risky, first ask what it
+    <em>decides</em>. Lift that decision into a pure, total function that returns
+    the verdict as plain data — proceed or not, and why. Leave the shell with
+    just three jobs: get the verdict, perform the one injected effect, report.
+    You will find the hard logic is now testable with literals, and the part that
+    touches the world is too small to hide a bug. For a destructive command, that
+    is the difference between a guard you trust and one you hope about.
+  </p>
+</div>
+
+<h2>Read this next</h2>
+
+<p>
+  <a href="https://www.destroyallsoftware.com/talks/boundaries">Gary Bernhardt,
+  <em>Boundaries</em> (SCNA 2012)</a> — the talk that named this. It argues for
+  passing <em>plain values</em> across the boundaries between subsystems (exactly
+  what <code>TeardownPlan</code> and <code>LimitSpec</code> are) and shows why a
+  functional core needs few or no test doubles. Watch it, then look again at
+  <code>plan_teardown</code>: the reason it needs no mocks is the reason the talk
+  is about.
+</p>
+
+<p class="ask">
+  Push on: is <code>deploy_init</code> raising a <code>ValueError</code> on a bad
+  config a "pure" decision or a shell effect? (It is a fair fight — argue it.)
+  And: <code>main</code> in both modules is the outermost shell — what is the one
+  job it adds that <code>destroy_enrich</code> / <code>deploy_init</code> do not?
+</p>
+
+<div class="footer">
+  Lesson 0004 &middot;
+  <a href="0003-decorator-over-a-port.html">← Lesson 0003</a> &middot;
+  <a href="../reference/seams-and-patterns.html">Reference: the patterns catalog</a> &middot;
+  <a href="../MISSION.md">Mission</a> &middot;
+  <a href="../RESOURCES.md">Resources</a>
+</div>
+
+<script src="../assets/quiz.js"></script>

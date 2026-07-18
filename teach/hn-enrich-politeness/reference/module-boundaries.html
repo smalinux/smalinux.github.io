@@ -1,0 +1,137 @@
+<meta charset="utf-8">
+<title>Reference — The fetch-path boundary map</title>
+<link rel="stylesheet" href="../assets/lesson.css">
+
+<h1>The fetch-path boundary map</h1>
+<p class="subtitle">Reference &middot; who owns what on hn-enrich's live-fetch path &middot; verified against the tree at 2026-07-17</p>
+
+<h2>The test</h2>
+
+<table>
+  <tr><th>Ask</th><th>If yes</th></tr>
+  <tr>
+    <td>Can I answer it from <strong>the url alone</strong>?</td>
+    <td><span class="pol">politeness.py</span></td>
+  </tr>
+  <tr>
+    <td>Does it count <strong>how many at once</strong>, or relate two capacities?</td>
+    <td><span class="lim">limits.py</span></td>
+  </tr>
+  <tr>
+    <td>Is it a <strong>transport detail</strong> (User-Agent, timeout, http verb)?</td>
+    <td><code>adapters.py</code></td>
+  </tr>
+  <tr>
+    <td>Is it <strong>which implementation</strong> gets used (real vs fake)?</td>
+    <td><code>deps.py</code></td>
+  </tr>
+  <tr>
+    <td>Is it <strong>the shape of an external effect</strong>?</td>
+    <td><code>ports.py</code></td>
+  </tr>
+</table>
+
+<p>
+  <strong>The line:</strong> <span class="pol">politeness.py</span> knows there is
+  a gate, but not how wide. <span class="lim">limits.py</span> knows how wide, but
+  not when you will open it.
+</p>
+
+<h2>The wiring</h2>
+
+<pre class="diagram">   worker ──asks for──▶ deps.fetcher()          "just give me a fetcher"
+                             │
+                             ▼
+        PolitenessFetcher(inner, limiter=…, gate=live_fetch_gate)
+              │                  │                     │
+              │                  │                     └── limits.py  (capacity)
+              │                  └── RateLimiter        shared: one per process
+              │
+              └── HttpxFetcher   (transport: UA, timeout, one hop)
+                       │
+                       └─drives─▶ walk_redirects(...)   (politeness owns the walk)
+
+   import arrow:   limits.py ──▶ politeness.py          (never the reverse)
+   both are HttpFetcher-shaped, so they compose at the same seam (ports.py)</pre>
+
+<h2>politeness.py — per-call policy</h2>
+
+<table>
+  <tr><th>Name</th><th>Is</th></tr>
+  <tr><td><code>is_public_url</code> / <code>assert_public_url</code></td><td>The SSRF guard. Scheme must be http(s); <code>localhost</code> refused; IP literal judged directly; hostname <strong>resolved</strong> and every address judged. Fails closed.</td></tr>
+  <tr><td><code>Resolver</code> / <code>default_resolve</code></td><td>How a name becomes addresses. Injectable, so DNS policy is tested without a socket. Asks for every family (A + AAAA).</td></tr>
+  <tr><td><code>walk_redirects</code></td><td>The redirect rule's one home. Guards <strong>every hop before fetching it</strong>. Adapters supply a one-hop <code>fetch_once</code> and must never follow redirects themselves.</td></tr>
+  <tr><td><code>RateLimiter</code></td><td>Per-domain minimum spacing. Reservation stamped under a lock; the sleep happens outside it.</td></tr>
+  <tr><td><code>ConcurrencyGate</code></td><td>The <em>shape</em> of a gate: something you can stand inside. Defined here, filled in by limits.</td></tr>
+  <tr><td><code>PolitenessFetcher</code> / <code>PolitenessScanner</code></td><td>Decorators over <code>HttpFetcher</code> / <code>TrackerScanner</code>. Both run <code>_politeness</code>, so the two live-fetch paths cannot drift.</td></tr>
+</table>
+
+<p>The order inside <code>_politeness</code> is load-bearing: <strong>guard → space → gate</strong>. The guard is cheapest and refuses before any effect; the gate is held only around the real call, so a refused url never burns a slot.</p>
+
+<h2>limits.py — system capacity</h2>
+
+<table>
+  <tr><th>Name</th><th>Is</th></tr>
+  <tr><td><code>plan_limits</code></td><td>Pure. The two caps, in order: <code>live-fetch</code> then <code>reprocess</code>.</td></tr>
+  <tr><td><code>reprocess_bounded_below_live</code></td><td>Pure. The invariant: <code>reprocess &lt; live-fetch</code>, so heals never starve fresh enrichment. Config floors each at 1; only this relates them.</td></tr>
+  <tr><td><code>apply_limits</code> / <code>deploy_init</code></td><td>The thin effect. <code>upsert</code> is injected → tests never reach Prefect. Refuses <em>before</em> touching the store if the invariant breaks.</td></tr>
+  <tr><td><code>live_fetch_gate</code> / <code>reprocess_gate</code></td><td>The real gates. <code>strict=True</code> → raises if the limit was never registered, rather than silently running un-capped.</td></tr>
+</table>
+
+<h2>Invariants to re-apply in any rebuild</h2>
+
+<table>
+  <tr><th>#</th><th>Invariant</th><th>Why it is stated this way</th></tr>
+  <tr>
+    <td>1</td>
+    <td><strong>Every redirect hop is guarded before it is fetched</strong> — not just the url the fetcher was handed.</td>
+    <td>A guard on the first url only is bypassed by any public url that redirects inward. An adapter with <code>follow_redirects=True</code> behind a wrapper-only guard is the bug — <em>and it leaves no witness</em>.</td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td><strong>A hostname is judged by what it resolves to</strong>, and by <em>every</em> address, across every family.</td>
+    <td>A public-looking name backed by a private IP is otherwise accepted. Matches OWASP: retrieve A + AAAA and apply the same verification to all.</td>
+  </tr>
+  <tr>
+    <td>3</td>
+    <td><strong>Fail closed.</strong> No resolution, empty resolution, or one bad address ⇒ refuse.</td>
+    <td>The default answer to "I don't know" must be no.</td>
+  </tr>
+  <tr>
+    <td>4</td>
+    <td><strong>A cap that exists only sometimes is the bug.</strong> <code>strict=True</code>.</td>
+    <td>A run against a server where <code>deploy-init</code> never registered the limit must fail loudly, not run un-capped.</td>
+  </tr>
+  <tr>
+    <td>5</td>
+    <td><strong>reprocess &lt; live-fetch</strong>, enforced before anything is written.</td>
+    <td>A bad <code>.env</code> must not be able to register a self-starving pipeline.</td>
+  </tr>
+  <tr>
+    <td>6</td>
+    <td><strong>One shared policy</strong> behind both live-fetch wrappers; <strong>one shared limiter</strong> across every adapter.</td>
+    <td>Two copies drift. Per-domain spacing must hold across workers, not per wrapper.</td>
+  </tr>
+</table>
+
+<h2>The known edge</h2>
+
+<div class="note">
+  <span class="label">Not fixable inside this module</span>
+  <p>
+    The guard resolves a name, judges it, then passes the <strong>url</strong>
+    onward — and the transport resolves it again. Between the two lookups the
+    answer can change (DNS rebinding; check-then-use). OWASP flags this directly.
+    Closing it needs something outside the process: an egress proxy
+    (Smokescreen) plus egress rules. Hence: <span class="pol">politeness.py</span>
+    is frozen, and the real tracker scanner must not ship before those land.
+  </p>
+</div>
+
+<div class="footer">
+  Reference &middot;
+  <a href="../lessons/0001-politeness-vs-limits.html">Lesson 0001</a> &middot;
+  <a href="../MISSION.md">Mission</a> &middot;
+  <a href="../RESOURCES.md">Resources</a> &middot;
+  <a href="https://cheatsheetseries.owasp.org/cheatsheets/Server_Side_Request_Forgery_Prevention_Cheat_Sheet.html">OWASP SSRF Cheat Sheet</a>
+</div>

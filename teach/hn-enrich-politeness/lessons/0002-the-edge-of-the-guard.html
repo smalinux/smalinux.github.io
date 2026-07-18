@@ -1,0 +1,267 @@
+<meta charset="utf-8">
+<title>0002 — The edge of the guard</title>
+<link rel="stylesheet" href="../assets/lesson.css">
+
+<h1>The edge of the guard</h1>
+<p class="subtitle">Lesson 0002 &middot; what <span class="pol">politeness.py</span> structurally <em>cannot</em> do — and why that answers "buy or build"</p>
+
+<div class="win">
+  <span class="label">The win</span>
+  Lesson 0001 was about what a boundary lets a module <em>do</em>. This one is
+  the other half: a boundary also fixes what a module <em>cannot</em> do. By the
+  end you can look at the SSRF guard, name the one gap it cannot close, and say
+  why the fix is an egress proxy rather than more Python — which is exactly the
+  call already on this project's decision record.
+</div>
+
+<h2>Start from what the guard does right</h2>
+
+<p>
+  The guard is good. Before any hop is fetched, it resolves the hostname and
+  refuses if <em>any</em> address it points at is non-public — and it does this
+  for every redirect hop, not just the first. That is the loop in
+  <code>walk_redirects</code>:
+</p>
+
+<pre><code>for _ in range(max_redirects + 1):
+    assert_public_url(hop, resolve=resolve)   # resolve #1 — to JUDGE
+    result = fetch_once(hop)                   # ...then hand the url onward
+    if result.next_url is None:
+        return result.response
+    hop = result.next_url</code></pre>
+<span class="src">src/hn_enrich/politeness.py:176–181</span>
+
+<p>
+  Nothing here is wrong. This is the OWASP guidance made executable. So the gap
+  is not a bug in the guard — it is the <em>edge</em> of it. To see the edge,
+  follow the url one step further, into the adapter that actually fetches it.
+</p>
+
+<h2>The url is handed on — not the address</h2>
+
+<p>
+  <code>assert_public_url</code> resolved the hostname to <em>judge</em> it. But
+  look at what it passes to <code>fetch_once</code>: the <strong>url string</strong>,
+  <code>hop</code> — not the address it just validated. So the transport has to
+  resolve the very same name a second time to open its connection:
+</p>
+
+<pre><code>def fetch_once(hop: str) -> Hop[httpx.Response]:
+    response = client.get(hop)   # resolve #2 — httpx resolves the host to CONNECT
+    ...</code></pre>
+<span class="src">src/hn_enrich/adapters.py:104–110</span>
+
+<p>
+  Two independent DNS lookups of the same hostname, for a single hop. The guard
+  did one, to decide <em>may I</em>. httpx does another, to decide <em>where to
+  send the packet</em>. They are not the same lookup — the guard's resolver is
+  even injectable (<code>resolve=</code>), while httpx uses its own. Nothing
+  guarantees the two answers match.
+</p>
+
+<div class="note">
+  <span class="label">Name the pattern — check-then-use (TOCTOU)</span>
+  <p>
+    This shape is old and has a name: <strong>time-of-check to time-of-use</strong>.
+    You <em>check</em> a thing, and then you <em>use</em> it — and between the two
+    moments the thing can change, so the check no longer describes what you used.
+    When the "thing" is a DNS name, the attack that exploits the window has its
+    own name: <strong>DNS rebinding</strong>. OWASP flags it directly on the page
+    this module implements.
+  </p>
+</div>
+
+<h2>The attack, on a timeline</h2>
+
+<p>
+  The attacker controls the name <code>evil.example</code> and its DNS server,
+  set to a very short TTL so answers are never cached:
+</p>
+
+<pre class="diagram">  time ──────────────────────────────────────────────────────────▶
+
+  guard: assert_public_url("http://evil.example/")
+            │  resolve #1  ─────▶  DNS answers 203.0.113.9   (public ✓)
+            │                                    guard says: allowed
+            │
+            │   ← attacker flips the DNS record to 169.254.169.254 →
+            │
+  httpx: client.get("http://evil.example/")
+            │  resolve #2  ─────▶  DNS answers 169.254.169.254 (cloud metadata!)
+            └────────────────────▶  connects there, fetches secrets
+
+                 ▲                          ▲
+              CHECK                        USE
+            (public)                   (internal)
+                 └──── the window the guard cannot see ────┘</pre>
+
+<p>
+  <code>169.254.169.254</code> is the cloud metadata endpoint — credentials live
+  behind it. The guard did everything right and still lost, because the address
+  it approved is not the address httpx dialed. The guard's power ends at the
+  edge of the process; the resolution that matters happens just past it.
+</p>
+
+<h2>Why no amount of Python closes this</h2>
+
+<p>
+  The instinct is to patch it in place. Retrieve, don't guess — for each proposed
+  fix, does it actually shut the window, or only shrink it? Answer from the
+  timeline, not from hope.
+</p>
+
+<div class="quiz" data-quiz
+     data-perfect="— you can now tell a shrunk window from a closed one. That judgment is the whole lesson; it earns a glossary entry."
+     data-partial="— re-read the timeline: a fix only 'closes' the gap if the address that gets CONNECTED is the one that was CHECKED.">
+
+  <div class="quiz-q" data-answer="open">
+    <p class="quiz-prompt">Call <span class="rule">assert_public_url</span> a second time, right before <span class="rule">client.get</span>.</p>
+    <div class="quiz-choices">
+      <button data-choice="closed">Closes the window</button>
+      <button data-choice="open">Window stays open</button>
+    </div>
+    <div class="quiz-fb"><p><strong>Stays open.</strong> You have moved the check closer to the use, not joined them. There is still a gap between your second check and httpx's own resolve — and rebinding with a short TTL flips the answer inside any gap, however small.</p></div>
+  </div>
+
+  <div class="quiz-q" data-answer="open">
+    <p class="quiz-prompt">Cache the guard's resolved address and <span class="rule">reuse</span> it for the connection.</p>
+    <div class="quiz-choices">
+      <button data-choice="closed">Closes the window</button>
+      <button data-choice="open">Window stays open</button>
+    </div>
+    <div class="quiz-fb"><p><strong>Stays open — as written.</strong> Good instinct, wrong wiring: httpx does not read your cache. Unless the validated address is what actually gets dialed, httpx resolves again and the cache changes nothing. (Make it the dialed address and you have the next option.)</p></div>
+  </div>
+
+  <div class="quiz-q" data-answer="closed">
+    <p class="quiz-prompt">Resolve once, then tell the transport to <span class="rule">connect to that exact IP</span> (IP pinning).</p>
+    <div class="quiz-choices">
+      <button data-choice="closed">Closes the window</button>
+      <button data-choice="open">Window stays open</button>
+    </div>
+    <div class="quiz-fb"><p><strong>Closes it</strong> — this is the real in-process mitigation: the checked address <em>is</em> the used address, so there is no second lookup to poison. But note what it cost: you are now overriding the transport's connection layer (and juggling TLS SNI and the Host header by hand). You have started building a proxy inside your process. Better to build it <em>once</em>, at the boundary.</p></div>
+  </div>
+
+  <div class="quiz-q" data-answer="closed">
+    <p class="quiz-prompt">Route all egress through <span class="rule">Smokescreen</span>, which resolves and validates at connect time.</p>
+    <div class="quiz-choices">
+      <button data-choice="closed">Closes the window</button>
+      <button data-choice="open">Window stays open</button>
+    </div>
+    <div class="quiz-fb"><p><strong>Closes it.</strong> The proxy's validation and the proxy's connection use the same resolution, by construction — check and use collapse into one moment. This is IP pinning done properly, in one place every worker shares, instead of re-derived in each adapter.</p></div>
+  </div>
+
+  <div class="quiz-q" data-answer="closed">
+    <p class="quiz-prompt">Add <span class="rule">network egress rules</span> that drop packets to private and CGNAT ranges.</p>
+    <div class="quiz-choices">
+      <button data-choice="closed">Closes the window</button>
+      <button data-choice="open">Window stays open</button>
+    </div>
+    <div class="quiz-fb"><p><strong>Closes it — at a lower layer.</strong> This does not care about names or timing at all: even if every check above is bypassed, the packet to an internal address never leaves the host. It is the last line, and it catches what a hostname-level control structurally cannot (see the CGNAT note below).</p></div>
+  </div>
+
+  <p class="quiz-score" data-quiz-score></p>
+</div>
+
+<p>
+  See the pattern in the answers. Every fix that stays <em>inside the process
+  making the request</em> can only shrink the window — because there are always
+  two moments, check and use, with a seam between them. The fixes that close it
+  do one of two things: make the checked address <em>be</em> the connected one
+  (pin it, or proxy it), or drop the packet at a layer that never trusted the
+  name in the first place (the network). The boundary of
+  <span class="pol">politeness.py</span> is the process boundary, and this gap
+  lives on the far side of it.
+</p>
+
+<h2>So the decision was infrastructure, not code</h2>
+
+<p>
+  This is why <span class="pol">politeness.py</span> is frozen and the real
+  fetch path waits on <strong>Smokescreen plus egress rules</strong>, rather than
+  on a cleverer guard. It is not that the guard is unfinished — it is that the
+  last gap is <em>unreachable</em> from where the guard stands. The two closing
+  moves from the quiz are exactly the two halves of the plan:
+</p>
+
+<table>
+  <tr><th>Layer</th><th>Closes</th><th>Cannot close</th></tr>
+  <tr>
+    <td><span class="pol">politeness.py</span> guard + <code>walk_redirects</code></td>
+    <td>Public-looking name → private IP, at check time; every redirect hop.</td>
+    <td>The check-then-use window: the name can flip before httpx connects.</td>
+  </tr>
+  <tr>
+    <td>Smokescreen (egress proxy)</td>
+    <td>The window — validation and connection share one resolution.</td>
+    <td>A client that bypasses the hostname ACL with a raw IP; CGNAT ranges. Its ACL acts on "hostnames as they appear in the request."</td>
+  </tr>
+  <tr>
+    <td>Network egress rules (firewall)</td>
+    <td>Whatever slips the layers above — at the packet level, by IP range.</td>
+    <td>Nothing above it; it is the floor. (But it is blunt — no per-request context.)</td>
+  </tr>
+</table>
+
+<p>
+  That middle row is your open <strong>CGNAT gap</strong> in one sentence:
+  Smokescreen validates the name it is handed, so an address in the carrier-grade
+  NAT range (<code>100.64.0.0/10</code>) that never went through a name still
+  needs the firewall row to stop it. No single layer is enough; that is why the
+  decision names <em>both</em> the proxy and the egress rules. Defense in depth
+  is not belt-and-braces caution here — it is forced by the fact that each layer
+  has an edge the next one covers.
+</p>
+
+<h2>The transferable lesson</h2>
+
+<p>
+  You came here to rebuild v5 with the boundaries right. Here is the rule this
+  lesson buys you, good far beyond SSRF:
+</p>
+
+<div class="note">
+  <span class="label">Keep this</span>
+  <p>
+    When a requirement lands, ask not only "which module owns it?" (lesson 0001)
+    but "<strong>can a module at this layer even reach it?</strong>" If the honest
+    answer is no — the thing you must control happens on the far side of your
+    boundary — then the fix is a different <em>layer</em>, not more code at this
+    one. Recognising that early is what stops you from writing a guard that feels
+    airtight and quietly is not. The dangerous version of this bug is the one
+    that leaves no witness: it passes every test, because the tests, like the
+    guard, never see the second resolution.
+  </p>
+</div>
+
+<h2>Read this next</h2>
+
+<p>
+  Same primary source, one section along:
+  <a href="https://cheatsheetseries.owasp.org/cheatsheets/Server_Side_Request_Forgery_Prevention_Cheat_Sheet.html">OWASP's
+  SSRF Prevention Cheat Sheet</a> — find where it says to <em>disable
+  redirect-following in the client</em> and to <em>beware DNS pinning / rebinding
+  (TOCTOU)</em>. You have now seen both in this codebase: the first is why
+  <code>HttpxFetcher</code> sets <code>follow_redirects=False</code>
+  (<code>adapters.py:100</code>), and the second is the window you just spent a
+  lesson on. For the "buy" side, skim
+  <a href="https://github.com/stripe/smokescreen">Smokescreen's README</a> — note
+  its own line that the ACL "is only applied to hostnames as they appear in the
+  request," which is the middle row of the table above.
+</p>
+
+<p class="ask">
+  Push on anything: why <code>walk_redirects</code> bothers to guard every hop if
+  the window remains regardless; whether IP pinning could live behind the same
+  <code>HttpFetcher</code> seam without the rest of the code noticing; or what a
+  test that <em>could</em> catch a rebinding regression would even look like.
+</p>
+
+<div class="footer">
+  Lesson 0002 &middot;
+  <a href="0001-politeness-vs-limits.html">← Lesson 0001</a> &middot;
+  <a href="../reference/ssrf-defense-in-depth.html">Reference: the defense-in-depth ladder</a> &middot;
+  <a href="../MISSION.md">Mission</a> &middot;
+  <a href="../RESOURCES.md">Resources</a>
+</div>
+
+<script src="../assets/quiz.js"></script>

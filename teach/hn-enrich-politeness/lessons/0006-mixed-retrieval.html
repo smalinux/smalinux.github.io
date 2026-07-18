@@ -1,0 +1,213 @@
+<meta charset="utf-8">
+<title>0006 — Mixed retrieval</title>
+<link rel="stylesheet" href="../assets/lesson.css">
+
+<h1>Mixed retrieval</h1>
+<p class="subtitle">Lesson 0006 &middot; no new pattern — retrieve all five, cold, in shuffled order</p>
+
+<div class="win">
+  <span class="label">The win</span>
+  This lesson teaches nothing new. That is the point. You have covered five
+  patterns quickly, and quick coverage builds <em>fluency</em> — the feeling of
+  knowing. Retention is different: it comes from pulling each idea out of memory,
+  in mixed order, with no section heading telling you which lesson it is from.
+  That is what this page makes you do.
+</div>
+
+<p>
+  Two ideas from how people actually learn, both Robert Bjork's "desirable
+  difficulties": <strong>interleaving</strong> (mix topics, don't block them) and
+  <strong>retrieval practice</strong> (recall beats re-reading). The questions
+  below are deliberately shuffled across lessons and deliberately a little hard.
+  If one makes you pause and reconstruct the reasoning — good. That pause is the
+  learning.
+</p>
+
+<h2>Part 1 — Free recall (the hard, useful kind)</h2>
+
+<p>
+  Read each prompt, answer it <em>out loud or on paper first</em>, and only then
+  open the card to check. Producing the answer from nothing is worth ten times
+  re-reading it. Some of these need two lessons at once.
+</p>
+
+<details class="recall">
+  <summary>Name the pattern: <code>PolitenessFetcher</code> both <em>is</em> and <em>has</em> an <code>HttpFetcher</code>. And name the one thing it must do to be worth its layer. <span class="tag">0003</span></summary>
+  <div class="recall-a">
+    <p><strong>Decorator over a Port.</strong> Is-a and has-a at the same interface is the Decorator signature; the interface is the <code>HttpFetcher</code> Port.</p>
+    <p>It must <strong>add real behaviour</strong> — guard, space, gate — not just forward the call. A wrapper that only forwards is a <em>pass-through</em>, which Ousterhout counts as a red flag: a layer with no new abstraction, pure cost.</p>
+  </div>
+</details>
+
+<details class="recall">
+  <summary>The SSRF guard resolves and judges <em>every</em> hop, yet a gap survives. Name the gap — and name the safety property the guard shares with <code>plan_teardown</code>. <span class="tag">0002 + 0004</span></summary>
+  <div class="recall-a">
+    <p>The gap is <strong>check-then-use (TOCTOU)</strong>, exploited by <strong>DNS rebinding</strong>: the guard resolves to judge, then httpx resolves again to connect, and the answer can change between. It lives below the process boundary, so no in-process code closes it — hence the egress proxy.</p>
+    <p>Shared property: <strong>fail-closed / safe by default</strong> (and <strong>total</strong>). The guard refuses on any doubt; <code>plan_teardown</code> refuses unless <code>confirm=="yes"</code>, prod-checked first. The dangerous path must be asked for, never defaulted into.</p>
+  </div>
+</details>
+
+<details class="recall">
+  <summary>In <span class="lim">limits.py</span>, where is the <em>decision</em> vs the <em>effect</em>, and which side imports Prefect? <span class="tag">0004 + 0001</span></summary>
+  <div class="recall-a">
+    <p><strong>Decision (pure core):</strong> <code>plan_limits</code> + <code>reprocess_bounded_below_live</code> — specs and a bool, no I/O. <strong>Effect (thin shell):</strong> <code>apply_limits</code> / <code>deploy_init</code>, acting through the injected <code>upsert</code>.</p>
+    <p>Only the effect imports Prefect (<code>_prefect_upsert</code>). And by Dependency Inversion, <span class="pol">politeness.py</span> owns <code>ConcurrencyGate</code> while <span class="lim">limits.py</span> depends on it — so the policy never imports the machinery.</p>
+  </div>
+</details>
+
+<details class="recall">
+  <summary>You must test "a worker counts words from a page" with no network. Name the two seams that let you, and the pattern behind each. <span class="tag">0003 + 0005</span></summary>
+  <div class="recall-a">
+    <p><strong>The <code>HttpFetcher</code> Port</strong> — drop in a <code>FakeFetcher</code> with canned pages (Ports &amp; Adapters / Decorator seam).</p>
+    <p><strong><code>deps.override(fetcher=...)</code></strong> — install that fake behind the accessor for one <code>with</code>-block (Service Locator seam). The worker never learns the real fetcher exists.</p>
+  </div>
+</details>
+
+<details class="recall">
+  <summary>Capstone. New v5 rule: "never fetch a URL on a customer blocklist." Which module, which existing function does it join, and is it core or shell? <span class="tag">mission</span></summary>
+  <div class="recall-a">
+    <p><strong>politeness.py</strong> — it is answerable from the url alone (lesson 0001's test), so it is per-call policy, not a system cap.</p>
+    <p>It joins <code>is_public_url</code> / <code>assert_public_url</code> as one more refusal reason, guarded <em>before</em> the effect inside <code>_politeness</code>. It is a <strong>pure predicate — core</strong>: url in, allowed/refused out, no I/O. And it should be <strong>fail-closed</strong>: if the blocklist can't be read, refuse. That is the whole course applied to one new line.</p>
+  </div>
+</details>
+
+<h2>Part 2 — Mixed recognition (shuffled, automatic feedback)</h2>
+
+<p>
+  Faster loop. Each question is from a different lesson than the one before it,
+  and the two choices change every time — so nothing in the format tells you the
+  answer. Decide from the idea, not the pattern of the page.
+</p>
+
+<div class="quiz" data-quiz
+     data-perfect="— retrieved cold and mixed, that is retention, not just fluency. This is the strongest signal yet that the five stuck."
+     data-partial="— note which lessons the misses came from; those are exactly the ones to revisit. Mixed misses are more honest than blocked practice.">
+
+  <div class="quiz-q" data-answer="pol">
+    <p class="quiz-prompt"><span class="rule">Wait 2 seconds</span> between two hits on the same domain.</p>
+    <div class="quiz-choices">
+      <button data-choice="pol">politeness.py</button>
+      <button data-choice="lim">limits.py</button>
+    </div>
+    <div class="quiz-fb"><p><strong>politeness.py</strong> — needs the url's host, so it is per-call (<code>RateLimiter</code>). "Limit" in the name is a decoy. [0001]</p></div>
+  </div>
+
+  <div class="quiz-q" data-answer="fake">
+    <p class="quiz-prompt"><span class="rule">deps.classifier()</span> with a key set but no <code>use_real</code> flag.</p>
+    <div class="quiz-choices">
+      <button data-choice="fake">Returns the fake</button>
+      <button data-choice="real">Returns the real</button>
+    </div>
+    <div class="quiz-fb"><p><strong>Fake.</strong> A credential is not consent — only <code>use_real_ai_classifier</code> selects the real one. [0005]</p></div>
+  </div>
+
+  <div class="quiz-q" data-answer="open">
+    <p class="quiz-prompt"><span class="rule">Re-check the URL</span> a second time, just before connecting.</p>
+    <div class="quiz-choices">
+      <button data-choice="closed">Closes the window</button>
+      <button data-choice="open">Window stays open</button>
+    </div>
+    <div class="quiz-fb"><p><strong>Stays open.</strong> Two lookups still exist; rebinding flips inside any gap. Only pinning or a proxy joins check and use. [0002]</p></div>
+  </div>
+
+  <div class="quiz-q" data-answer="core">
+    <p class="quiz-prompt"><span class="rule">Mask the password</span> in a DSN before echoing it.</p>
+    <div class="quiz-choices">
+      <button data-choice="core">Pure core</button>
+      <button data-choice="shell">Thin shell</button>
+    </div>
+    <div class="quiz-fb"><p><strong>Core.</strong> <code>redact_dsn</code> — string in, string out, no I/O. That is why the redacted DSN is safe to carry in the plan. [0004]</p></div>
+  </div>
+
+  <div class="quiz-q" data-answer="yes">
+    <p class="quiz-prompt">Unit-test that the guard <span class="rule">refuses a private-IP hostname</span>?</p>
+    <div class="quiz-choices">
+      <button data-choice="yes">Yes, fakes isolate it</button>
+      <button data-choice="no">No, needs real world</button>
+    </div>
+    <div class="quiz-fb"><p><strong>Yes.</strong> Inject <code>resolve=</code> returning <code>10.0.0.1</code>; the DNS policy is judged with no DNS. [0003]</p></div>
+  </div>
+
+  <div class="quiz-q" data-answer="lim">
+    <p class="quiz-prompt"><span class="rule">Refuse to run</span> if the cap was never registered on the server.</p>
+    <div class="quiz-choices">
+      <button data-choice="pol">politeness.py</button>
+      <button data-choice="lim">limits.py</button>
+    </div>
+    <div class="quiz-fb"><p><strong>limits.py.</strong> <code>strict=True</code> on the gate — a cap that exists only sometimes is the bug it refuses. [0001]</p></div>
+  </div>
+
+  <div class="quiz-q" data-answer="closed">
+    <p class="quiz-prompt">Route all egress through <span class="rule">Smokescreen</span>, which validates at connect time.</p>
+    <div class="quiz-choices">
+      <button data-choice="closed">Closes the window</button>
+      <button data-choice="open">Window stays open</button>
+    </div>
+    <div class="quiz-fb"><p><strong>Closes it.</strong> One resolution serves both check and connect — IP pinning done once, in one place every worker shares. [0002]</p></div>
+  </div>
+
+  <div class="quiz-q" data-answer="real">
+    <p class="quiz-prompt"><span class="rule">deps.fetcher()</span> in production, no overrides.</p>
+    <div class="quiz-choices">
+      <button data-choice="fake">Returns the fake</button>
+      <button data-choice="real">Returns the real</button>
+    </div>
+    <div class="quiz-fb"><p><strong>Real.</strong> The fetcher <em>is</em> built, so no <code>use_real_fetcher</code> flag, no fake default. Only the two unbuilt adapters default to fake. [0005]</p></div>
+  </div>
+
+  <div class="quiz-q" data-answer="no">
+    <p class="quiz-prompt">Unit-test that a <span class="rule">DNS flip</span> between check and connect is refused?</p>
+    <div class="quiz-choices">
+      <button data-choice="yes">Yes, fakes isolate it</button>
+      <button data-choice="no">No, needs real world</button>
+    </div>
+    <div class="quiz-fb"><p><strong>No.</strong> The window lives below the seam, in httpx's own resolve — no fake reproduces it. It "leaves no witness"; that is why the fix was a proxy, not a test. [0002 + 0003]</p></div>
+  </div>
+
+  <p class="quiz-score" data-quiz-score></p>
+</div>
+
+<h2>Where you are</h2>
+
+<p>
+  Six lessons in, the whole live-fetch and operator path is mapped — and mapped
+  as <em>decisions</em>, not files. The catalog is your compression of it:
+</p>
+
+<table>
+  <tr><th>Lesson</th><th>Pattern / idea</th><th>The one line to keep</th></tr>
+  <tr><td>0001</td><td>Boundary: per-call vs system</td><td>politeness knows there is a gate, not how wide; limits knows how wide, not when.</td></tr>
+  <tr><td>0002</td><td>Check-then-use / the boundary's edge</td><td>A boundary also fixes what a module <em>cannot</em> do; then the fix is a different layer.</td></tr>
+  <tr><td>0003</td><td>Decorator over a Port</td><td>Give a cross-cutting rule the effect's interface and wrap it; gain a seam for fakes.</td></tr>
+  <tr><td>0004</td><td>Functional Core, Imperative Shell</td><td>Lift the decision into a pure verdict; leave the shell too small to hide a bug.</td></tr>
+  <tr><td>0005</td><td>Service Locator + safe default</td><td>Forced registries pay two tolls: one fake-seam, and every risky selection opt-in.</td></tr>
+</table>
+
+<p>
+  Per the <a href="../MISSION.md">mission</a>, that is the boundary this course set
+  out to make solid before going wider. Everything past it — <code>repo.py</code>,
+  the workqueue, the flows — is deliberately out of scope until you decide to open
+  it, and that is a decision worth making on purpose, not by momentum.
+</p>
+
+<p class="ask">
+  The most useful thing you can do now is not another lesson — it is to
+  <em>produce</em>. Pick any open question still on the table (the per-process
+  <code>RateLimiter</code>; whether <code>deploy_init</code>'s <code>ValueError</code>
+  is core or shell; what the workers' signatures would be if Prefect could pass
+  objects) and argue it to me in your own words. That is the first real evidence
+  of learning in this workspace — and the moment you do, I will write the
+  <code>GLOSSARY.md</code> and the first learning record from what you show, and
+  aim the next lesson at your actual gaps instead of a guess.
+</p>
+
+<div class="footer">
+  Lesson 0006 &middot;
+  <a href="0005-the-service-locator.html">← Lesson 0005</a> &middot;
+  <a href="../reference/seams-and-patterns.html">Catalog</a> &middot;
+  <a href="../reference/module-boundaries.html">Boundary map</a> &middot;
+  <a href="../reference/ssrf-defense-in-depth.html">SSRF ladder</a> &middot;
+  <a href="../MISSION.md">Mission</a>
+</div>
+
+<script src="../assets/quiz.js"></script>

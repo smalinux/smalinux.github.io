@@ -1,0 +1,295 @@
+<meta charset="utf-8">
+<title>0001 — Where does a rule live?</title>
+<link rel="stylesheet" href="../assets/lesson.css">
+
+<h1>Where does a rule live?</h1>
+<p class="subtitle">Lesson 0001 &middot; <span class="pol">politeness.py</span> and <span class="lim">limits.py</span>, and the seam between them</p>
+
+<div class="win">
+  <span class="label">The win</span>
+  By the end of this page you can take any new rule about fetching the web and
+  say which of the two modules owns it — and say <em>why</em>, in one sentence.
+  That is the same judgement the v5 rebuild needs, applied to a small case.
+</div>
+
+<h2>Two questions</h2>
+
+<p>
+  The two modules look similar from a distance. Both are about "don't hammer the
+  web". Both end up wrapped around the same fetch. But each one answers a
+  different question, and the question is the boundary:
+</p>
+
+<table>
+  <tr>
+    <th>Module</th>
+    <th>The question it answers</th>
+    <th>What it needs to know</th>
+  </tr>
+  <tr>
+    <td><span class="pol">politeness.py</span></td>
+    <td><strong>May <em>this one call</em> go, and when?</strong></td>
+    <td>The url.</td>
+  </tr>
+  <tr>
+    <td><span class="lim">limits.py</span></td>
+    <td><strong>How many calls may run at once, across everything?</strong></td>
+    <td>Two numbers from <code>.env</code>.</td>
+  </tr>
+</table>
+
+<p>
+  Notice that neither can answer the other's question. A single call has no idea
+  how many other calls are in flight — it cannot see them. And a number in
+  <code>.env</code> has no idea what url you are about to visit. That mutual
+  blindness is not a weakness in the design; it <em>is</em> the design.
+</p>
+
+<h2>Everything politeness.py does, in six lines</h2>
+
+<p>
+  The whole module funnels into one shared policy. Both wrappers
+  (<code>PolitenessFetcher</code> and <code>PolitenessScanner</code>) run their
+  outward call inside it, so the two cannot drift apart:
+</p>
+
+<pre><code>@contextmanager
+def _politeness(
+    url: str, *, limiter: RateLimiter, gate: GateFactory, resolve: Resolver
+) -> Iterator[None]:
+    assert_public_url(url, resolve=resolve)         # 1. may I visit at all?
+    limiter.acquire(urlsplit(url).hostname or "")   # 2. when may I visit?
+    with gate():                                    # 3. is there a free slot?
+        yield</code></pre>
+<span class="src">src/hn_enrich/politeness.py:226–233 &middot; comments added here</span>
+
+<p>
+  Read the three steps as three <em>different kinds</em> of question. Step 1 and
+  step 2 are answered from the url alone. Step 3 is not — step 3 asks somebody
+  else. And that somebody is where the boundary falls.
+</p>
+
+<h2>Everything limits.py decides, in four lines</h2>
+
+<pre><code>def plan_limits(settings: Settings) -> list[LimitSpec]:
+    return [
+        LimitSpec(LIVE_FETCH, settings.live_fetch_concurrency),
+        LimitSpec(REPROCESS, settings.reprocess_concurrency),
+    ]</code></pre>
+<span class="src">src/hn_enrich/limits.py:102–106</span>
+
+<p>
+  No url. No fetching. No web. Just two names and two numbers — and one rule
+  relating them (<code>reprocess_bounded_below_live</code>), which says re-runs
+  must stay under fresh enrichment so a heal can never starve the live pipeline.
+  This module is about <em>capacity</em>, and capacity is a property of the whole
+  system, never of one call.
+</p>
+
+<h2>The seam: a gate</h2>
+
+<p>
+  Step 3 above says <code>with gate():</code>. The gate is the one place the two
+  modules touch, and the way they touch is the interesting part.
+  <span class="pol">politeness.py</span> defines what a gate <em>is</em>:
+</p>
+
+<pre><code>ConcurrencyGate = AbstractContextManager[None]
+GateFactory = Callable[[], ConcurrencyGate]</code></pre>
+<span class="src">src/hn_enrich/politeness.py:65–66</span>
+
+<p>
+  That is the entire specification: <em>something you can stand inside</em>. Not
+  how many slots. Not who counts them. Not Prefect. Then
+  <span class="lim">limits.py</span> supplies a real one:
+</p>
+
+<pre><code>def live_fetch_gate() -> ConcurrencyGate:
+    return cast(ConcurrencyGate, concurrency(LIVE_FETCH, strict=True))</code></pre>
+<span class="src">src/hn_enrich/limits.py:154–155</span>
+
+<p>And <code>deps.py</code> is the one place they are introduced to each other:</p>
+
+<pre><code>return PolitenessFetcher(inner, limiter=_rate_limiter(), gate=live_fetch_gate)</code></pre>
+<span class="src">src/hn_enrich/deps.py:115</span>
+
+<pre class="diagram">                         deps.py
+              the one place the two modules meet
+                            │
+   PolitenessFetcher(inner, limiter=…, gate=live_fetch_gate)
+                            │
+        ┌───────────────────┴───────────────────┐
+        ▼                                       ▼
+┌───────────────────────┐          ┌───────────────────────┐
+│     politeness.py     │          │       limits.py       │
+│                       │          │                       │
+│  "May THIS call go,   │          │  "How many calls may  │
+│   and when?"          │          │   run at once?"       │
+│                       │          │                       │
+│  1. public url?       │          │   live-fetch = 8      │
+│  2. domain spaced?    │          │   reprocess  = 3      │
+│  3. hold a slot ──────┼── gate ─▶│   supplies the real   │
+│                       │          │   gate                │
+│                       │          │                       │
+│  defines the SHAPE    │          │   owns the NUMBER     │
+│  of a gate            │          │   inside it           │
+└───────────────────────┘          └───────────────────────┘
+            ▲                                  │
+            └────────── imports ───────────────┘
+       limits.py imports politeness.py — never the reverse</pre>
+
+<div class="note">
+  <span class="label">Name the pattern — Dependency Inversion</span>
+  <p>
+    Look at the arrow. The module with the <em>policy</em>
+    (<span class="pol">politeness.py</span>) owns the abstraction; the module with
+    the <em>machinery</em> (<span class="lim">limits.py</span>, and behind it
+    Prefect) depends on it. You can prove it in one line —
+    <code>limits.py:82</code> reads
+    <code>from hn_enrich.politeness import ConcurrencyGate</code>, and
+    <span class="pol">politeness.py</span> imports nothing from
+    <span class="lim">limits.py</span> at all.
+  </p>
+  <p>
+    This is why <span class="pol">politeness.py</span> has no idea Prefect
+    exists, and why its tests never start a server. The naive arrangement — the
+    fetcher reaching into <span class="lim">limits.py</span> to ask for the cap —
+    would drag Prefect into every test of the SSRF guard.
+  </p>
+</div>
+
+<p><strong>The line worth memorising:</strong> <span class="pol">politeness.py</span> knows there
+is a gate, but not how wide it is. <span class="lim">limits.py</span> knows how
+wide, but not when you will open it.</p>
+
+<h2>Place the rule</h2>
+
+<p>
+  Now retrieve it — don't scroll up. For each rule, which module owns it? Answer
+  from the two questions, not from memory of the file.
+</p>
+
+<div class="quiz" data-quiz
+     data-perfect="— you own the boundary. Tell your teacher; it earns a glossary entry."
+     data-partial="— worth re-reading the two questions above, then retry from memory.">
+
+  <div class="quiz-q" data-answer="pol">
+    <p class="quiz-prompt"><span class="rule">Refuse a url whose hostname resolves to 10.0.0.5.</span></p>
+    <div class="quiz-choices">
+      <button data-choice="pol">politeness.py</button>
+      <button data-choice="lim">limits.py</button>
+    </div>
+    <div class="quiz-fb"><p><strong>politeness.py.</strong> Answerable from the url alone — this call, this target. No other call in the system changes the answer.</p></div>
+  </div>
+
+  <div class="quiz-q" data-answer="lim">
+    <p class="quiz-prompt"><span class="rule">Never let more than 8 fetches run at once across the whole pipeline.</span></p>
+    <div class="quiz-choices">
+      <button data-choice="pol">politeness.py</button>
+      <button data-choice="lim">limits.py</button>
+    </div>
+    <div class="quiz-fb"><p><strong>limits.py.</strong> A count across the system. One call cannot see the other seven, so it cannot enforce this — it can only ask for a slot.</p></div>
+  </div>
+
+  <div class="quiz-q" data-answer="pol">
+    <p class="quiz-prompt"><span class="rule">Wait 2 seconds between two hits on example.com.</span></p>
+    <div class="quiz-choices">
+      <button data-choice="pol">politeness.py</button>
+      <button data-choice="lim">limits.py</button>
+    </div>
+    <div class="quiz-fb"><p><strong>politeness.py.</strong> Tempting to call this a "limit", but it needs the url's hostname to mean anything — so it is per-call. That is <code>RateLimiter</code>, step 2.</p></div>
+  </div>
+
+  <div class="quiz-q" data-answer="lim">
+    <p class="quiz-prompt"><span class="rule">Re-runs must never crowd out fresh enrichment.</span></p>
+    <div class="quiz-choices">
+      <button data-choice="pol">politeness.py</button>
+      <button data-choice="lim">limits.py</button>
+    </div>
+    <div class="quiz-fb"><p><strong>limits.py.</strong> A relationship between two capacities — <code>reprocess_bounded_below_live</code>. Nothing about any single url is involved.</p></div>
+  </div>
+
+  <div class="quiz-q" data-answer="pol">
+    <p class="quiz-prompt"><span class="rule">Check every hop of a redirect chain before following it.</span></p>
+    <div class="quiz-choices">
+      <button data-choice="pol">politeness.py</button>
+      <button data-choice="lim">limits.py</button>
+    </div>
+    <div class="quiz-fb"><p><strong>politeness.py.</strong> One call's journey. It lives in <code>walk_redirects</code> — and it lives there rather than in the adapter so that no adapter can forget it. The loop <em>is</em> the rule.</p></div>
+  </div>
+
+  <div class="quiz-q" data-answer="lim">
+    <p class="quiz-prompt"><span class="rule">Refuse to run if the cap was never registered on the server.</span></p>
+    <div class="quiz-choices">
+      <button data-choice="pol">politeness.py</button>
+      <button data-choice="lim">limits.py</button>
+    </div>
+    <div class="quiz-fb"><p><strong>limits.py.</strong> That is <code>strict=True</code>. It is about whether the capacity <em>exists</em> — a fact about the deployment, not about a url.</p></div>
+  </div>
+
+  <p class="quiz-score" data-quiz-score></p>
+</div>
+
+<div class="note">
+  <span class="label">Name the pattern — Null Object</span>
+  <p>
+    One case that catches people. The <em>default</em> gate — the one that never
+    blocks — lives in <span class="pol">politeness.py</span>, not
+    <span class="lim">limits.py</span>:
+  </p>
+  <pre><code>def _open_gate() -> ConcurrencyGate:
+    # The default gate never blocks; the real cap is injected by a later slice.
+    return nullcontext()</code></pre>
+  <span class="src">src/hn_enrich/politeness.py:217–219</span>
+  <p>
+    Why there? Because <span class="pol">politeness.py</span> has to work with no
+    capacity system at all — that is what "owns the abstraction" means. A
+    do-nothing default keeps every caller and every test free of an <code>if
+    gate is None</code>. The empty gate is not a limit; it is the
+    <em>absence</em> of one, which is politeness's own business.
+  </p>
+</div>
+
+<h2>Where this goes next</h2>
+
+<p>
+  A boundary also defines what a module <strong>cannot</strong> do, and
+  <span class="pol">politeness.py</span> has a hard edge worth knowing before you
+  rebuild it. It resolves a hostname, judges the addresses, and then hands the
+  <em>url</em> onward — so whoever fetches it resolves it a second time. Between
+  those two resolutions, the answer can change. That gap has a name, OWASP names
+  it too, and it cannot be closed from inside this module — which is exactly why
+  the decision on record is an egress proxy rather than more code. That is
+  lesson 0002.
+</p>
+
+<h2>Read this next</h2>
+
+<p>
+  The primary source for this module is
+  <a href="https://cheatsheetseries.owasp.org/cheatsheets/Server_Side_Request_Forgery_Prevention_Cheat_Sheet.html">OWASP's
+  Server Side Request Forgery Prevention Cheat Sheet</a>. Read just the "Case 2:
+  Application can send requests to ANY external IP address or domain name"
+  section — perhaps ten minutes. You will recognise three rules you have already
+  seen today, because <span class="pol">politeness.py</span> implements them
+  nearly verbatim: disable redirect-following in the client, resolve a name to
+  <em>all</em> its addresses and validate every one, and deny loopback /
+  private / link-local. The module's rules are not house style; they are the
+  standard, made executable.
+</p>
+
+<p class="ask">
+  Anything here that did not land? Ask — that is what your teacher is for. Good
+  questions to push on: why the limiter is shared rather than one per wrapper;
+  why <code>Resolver</code> is injectable at all; or what would actually break if
+  someone put the live-fetch cap inside <span class="pol">politeness.py</span>.
+</p>
+
+<div class="footer">
+  Lesson 0001 &middot;
+  <a href="../MISSION.md">Mission</a> &middot;
+  <a href="../RESOURCES.md">Resources</a> &middot;
+  <a href="../reference/module-boundaries.html">Reference: the boundary map</a>
+</div>
+
+<script src="../assets/quiz.js"></script>

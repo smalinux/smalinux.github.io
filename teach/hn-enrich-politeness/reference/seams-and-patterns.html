@@ -1,0 +1,117 @@
+<meta charset="utf-8">
+<title>Reference — Seams & patterns catalog</title>
+<link rel="stylesheet" href="../assets/lesson.css">
+
+<h1>Seams &amp; patterns catalog</h1>
+<p class="subtitle">Reference &middot; the design moves hn-enrich's fetch/ops path is built from — the list to re-apply in v5 &middot; verified 2026-07-17</p>
+
+<h2>The patterns</h2>
+
+<table>
+  <tr><th>Pattern</th><th>In one line</th><th>Where it lives</th><th>Buys</th><th>Lesson</th></tr>
+  <tr>
+    <td><strong>Ports &amp; Adapters</strong> (Hexagonal)</td>
+    <td>A one-method <code>Protocol</code> in front of each external effect; the rest of the code depends on the shape, not the client.</td>
+    <td><code>ports.py</code> — <code>HttpFetcher</code>, <code>TrackerScanner</code>, <code>AiClassifier</code></td>
+    <td>Swap real ⇄ fake at one seam; no internal call-sequence mocking.</td>
+    <td>0003</td>
+  </tr>
+  <tr>
+    <td><strong>Decorator</strong> over a Port</td>
+    <td>An object that <em>is-a</em> and <em>has-a</em> the same port, adding behaviour around the inner call.</td>
+    <td><code>politeness.py</code> — <code>PolitenessFetcher</code>, <code>PolitenessScanner</code></td>
+    <td>Cross-cutting policy testable over a fake; reused across every port that shares the interface.</td>
+    <td>0003</td>
+  </tr>
+  <tr>
+    <td><strong>Dependency Inversion</strong></td>
+    <td>The policy owns the abstraction; the machinery depends on it. Arrow points toward the policy.</td>
+    <td><code>ConcurrencyGate</code> defined in <code>politeness.py</code>, filled by <code>limits.py</code></td>
+    <td><code>politeness.py</code> never imports Prefect; its tests start no server.</td>
+    <td>0001</td>
+  </tr>
+  <tr>
+    <td><strong>Functional Core, Imperative Shell</strong></td>
+    <td>A pure, total function decides and returns a verdict as data; a thin shell performs the injected effect.</td>
+    <td><code>limits.py</code> (<code>plan_limits</code> → <code>deploy_init</code>), <code>teardown.py</code> (<code>plan_teardown</code> → <code>destroy_enrich</code>)</td>
+    <td>The hard logic tests with literals; the shell is too small to hide a bug.</td>
+    <td>0004</td>
+  </tr>
+  <tr>
+    <td><strong>Null Object</strong></td>
+    <td>A do-nothing implementation of a seam, so callers need no null check.</td>
+    <td><code>politeness.py</code> — <code>_open_gate</code> returns <code>nullcontext()</code></td>
+    <td>Politeness works with no capacity system at all; no <code>if gate is None</code>.</td>
+    <td>0001</td>
+  </tr>
+  <tr>
+    <td><strong>Service Locator</strong></td>
+    <td>One place resolves every dependency; an <code>override</code> seam installs fakes for a block.</td>
+    <td><code>deps.py</code> — accessors + <code>override</code> / <code>reset</code></td>
+    <td>Prefect tasks keep plain-id parameters. An honest step down from constructor injection (its docstring says so).</td>
+    <td>0003</td>
+  </tr>
+</table>
+
+<h2>The injected-effect seams</h2>
+
+<p>Every one is dependency injection: a <code>Callable</code> alias with a real default, overridable in tests.</p>
+
+<table>
+  <tr><th>Alias</th><th>Signature</th><th>Real default</th><th>Where</th></tr>
+  <tr><td><code>Resolver</code></td><td><code>Callable[[str], Sequence[str]]</code></td><td><code>default_resolve</code></td><td><code>politeness.py:70</code></td></tr>
+  <tr><td><code>GateFactory</code></td><td><code>Callable[[], ConcurrencyGate]</code></td><td><code>_open_gate</code></td><td><code>politeness.py:65–66</code></td></tr>
+  <tr><td><code>UpsertLimit</code></td><td><code>Callable[[str, int], None]</code></td><td><code>_prefect_upsert</code></td><td><code>limits.py:88</code></td></tr>
+  <tr><td><code>DropSchema</code></td><td><code>Callable[[str], None]</code></td><td><code>downgrade_to_base</code></td><td><code>teardown.py:49</code></td></tr>
+  <tr><td><code>Emit</code></td><td><code>Callable[[str], None]</code></td><td><code>print</code></td><td><code>teardown.py:51</code></td></tr>
+</table>
+
+<h2>Properties the patterns are chosen to give</h2>
+
+<table>
+  <tr><th>Property</th><th>Means</th><th>Seen in</th></tr>
+  <tr><td><strong>Total</strong></td><td>A function returns a verdict for every input; no path forgets to answer.</td><td><code>plan_teardown</code>, <code>is_public_url</code></td></tr>
+  <tr><td><strong>Fail-closed / safe by default</strong></td><td>The default answer is "no"; unknowns refuse.</td><td>SSRF guard (0002), <code>plan_teardown</code> refuses unless <code>confirm=="yes"</code></td></tr>
+  <tr><td><strong>Ordered policy</strong></td><td>Which check runs first is itself policy, and testable because it is pure.</td><td>prod-DSN checked before confirm; guard before spacing before gate</td></tr>
+  <tr><td><strong>No drift</strong></td><td>A rule exists once, so two callers cannot diverge.</td><td>one <code>_politeness</code> for fetch and scan</td></tr>
+</table>
+
+<h2>Anti-patterns — what these moves are chosen to avoid</h2>
+
+<table>
+  <tr><th>Smell</th><th>What breaks</th><th>The move that avoids it</th></tr>
+  <tr>
+    <td><strong>Decision welded to effect</strong> — one function both decides and acts.</td>
+    <td>The decision is testable only by its effect; to check a guard you must risk the drop.</td>
+    <td>Functional Core, Imperative Shell (0004)</td>
+  </tr>
+  <tr>
+    <td><strong>Check-then-use across a boundary</strong> — validate here, act past the seam.</td>
+    <td>The thing changes in the window (DNS rebinding); the guard leaves no witness.</td>
+    <td>Move the control to the layer that acts — egress proxy (0002)</td>
+  </tr>
+  <tr>
+    <td><strong>Policy inlined into a client</strong> — the <code>if</code> baked into the real fetcher.</td>
+    <td>Shallow, entangled module; every test drags the transport; rules get copied and drift.</td>
+    <td>Decorator over a Port (0003)</td>
+  </tr>
+  <tr>
+    <td><strong>Pass-through wrapper</strong> — a layer that forwards unchanged.</td>
+    <td>A new layer with no new abstraction: pure cost (Ousterhout).</td>
+    <td>Only decorate when the wrapper does real work (0003)</td>
+  </tr>
+  <tr>
+    <td><strong>A cap that exists only sometimes</strong> — silently run un-capped if unset.</td>
+    <td>A run against an unconfigured server hammers targets with no limit.</td>
+    <td><code>strict=True</code> raises instead (0001, <code>limits.py</code>)</td>
+  </tr>
+</table>
+
+<div class="footer">
+  Reference &middot;
+  <a href="module-boundaries.html">Boundary map</a> &middot;
+  <a href="ssrf-defense-in-depth.html">SSRF ladder</a> &middot;
+  <a href="../lessons/0004-pure-plan-thin-effect.html">Lesson 0004</a> &middot;
+  <a href="https://www.destroyallsoftware.com/talks/boundaries">Bernhardt, Boundaries</a> &middot;
+  <a href="https://alistair.cockburn.us/hexagonal-architecture">Cockburn, Hexagonal</a>
+</div>
