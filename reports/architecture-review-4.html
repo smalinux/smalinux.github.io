@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Code review — the URL scrape worker (easy English)</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>mermaid.initialize({startOnLoad:true, theme:"neutral"});</script>
+<style>
+  .card{break-inside:avoid}
+  .chip{font:600 11px/1 ui-monospace,monospace}
+  .before{background:linear-gradient(180deg,#fef2f2,#fff)}
+  .after{background:linear-gradient(180deg,#f0fdf4,#fff)}
+</style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+<div class="max-w-5xl mx-auto px-6 py-10">
+
+  <header class="mb-8">
+    <p class="chip uppercase text-indigo-600 font-bold tracking-wide">Code review · easy English</p>
+    <h1 class="text-3xl font-bold mt-1">The URL scrape worker — what is good, and what to fix</h1>
+    <p class="mt-3 text-slate-600 max-w-3xl">This looks at the last two code commits. They add a worker that opens each post's web page, downloads it once, and saves it. Most of the new code is good. This page lists a few things that are hard to test, and how to make them easier. It uses easy words. Hard words are explained in the box below.</p>
+  </header>
+
+  <!-- GLOSSARY -->
+  <section class="mb-8 bg-white rounded-xl border border-slate-200 p-5 card">
+    <h2 class="font-bold text-sm uppercase text-slate-500 mb-3">Words I use in this page</h2>
+    <dl class="grid sm:grid-cols-2 gap-x-8 gap-y-3 text-sm">
+      <div><dt class="font-semibold">Pure function</dt><dd class="text-slate-600">A function that uses only its inputs. It does not touch the database or the internet. It is easy and fast to test.</dd></div>
+      <div><dt class="font-semibold">Effect / side effect</dt><dd class="text-slate-600">Code that changes the outside world — writes to the database, opens a web page.</dd></div>
+      <div><dt class="font-semibold">Fake</dt><dd class="text-slate-600">A small pretend version of a real thing (like a fake web fetcher), used in tests so you do not need the internet.</dd></div>
+      <div><dt class="font-semibold">Branch</dt><dd class="text-slate-600">One path in the code — an <code>if</code> case. "7 branches" means the code can go 7 different ways.</dd></div>
+      <div><dt class="font-semibold">Raise</dt><dd class="text-slate-600">When code throws an error to stop and say "something failed".</dd></div>
+      <div><dt class="font-semibold">Ledger / retry budget</dt><dd class="text-slate-600">The record of tries per item. After N failed tries the item is marked <code>dead</code> and is not tried again.</dd></div>
+    </dl>
+  </section>
+
+  <!-- BIG PICTURE -->
+  <section class="mb-10 bg-white rounded-xl shadow-sm border border-slate-200 p-6 card">
+    <h2 class="font-bold text-lg mb-1">The main problem in one picture</h2>
+    <p class="text-slate-600 text-sm mb-5">The small helper functions have many tests. But bugs do not live there. The important code — the code that <b>decides</b> the result and <b>writes</b> to the database — has few tests, because you need a real database to run it.</p>
+    <div class="grid md:grid-cols-2 gap-6">
+      <div class="before rounded-lg border border-rose-200 p-4">
+        <p class="chip text-rose-600 mb-2">HAS MANY TESTS · but not important</p>
+        <div class="space-y-1 text-sm">
+          <div class="bg-white rounded px-3 py-1.5 border border-slate-200">check if a URL is safe to fetch</div>
+          <div class="bg-white rounded px-3 py-1.5 border border-slate-200">read text out of a web page</div>
+          <div class="bg-white rounded px-3 py-1.5 border border-slate-200">count words / cut the text short</div>
+        </div>
+        <p class="text-xs text-rose-700/80 mt-3">These are pure and simple. Good tests — but no result is decided here.</p>
+      </div>
+      <div class="after rounded-lg border border-amber-300 p-4">
+        <p class="chip text-amber-700 mb-2">FEW TESTS · but very important</p>
+        <div class="text-sm font-mono leading-6 bg-white rounded p-3 border border-slate-200">
+          the function <b>_settle</b> — 7 ways:<br>
+          &nbsp;• no URL &rarr; skip<br>
+          &nbsp;• bad URL &rarr; skip <span class="text-rose-500">✗ no test</span><br>
+          &nbsp;• nothing came back &rarr; error <span class="text-rose-500">✗ no test</span><br>
+          &nbsp;• blocked by robots &rarr; save + skip<br>
+          &nbsp;• fetch error &rarr; error<br>
+          &nbsp;• page code ≥ 400 &rarr; error <span class="text-rose-500">✗ no test</span><br>
+          &nbsp;• all good &rarr; save + ok
+        </div>
+        <p class="text-xs text-amber-800 mt-3">To run any of these 7 ways you need a real database. So 3 of the 7 have no test.</p>
+      </div>
+    </div>
+  </section>
+
+  <h2 class="text-2xl font-bold mb-1">The four main things to fix</h2>
+  <p class="text-slate-500 text-sm mb-6">Sorted from most useful to least. None of these means "delete the code" — the design is good. They only make the code easier to test.</p>
+
+  <!-- S2 TOP -->
+  <article class="card bg-white rounded-xl shadow-sm border-2 border-emerald-400 p-6 mb-6">
+    <div class="flex flex-wrap items-center gap-3 mb-2">
+      <span class="chip uppercase font-bold text-white bg-emerald-500 rounded px-2 py-0.5">Fix this first</span>
+      <h3 class="text-xl font-bold">1. Split "decide" from "save to the database"</h3>
+    </div>
+    <p class="text-sm text-slate-500 mb-4">File: <code class="chip">workers/scrape_url.py</code> — the function <code>_settle</code></p>
+    <div class="grid md:grid-cols-2 gap-6 text-sm">
+      <div>
+        <p class="font-semibold text-slate-700">The problem</p>
+        <p class="text-slate-600 mt-1">One function does two jobs at the same time. It <b>decides</b> the result (7 different ways), and it also <b>writes</b> the page to the database inside some of those ways. Because writing needs a real database, you can only run this function with Docker. So 3 of the 7 ways are never tested.</p>
+        <p class="font-semibold text-slate-700 mt-3">The fix</p>
+        <p class="text-slate-600 mt-1">Cut it into two parts. Part one only <b>decides</b> and gives back a small answer: "save this", or "skip, reason X", or "this failed". This part is pure — no database. Part two is 3 lines that read the answer and do the save. Now you can test all 7 ways fast, with no database.</p>
+      </div>
+      <div>
+        <p class="font-semibold text-slate-700">Why it helps</p>
+        <ul class="text-slate-600 mt-1 list-disc pl-5 space-y-1">
+          <li>The hard, important code finally gets easy tests.</li>
+          <li>The 3 untested ways become tested.</li>
+          <li>It also makes fixes 2 and 4 below easy, because they touch the same place.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="grid md:grid-cols-2 gap-4 mt-5">
+      <div class="before rounded-lg border border-rose-200 p-3">
+        <p class="chip text-rose-600 mb-2">NOW — decide and save mixed</p>
+        <div class="font-mono text-xs leading-5 text-slate-700">_settle(database, …)<br>&nbsp;&nbsp;if blocked: <b class="text-rose-600">save(database)</b>; return skip<br>&nbsp;&nbsp;if error: raise<br>&nbsp;&nbsp;<b class="text-rose-600">save(database)</b>; return ok</div>
+        <p class="text-xs text-rose-700/80 mt-2">Needs a real database to run any line.</p>
+      </div>
+      <div class="after rounded-lg border border-emerald-300 p-3">
+        <p class="chip text-emerald-700 mb-2">AFTER — decide, then save</p>
+        <div class="font-mono text-xs leading-5 text-slate-700">decide(item, result) → answer <span class="text-emerald-600">(pure, no database)</span><br>save(database, answer) <span class="text-emerald-600">(3 lines)</span></div>
+        <p class="text-xs text-emerald-700/80 mt-2">All 7 ways testable with no database.</p>
+      </div>
+    </div>
+  </article>
+
+  <!-- S1 -->
+  <article class="card bg-white rounded-xl shadow-sm border border-slate-200 p-6 mb-6">
+    <div class="flex flex-wrap items-center gap-3 mb-2">
+      <span class="chip uppercase font-bold text-white bg-rose-500 rounded px-2 py-0.5">Important</span>
+      <h3 class="text-xl font-bold">2. Make it impossible to break the retry counter</h3>
+    </div>
+    <p class="text-sm text-slate-500 mb-4">File: <code class="chip">worker_run.py</code></p>
+    <div class="grid md:grid-cols-2 gap-6 text-sm">
+      <div>
+        <p class="font-semibold text-slate-700">The problem</p>
+        <p class="text-slate-600 mt-1">The loop counts a failed try only when a worker <b>raises</b> an error. That is the rule. But the return type also lets a worker <b>return</b> the word "failed". If someone does that, the counter stays at 1 for ever. The item is never marked <code>dead</code>, and the retry limit stops working — quietly. Right now the rule lives only in a comment, so it is easy to break.</p>
+        <p class="font-semibold text-slate-700 mt-3">The fix</p>
+        <p class="text-slate-600 mt-1">Make the return type allow only the "settled" words: <code>ok</code>, <code>na</code>, <code>skipped</code>. To fail, you must raise. Now a worker <b>cannot</b> return "failed", so this mistake is impossible — the type stops it.</p>
+      </div>
+      <div>
+        <p class="font-semibold text-slate-700">Why it helps</p>
+        <ul class="text-slate-600 mt-1 list-disc pl-5 space-y-1">
+          <li>The next person who writes a worker is safe by default.</li>
+          <li>No need to read a comment to get it right.</li>
+        </ul>
+        <div class="mt-3 font-mono text-xs bg-slate-50 border border-slate-200 rounded p-2">
+          <span class="text-rose-600">now:&nbsp;&nbsp;</span> any word (even "failed")<br>
+          <span class="text-emerald-600">after:</span> only "ok" / "na" / "skipped"
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- S3 -->
+  <article class="card bg-white rounded-xl shadow-sm border border-slate-200 p-6 mb-6">
+    <div class="flex flex-wrap items-center gap-3 mb-2">
+      <span class="chip uppercase font-bold text-white bg-rose-500 rounded px-2 py-0.5">Important</span>
+      <h3 class="text-xl font-bold">3. Test the web-fetch child — it has zero tests today</h3>
+    </div>
+    <p class="text-sm text-slate-500 mb-4">File: <code class="chip">crawl.py</code> — the child that really opens web pages</p>
+    <div class="grid md:grid-cols-2 gap-6 text-sm">
+      <div>
+        <p class="font-semibold text-slate-700">The problem</p>
+        <p class="text-slate-600 mt-1">The real web fetch runs in a small separate program (a "child"). That child code has <b>no tests</b>. The riskiest part is this choice: when a fetch fails, was it <b>blocked by robots.txt</b> (so skip for ever) or a <b>normal error</b> (so try again)? This choice is never tested. The bigger tests use a fake fetcher that already knows the answer — so they test the reader, not the real chooser.</p>
+        <p class="font-semibold text-slate-700 mt-3">The fix</p>
+        <p class="text-slate-600 mt-1">Pull out one small step: "turn a web response into a result". Test it with a fake response — no internet needed. This covers the blocked-vs-error choice.</p>
+      </div>
+      <div>
+        <p class="font-semibold text-slate-700">Why it helps</p>
+        <ul class="text-slate-600 mt-1 list-disc pl-5 space-y-1">
+          <li>The most risky code stops being a blind spot.</li>
+          <li>You catch a wrong "blocked vs error" choice before it ships.</li>
+          <li>No internet needed in the test.</li>
+        </ul>
+      </div>
+    </div>
+  </article>
+
+  <!-- S4 -->
+  <article class="card bg-white rounded-xl shadow-sm border border-slate-200 p-6 mb-6">
+    <div class="flex flex-wrap items-center gap-3 mb-2">
+      <span class="chip uppercase font-bold text-white bg-orange-500 rounded px-2 py-0.5">Good to fix</span>
+      <h3 class="text-xl font-bold">4. Decide "is this URL OK to fetch?" only once</h3>
+    </div>
+    <p class="text-sm text-slate-500 mb-4">File: <code class="chip">workers/scrape_url.py</code> — the check runs in two places</p>
+    <div class="grid md:grid-cols-2 gap-6 text-sm">
+      <div>
+        <p class="font-semibold text-slate-700">The problem</p>
+        <p class="text-slate-600 mt-1">The same question — "should we fetch this URL?" — is asked in two places. One place uses it to pick which URLs to fetch. The other uses it to mark an item as skipped. Both must give the same answer. If they ever differ, the item breaks. Today they agree because it is the same function, but nothing keeps them in step, and there is no test for the difference.</p>
+        <p class="font-semibold text-slate-700 mt-3">The fix</p>
+        <p class="text-slate-600 mt-1">Decide once, save the answer, and read that saved answer in the second place. One decision, one place to test.</p>
+      </div>
+      <div>
+        <p class="font-semibold text-slate-700">Why it helps</p>
+        <ul class="text-slate-600 mt-1 list-disc pl-5 space-y-1">
+          <li>The two places can never drift apart.</li>
+          <li>One clear place to test the rule.</li>
+        </ul>
+      </div>
+    </div>
+  </article>
+
+  <!-- SMALLER NOTES -->
+  <h3 class="text-lg font-bold mt-8 mb-3 text-slate-700">Smaller notes</h3>
+  <div class="grid md:grid-cols-2 gap-4 mb-8">
+    <div class="card bg-white rounded-lg border border-slate-200 p-4 text-sm">
+      <p class="font-semibold mb-1">5. <code>run_worker</code> is very thin</p>
+      <p class="text-slate-600">It is a 3-line wrapper. Fine to keep for now. Just do not let it grow into a copy of the bigger loop next to it.</p>
+    </div>
+    <div class="card bg-white rounded-lg border border-slate-200 p-4 text-sm">
+      <p class="font-semibold mb-1">6. The fetch result holds three shapes in one</p>
+      <p class="text-slate-600">"Good page", "blocked", and "failed" all share one type where every field is optional. You can build a nonsense mix by mistake. A clearer type with three separate shapes would help — but it costs some work. Try it together with fix 1.</p>
+    </div>
+    <div class="card bg-white rounded-lg border border-slate-200 p-4 text-sm">
+      <p class="font-semibold mb-1">7. NUL cleaning is spread over 6 spots</p>
+      <p class="text-slate-600">Some text fields are cleaned of bad bytes, but two (<code>published</code>, <code>language</code>) are not. Clean once, in one place, so no field is missed. (Your own old <code>SMA</code> note asked about this.)</p>
+    </div>
+    <div class="card bg-white rounded-lg border border-emerald-300 p-4 text-sm">
+      <p class="font-semibold mb-1 text-emerald-700">8. Done already ✓</p>
+      <p class="text-slate-600">The helper functions that only the tests used are now private (<code>_url_guard</code>, <code>_extract_page</code>, <code>_count_words</code>, <code>_first_words</code>, <code>_scrapy_settings</code>). This answers your <code>SMA: local function?</code> notes. See the new <b>Code style</b> doc page.</p>
+    </div>
+  </div>
+
+  <!-- WHAT TO DO -->
+  <section class="rounded-xl border-2 border-emerald-400 bg-emerald-50 p-6 mb-8">
+    <h2 class="text-xl font-bold text-emerald-800 mb-2">What to do first</h2>
+    <p class="text-sm text-emerald-900/90 max-w-3xl">Start with <b>fix 1</b> (split "decide" from "save"). It gives the most value: the hard code finally gets easy tests, and 3 untested paths become tested. After that, fix 2 (the safe return type) and fix 6 (the clearer result type) are small and touch the same spot, so they come almost for free. Then fix 3 to test the web-fetch child.</p>
+  </section>
+
+  <footer class="text-xs text-slate-400 border-t border-slate-200 pt-4">
+    About the last two code commits of the scrape worker. The good parts (the shared worker loop, the web-fetch adapter, the small interfaces) are kept — these notes only make the code easier to test.
+  </footer>
+
+</div>
+</body>
+</html>
