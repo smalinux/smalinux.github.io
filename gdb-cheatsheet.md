@@ -333,7 +333,7 @@ echo 0 | sudo tee /proc/sys/kernel/yama/ptrace_scope
 
 ```gdb
 break     / b                  # at current line (or next instruction in frame)
-break LOCATION                 # see "Location Specifications" below
+break LOCATION                 # see "Location Specifications" below ⭐
 break main                     # at function
 break file.c:42                # file:line
 break 42                       # line in current file
@@ -520,11 +520,11 @@ Breakpoint address adjusted...  # GDB moved the bp to a valid instruction bounda
 
 ```gdb
 continue [N] / c / fg          # continue; N = ignore this bp N-1 more times
-next [N]     / n               # step over (one source line, skip calls)
+next [N]     / n               # step over (one source line, skip calls) ⭐
 step [N]     / s               # step into
-stepi [N]    / si              # one machine instruction, step into
-nexti [N]    / ni              # one machine instruction, step over calls
-finish       / fin             # run until current function returns, print value
+stepi [N]    / si              # one machine instruction, step into ⭐
+nexti [N]    / ni              # one machine instruction, step over calls ⭐
+finish       / fin             # run until current function returns, print value ⭐
 set print finish on|off        # print the return value on finish
 until        / u               # next line, but do not go BACK in loops
 until LOCATION                 # run until LOCATION or current frame returns
