@@ -529,7 +529,7 @@ set print finish on|off        # print the return value on finish
 until        / u               # next line, but do not go BACK in loops
 until LOCATION                 # run until LOCATION or current frame returns
 advance LOCATION               # run until LOCATION (stops also if frame returns)
-display/i $pc                  # auto-show current instruction after each step
+display/i $pc                  # auto-show current instruction after each step ⭐
 
 set step-mode on               # step INTO functions without debug info
 set step-mode off              # (default) step OVER functions without line info
@@ -998,7 +998,7 @@ call EXPR                      # like print but void results are not shown
 x/NFU ADDR                     # N units, format F, unit size U
 x/4xw &var                     # 4 words in hex
 x/8xb ptr                      # 8 bytes in hex
-x/s str                        # C string
+x/s str                        # C string ⭐
 x/2s str                       # 2 strings
 x/10i $pc                      # 10 instructions
 x/3xg $sp                      # 3 giant (8-byte) words
@@ -2408,7 +2408,7 @@ Ctrl-p / Ctrl-n / Ctrl-b / Ctrl-f        # command history / cursor (when cmd ha
 layout src                     # source + command
 layout asm                     # assembly + command
 layout split                   # source + assembly + command
-layout regs                    # registers + (source or asm) + command
+layout regs                    # registers + (source or asm) + command ⭐
 layout next / layout prev
 layout NAME                    # user layout
 tui new-layout NAME WINDOW WEIGHT [WINDOW WEIGHT]...   # e.g. tui new-layout mine src 2 regs 1 status 0 cmd 1
