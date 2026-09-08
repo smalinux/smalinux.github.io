@@ -84,7 +84,7 @@ gdb -s file  / --symbols=file  # read symbol table from this file only
 gdb -e file  / --exec=file     # use this file as the executable
 gdb -se file                   # symbols AND executable from same file
 gdb -c file  / --core=file     # use this core dump
-gdb -x file  / --command=file  # run GDB commands from a file (like "source")
+gdb -x file  / --command=file  # run GDB commands from a file (custom gdb scripting) ⭐
 gdb -ex 'cmd' / --eval-command # run one GDB command (repeatable)
 gdb -ix file / -iex 'cmd'      # same, but BEFORE the program is loaded
 gdb -eix file / -eiex 'cmd'    # very early init, before any output
