@@ -177,7 +177,7 @@ p $_shell("ls -l")             # run shell from an expression, returns exit code
 p $_shell_exitcode             # exit code of last shell/make/pipe
 p $_shell_exitsignal           # signal that killed the last shell command
 
-set logging enabled on|off     # start / stop logging
+set logging enabled on|off     # start / stop logging (tee output to gdb.txt) ⭐
 set logging file FILE          # default: gdb.txt
 set logging overwrite on|off   # overwrite instead of append
 set logging redirect on|off    # on = output goes ONLY to the file
@@ -270,12 +270,18 @@ start ARGS                     # same with args
 starti                         # stop at the very first instruction
 set exec-wrapper env 'LD_PRELOAD=libx.so'   # launch through a wrapper program
 unset exec-wrapper / show exec-wrapper
-set startup-with-shell off     # start program directly, not via $SHELL
-set auto-connect-native-target off  # "run" will not auto-connect to native target
 target native                  # connect to native target explicitly
 disconnect                     # disconnect from target
 set disable-randomization off  # keep ASLR on (default: GDB disables ASLR)
 show disable-randomization
+
+set startup-with-shell off     # start program directly, not via $SHELL
+show startup-with-shell
+set startup-with-shell on
+
+set auto-connect-native-target off  # "run" will not auto-connect to native target 👍
+show auto-connect-native-target
+set auto-connect-native-target on
 ```
 
 ### 4.3 Arguments, Environment, Working Directory, I/O
@@ -298,14 +304,15 @@ set cwd DIR                    # program's working directory (next run)
 set cwd                        # reset: inherit GDB's cwd
 show cwd
 cd [DIR]                       # change GDB's own working directory
-pwd                            # print GDB's working directory
+pwd                            # print GDB's working directory 👍
 info proc cwd                  # actual cwd of the running debuggee (Linux)
 
-info terminal                  # terminal modes the program uses
-tty /dev/pts/3                 # program I/O on another terminal
+info terminal                  # terminal modes the program uses 👍
+
+show inferior-tty
+tty /dev/pts/3                 # program I/O on another terminal ❤️
 set inferior-tty /dev/pts/3    # same as tty
 set inferior-tty               # reset to GDB's terminal
-show inferior-tty
 ```
 
 ### 4.4 Attach / Detach / Kill
@@ -317,7 +324,7 @@ attach PID                     # attach to a running process
 attach -f PID                  # (some targets) force
 detach                         # let the process continue without GDB
 kill      / k                  # kill the debugged process
-info files                     # show active targets
+info files                     # show active targets ⭐
 ```
 
 ```bash
@@ -760,7 +767,7 @@ set record function-call-history-size N
 
 ```gdb
 backtrace / bt / where / info stack   # print call stack
-bt N                           # innermost N frames
+bt N                           # innermost N frames ⭐
 bt -N                          # outermost N frames
 bt full                        # with local variables
 bt -full                       # same (option form)
@@ -1203,13 +1210,14 @@ append [binary] value FILE EXPR
 restore FILE [binary] [BIAS START END]   # load file into memory
 restore mem.bin binary 0x400000
 
-generate-core-file [FILE] / gcore [FILE]    # write core of running process
+generate-core-file [FILE]                   # write core of running process
+gcore [FILE]                                # write core of running process ❤️
 set use-coredump-filter on|off # honor /proc/PID/coredump_filter
 set dump-excluded-mappings on|off
-core-file FILE / core FILE     # load core file
+core FILE / core-file FILE     # load core file ❤️
 core-file                      # discard core
 target core FILE
-info proc mappings             # memory map (Linux)
+info proc mappings             # memory map (Linux) ❤️
 ```
 
 ```bash
