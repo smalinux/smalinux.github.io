@@ -1,5 +1,7 @@
 # GDB Cheatsheet — الدليل الشامل لـ GDB
 
+*Generated 2026-09-07 from the GDB 19 (19.0.50.20260909-git) manual. Commands marked with version-specific behavior may differ on older GDB releases; run `help CMD` inside your GDB to confirm.*
+
 > Based on *Debugging with GDB* (Tenth Edition, GDB 19.x) — https://sourceware.org/gdb/current/onlinedocs/gdb
 > الشرح بالعامية المصرية، والـ keywords والأوامر كلها English. الـ comments جوه الكود بإنجليزي بسيط (B1).
 > علامة `#` جوه أي code block = comment. GDB نفسه بيعتبر `#` comment برضه.
@@ -2780,4 +2782,60 @@ $_isvoid(E) $_memeq(A,B,N) $_regex(S,R) $_shell(CMD) $_streq(A,B) $_strlen(S)
 
 ---
 
-*Generated 2026-09-07 from the GDB 19 (git) manual. Commands marked with version-specific behavior may differ on older GDB releases; run `help CMD` inside your GDB to confirm.*
+---
+
+## `Scenario 01`: How to actually get a core file
+
+Taking snapshot (screenshot) from process (lets say /usr/bin/htop) in memory. So at some point you can look and inspect this process and read EVERYTHING this process is doing.
+
+Scenario: (STOP) breakpoint → 📸 snapshot (ex gcore)`kill` → Inspect (with gdb).
+
+< Think in future how to record EVERYTHING a process doing for sometime (lets say last 10 mins) then open it with gdb or whatever, maybe I will use eBPF stuff here...
+
+### TL;DR
+```
+################## terminal 1
+$ tty
+/dev/pts/8
+
+################## terminal 2
+$ gdb -n /usr/bin/htop
+(gdb) set inferior-tty /dev/pts/8
+(gdb) start
+(gdb) c
+Continuing.
+^C
+
+(gdb) generate-core-file
+(gdb) core-file core.2755591
+(gdb) bt
+#0  0x000056554a00a174 in bla_bla (fds=0x7fffffffd380, nfds=1, timeout=1500)
+```
+
+A. **From inside GDB** — this is the one you want:
+
+```
+(gdb) generate-core-file
+Saved corefile core.135993
+```
+
+B. **From outside GDB**, on a process you didn't start under the debugger:
+
+```sh
+$ gcore <pid>
+```
+
+`gcore` is the shorter alias. It dumps the process *without* killing it, so you can snapshot a running program and carry on. The result loads normally:
+
+```sh
+$ gdb ./pipedemo core.135993
+#0  main () at pipedemo.c:12
+```
+
+C. **Automatically, when a program crashes** — this is where your existing `core` file came from. Your `core_pattern` is `core`, so a crash writes `./core` in the working directory. But it only happens if the core size limit allows it, and in my shell `ulimit -c` is `0` (disabled). Enable it per-shell:
+
+```sh
+$ ulimit -c unlimited
+$ ./faulty          # segfaults → writes ./core
+```
+
