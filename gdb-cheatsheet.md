@@ -154,7 +154,7 @@ set startup-quietly on          # like -q (early-init file only)
 set confirm off                 # do not ask "are you sure?"
 set pagination off              # no "--Type <RET>--" pauses
 set print pretty on             # nice struct printing
-set history save on             # keep command history between sessions
+set history save on             # keep command history between sessions ⭐⭐⭐⭐⭐
 set auto-load safe-path /       # allow local .gdbinit anywhere (careful!)
 ```
 
@@ -686,6 +686,7 @@ set may-interrupt off
 
 ```gdb
 set follow-fork-mode parent|child   # which side to follow after fork
+set follow-fork-mode child   #  ⭐⭐⭐⭐⭐
 set detach-on-fork on|off           # off = keep both as inferiors
 show follow-fork-mode
 catch fork / catch vfork / catch exec
@@ -897,6 +898,7 @@ x/10i $pc                      # 10 instructions from PC
 x/3i main+8
 display/i $pc                  # show next instruction at each stop
 set disassembly-flavor intel|att   # x86 syntax
+set disassembly-flavor intel       #  ⭐⭐⭐⭐⭐
 set disassemble-next-line on|off|auto
 set disassembler-options OPTS  # e.g. "no-aliases" for RISC-V
 show disassembler-options
