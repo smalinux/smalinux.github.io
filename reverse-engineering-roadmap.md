@@ -1,7 +1,11 @@
 # Reverse Engineering Roadmap
 
-## Foundations (your 1–4, plus)
+## Foundations
 
+1. ELF format
+2. Understand program execution and program load
+3. Stack & functions
+4. Assembly
 5. C language — most RE targets compiled C/C++. Read C, know how compilers translate it
 6. Memory layout — heap, stack, globals, virtual memory, paging, ASLR
 7. Calling conventions — SysV, stdcall, fastcall, how args/returns pass
